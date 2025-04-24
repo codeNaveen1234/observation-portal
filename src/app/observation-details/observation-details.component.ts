@@ -173,11 +173,6 @@ getObservationsByStatus(statuses: ('draft' | 'inprogress' | 'completed' | 'start
   }
 
   viewReport(entity?) {
-    console.log("viewreports",entity,this.observationId,
-      this.entityId,
-      entity ? entity?.entityType : this.observations[0]?.entityType,
-      entity ? false : true,
-      this.isRubricDriven ? true : false)
     this.router.navigate([
       'reports',
       this.observationId,

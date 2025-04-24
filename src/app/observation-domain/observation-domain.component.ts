@@ -98,7 +98,6 @@ export class ObservationDomainComponent implements OnInit {
   }
 
   navigateToDetails(data,index) {
-    console.log("data in domain page",data)
     this.router.navigate(['questionnaire'], {
       queryParams: { observationId:this.observationId, entityId:this.entityId, submissionNumber:this.submissionNumber,evidenceCode:data?.code, index:index }
     });
