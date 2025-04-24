@@ -41,14 +41,7 @@ export class ObservationDomainComponent implements OnInit {
     this.observationId = this.urlParamsService?.observationId;
     this.entityId = this.urlParamsService?.entityId;
     this.id = this.urlParamsService?.id;
-    // let typeFromPreviousUrl = this.queryParamsService.typeFromPreviousUrl;
-    // if(typeFromPreviousUrl == "questionnairePlayer"){
-      setTimeout(() => {
-        this.getObservationByEntityId();
-      }, 1000);
-    // }else{
-      // this.getObservationByEntityId()
-    // }
+    this.getObservationByEntityId();
   }
 
   getObservationByEntityId() {

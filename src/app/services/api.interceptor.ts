@@ -98,12 +98,7 @@ export class ApiInterceptor implements HttpInterceptor {
     }
     return request;
   }
-//   private isSpecialUrl(url: string): boolean {
-//     return url.includes('/logout') || 
-//            url.includes('/user/update') ||
-//            url.includes('/cloud-services/file/getSignedUrl') || 
-//            url.includes('getDownloadableUrl');
-//   }
+
   private handleError(error: HttpErrorResponse): Observable<never> {
     if (!this.onlineStatus) {
       return throwError(() => new Error('User is offline'));
