@@ -1,0 +1,35 @@
+.spinner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+  
+  .spinner {
+    color: #832215 !important;
+    width: 50px;
+    height: 50px;
+  }
+
+  .mat-mdc-progress-spinner .mdc-circular-progress__determinate-circle, .mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic {
+    stroke: #832215 !important;
+}
+
+::ng-deep{
+    .mat-mdc-mini-fab{
+      box-shadow: none !important;
+    }
+  
+    .mat-mdc-progress-spinner .mdc-circular-progress__determinate-circle, .mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic {
+      stroke: #832215 !important;
+    }
+  
+    .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
+      padding: 16px !important;
+    }
+  }

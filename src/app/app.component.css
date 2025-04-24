@@ -1,0 +1,33 @@
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+    padding-left: 0.4rem; 
+    z-index: 10;
+    background-color: #fff;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+  }
+  
+  .back-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+  }
+  
+  .back-button mat-icon {
+    font-size: 1.5625rem; 
+    color: rgb(66, 66, 66);
+    width: 2rem; 
+    height: 2rem; 
+  }
+  .main-content{
+    padding-top: 3.5rem;
+  }

@@ -1,0 +1,189 @@
+@use '@angular/material' as mat;
+// @import './assets/styles/_styles.scss';
+
+@include mat.core();
+
+body{
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+:root {
+    --ion-default-font: "NotoSans-Regular";
+    --ion-font-family: "NotoSans-Regular";
+    --primary-color: #832215;
+    --color-primary: #832215;
+    --color-secondary: #8C2E23;
+    --color-light: #ffffff;
+    --color-dark: #000000;
+    --color-grey: #808080;
+    --color-danger: #ff0000;
+  
+    --color-disable-text: #7F7F7F;
+    --color-disable-bg: #E4E3E0;
+    --disabled-btn-bg: gainsboro;
+    --disabled-btn-text: gray;
+  
+    --btn-outline: #832215;
+    --general-btn-text-color: white;
+    --general-btn-hover-bg: white;
+    --secondary-btn-bg: white;
+    --secondary-btn-hover-bg: whitesmoke;
+  
+    --error-color: rgb(150, 4, 4);
+    --question-tip: gray;
+  
+    --card-bg: white;
+    --light-grey: #f1f1f1;
+    --light-opacity: #00000052;
+  
+    --border-color: #ccc;
+    --mdc-outlined-text-field-caret-color: var(--color-primary);
+    --mdc-outlined-text-field-focus-outline-color: var(--color-primary);
+    --mdc-outlined-text-field-focus-label-text-color: var(--color-primary);
+    --mdc-filled-text-field-focus-active-indicator-color: var(--color-primary);
+    --mdc-filled-text-field-container-color: var(--color-light);
+    --mdc-filled-text-field-caret-color: var(--primary-color);
+    --mdc-filled-text-field-focus-label-text-color: var(--primary-color);
+    --mat-select-focused-arrow-color: var(--primary-color);
+    --mdc-circular-progress-active-indicator-color: var(--primary-color);
+  
+    --mdc-checkbox-selected-focus-icon-color: var(--primary-color);
+    --mdc-checkbox-selected-hover-icon-color: var(--primary-color);
+    --mdc-checkbox-selected-icon-color: var(--primary-color);
+    --mdc-checkbox-selected-pressed-icon-color: var(--primary-color);
+    --mdc-checkbox-selected-focus-state-layer-color: var(--primary-color);
+    --mdc-checkbox-selected-hover-state-layer-color: var(--primary-color);
+    --mdc-checkbox-selected-pressed-state-layer-color: var(--primary-color);
+  
+    --mat-datepicker-toggle-active-state-icon-color: var(--primary-color);
+    --mat-datepicker-calendar-date-selected-state-background-color: var(--primary-color);
+    --mat-stepper-header-selected-state-icon-background-color: var(--primary-color);
+    --mat-stepper-header-done-state-icon-background-color: var(--primary-color);
+    --mat-stepper-header-edit-state-icon-background-color: var(--primary-color);
+}
+.mat-mdc-snack-bar-container.success {
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-container-color: #28a745;
+    --mdc-snackbar-supporting-text-color: #fff;
+  }
+  
+.mat-mdc-snack-bar-container.error,
+.mat-mdc-snack-bar-container.danger,
+.mat-mdc-snack-bar-container.warning {
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-container-color: #ff0000;
+    --mdc-snackbar-supporting-text-color: #fff;
+}
+
+::ng-deep .mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
+  color: black !important;
+}
+
+@font-face {
+    font-family: 'NotoSans-Bold';
+    font-style: normal;
+    font-weight: bold;
+    src: url('/assets/fonts/noto_Sans/NotoSans-Bold.ttf');
+  }
+  
+  @font-face {
+    font-family: 'NotoSans-Regular';
+    src: url('/assets/fonts/noto_Sans/NotoSans-Regular.ttf');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'NotoSans-Italic';
+    font-style: italic;
+    font-weight: normal;
+    src: url('/assets/fonts/noto_Sans/NotoSans-Italic.ttf');
+  }
+  
+  @font-face {
+    font-family: 'NotoSans-BoldItalic';
+    font-style: italic;
+    font-weight: bold;
+    src: url('/assets/fonts/noto_Sans/NotoSans-BoldItalic.ttf');
+  }
+  .list-title {
+    padding: 1rem;
+    background-color: var(--primary-color);
+    color: var(--color-light);
+    display: flex;
+    flex-direction: column;
+  }
+  .srch {
+    display: flex;
+    justify-content: center;
+  }
+  .list-heading {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .heading {
+    margin: 0;
+    font-size: 1.563rem;
+  }
+  
+  .heading-paragraph {
+    margin: 0;
+    margin-bottom: 1.563rem;
+  }
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+  .observation-list, .grid-container, .mat-tab-group   {
+    padding-bottom: 5rem;
+  }
+  spinner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+  
+  .spinner {
+    width: 3.125rem;
+    height: 3.125rem;
+  }
+
+  .mat-mdc-progress-spinner .mdc-circular-progress__determinate-circle, .mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic {
+    stroke: var(--primary-color) !important;
+}
+
+.search {
+  margin-top: 0 !important;
+}
+
+::ng-deep{
+    .mat-mdc-mini-fab{
+      box-shadow: none !important;
+    }
+  
+    .mat-mdc-progress-spinner .mdc-circular-progress__determinate-circle, .mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic {
+      stroke: var(--primary-color) !important;
+    }
+  
+    .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
+      padding: 1rem !important;
+    }
+  }
+  
+
+  @media (max-width: 48rem) {
+    .grid-container {
+      grid-template-columns: 1fr;
+    }
+  }
