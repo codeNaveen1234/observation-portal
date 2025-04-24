@@ -98,6 +98,7 @@ export class ApiInterceptor implements HttpInterceptor {
     }
     return request;
   }
+
   private handleError(error: HttpErrorResponse): Observable<never> {
     if (!this.onlineStatus) {
       return throwError(() => new Error('User is offline'));
