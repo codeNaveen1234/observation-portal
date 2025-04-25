@@ -1,6 +1,6 @@
 <div class="list-title">
     <div>
-        <h1 class="heading">Domains</h1>
+        <h1 class="heading">{{"DOMAINS"|translate}}</h1>
     </div>
 </div>
 
@@ -19,21 +19,22 @@
 
                             <div class="btn-container" *ngIf="!entity?.notApplicable">
                                 <div class="">
-                                    <p>Status: {{ entity?.status == 'notstarted' ? 'not started' : entity?.status }}</p>
+                                    <p>{{ 'STATUS' | translate }}:
+                                        {{ entity?.status == 'notstarted' ? ('NOT_STARTED' | translate) : entity?.status }}</p>
                                 </div>
                                 <div class="">
                                     <button class="not-applicable mr-5 primary-btn" (click)="navigateToDetails(entity,i)"
-                                    *ngIf="entity?.status == 'completed'">View</button>
+                                    *ngIf="entity?.status == 'completed'">{{"VIEW" | translate}}</button>
                                     <button class="not-applicable mr-5 secondary-btn" (click)="navigateToDetails(entity,i)"
-                                    *ngIf="entity?.status == 'draft'">Continue</button> 
+                                    *ngIf="entity?.status == 'draft'">{{"CONTINUE" | translate}}</button> 
                                 <button class="not-applicable mr-5 secondary-btn" (click)="navigateToDetails(entity,i)"
-                                    *ngIf="entity?.status == 'notstarted'">Start</button>
+                                    *ngIf="entity?.status == 'notstarted'">{{"START" | translate}}</button>
                                 <button class="not-applicable primary-btn" (click)="notApplicable(entity)"
-                                    *ngIf="entity?.canBeNotApplicable && entity?.status != 'completed'">Not Applicable</button>
+                                    *ngIf="entity?.canBeNotApplicable && entity?.status != 'completed'">{{"NOT_APPLICABLE" | translate}}</button>
                                 </div>
                             </div>
                             <div class="btn-container" *ngIf="entity?.notApplicable">
-                            <p>Not Applicable !</p>
+                            <p>{{"NOT_APPLICABLE" | translate}}</p>
                         </div>
                         </mat-card-content>
                     </mat-card>
@@ -41,7 +42,7 @@
                 </div>
             </ng-container>
             <ng-template #noData>
-                <p>No data found</p>
+                <p>{{'NO_DATA_MSG' | translate}}</p>
             </ng-template>
         </div>
     </div>
@@ -51,17 +52,17 @@
 
 
 <ng-template #notApplicableModel>
-    <h1 mat-dialog-title>Not Applicable</h1>
+    <h1 mat-dialog-title>{{"NOT_APPLICABLE" | translate}}</h1>
     <mat-dialog-content>
-        <p>Please add your remarks here before making the Domain Not applicable.</p>
+        <p>{{ 'ADD_REMARKS' | translate }}</p>
         <mat-form-field appearance="fill" style="width: 100%;">
-            <input matInput [(ngModel)]="remark" placeholder="Enter remark">
+            <input matInput [(ngModel)]="remark" [placeholder]="'ENTER_REMARK' | translate">
         </mat-form-field>
     </mat-dialog-content>
 
     <mat-dialog-actions class="mat-dialog-actions">
         <button [mat-dialog-close]="'confirm'" class="primary-btn"
-            [disabled]="!remark" [ngClass]="{'disabled-button': !remark}">Confirm</button>
-        <button mat-dialog-close="cancel" class="secondary-btn">Cancel</button>
+            [disabled]="!remark" [ngClass]="{'disabled-button': !remark}">{{"CONFIRM" | translate}}</button>
+        <button mat-dialog-close="cancel" class="secondary-btn">{{"CANCEL"| translate}}</button>
     </mat-dialog-actions>
 </ng-template>

@@ -3,7 +3,7 @@
     <div class="list-title">
       <div class="list-heading">
         <h1 class="heading">{{pageTitle}}</h1>
-        <p class="heading-paragraph">Access and record your observations easily and plan your improvement journeys</p>
+        <p class="heading-paragraph">{{'OBSERVATION_LISTING_MESSAGE' | translate}}</p>
       </div>
 
       <div class="srch" *ngIf="!reportPage">
@@ -14,7 +14,7 @@
           <input 
             [(ngModel)]="searchTerm" 
             (keydown)="handleKeyDown($event)" 
-            placeholder="Search your observation here" 
+            [placeholder]="'SEARCH_OBSERVATION_PLACEHOLDER' | translate"
             class="search-input"
           />
           <button *ngIf="searchTerm" aria-label="Clear" class="clear-btn" (click)="handleInput()">
@@ -28,7 +28,7 @@
 
      <div class="select-filter" *ngIf="reportPage">
       <mat-form-field>
-        <mat-label>Entity Filter</mat-label>
+        <mat-label>{{'ENTITY_FILTER' | translate}}</mat-label>
         <mat-select (selectionChange)="changeEntityType($event.value)" [(ngModel)]="selectedEntityType">
           <mat-option *ngFor="let item of entityType" [value]="item">
             {{ item }}
@@ -53,14 +53,14 @@
     </div>
 
     <div class="fixed-bottom-buttons" *ngIf="!(solutionListCount === 0 || solutionListCount === initialSolutionData?.length)">
-      <button mat-raised-button color="accent" (click)="loadData()">LOAD MORE</button>
+      <button mat-raised-button color="accent" (click)="loadData()">{{'LOAD_MORE' | translate}}</button>
     </div>
   </div>
 
   <div *ngIf="isEntityFilterModalOpen" class="modal">
     <div class="modal-content">
       <header class="d-flex align-items-center">
-        <h1 class="modal-title">Select entity</h1>
+        <h1 class="modal-title">{{'SELECT_ENTITY' | translate}}</h1>
         <mat-icon class="close-btn" (click)="closeFilter()">close</mat-icon>
       </header>
       <div>
@@ -74,7 +74,7 @@
         </ul>
       </div>
       <footer class="question-footer">
-        <button (click)="applyFilter()" class="apply-filter" [ngClass]="{'disabled-button': !isAnyEntitySelected}" [disabled]="!isAnyEntitySelected">Submit</button>
+        <button (click)="applyFilter()" class="apply-filter" [ngClass]="{'disabled-button': !isAnyEntitySelected}" [disabled]="!isAnyEntitySelected">{{"SUBMIT" | translate}}</button>
       </footer>
     </div>
   </div>

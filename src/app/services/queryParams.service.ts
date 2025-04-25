@@ -7,13 +7,11 @@ import { filter } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class QueryParamsService implements OnDestroy {
-  public entityId: any;
   public entityName: any;
   public observationId: any;
   public submissionId: any;
   public allowMultipleAssessemts: any;
   public reports: any;
-  public id: any;
   public name: any;
   public entityType: any;
   public submissionNumber: any;
@@ -40,13 +38,11 @@ export class QueryParamsService implements OnDestroy {
 
   parseQueryParams() {
     let queryParams = this.getQueryParams(window.location.search);
-    this.entityId = queryParams?.entityId;
     this.entityName = queryParams?.name;
     this.observationId = queryParams?.observationId;
     this.submissionId = queryParams?.submissionId;
     this.allowMultipleAssessemts = queryParams?.allowMultipleAssessemts;
     this.reports = queryParams?.reports;
-    this.id = queryParams?.id;
     this.name = queryParams?.name;
     this.entityType = queryParams?.entityType;
     this.submissionNumber = queryParams?.submissionNumber;

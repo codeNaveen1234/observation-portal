@@ -40,7 +40,7 @@ export class ObservationDomainComponent implements OnInit {
     this.urlParamsService.parseRouteParams(this.route)
     this.observationId = this.urlParamsService?.observationId;
     this.entityId = this.urlParamsService?.entityId;
-    this.id = this.urlParamsService?.id;
+    this.id = this.urlParamsService?.solutionId;
     this.getObservationByEntityId();
   }
 

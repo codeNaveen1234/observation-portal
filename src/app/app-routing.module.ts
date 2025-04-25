@@ -6,32 +6,15 @@ import { ObservationDetailsComponent } from './observation-details/observation-d
 import { ObservationDomainComponent } from './observation-domain/observation-domain.component';
 import { QuestionnaireComponent } from './questionnaire/questionnaire.component';
 import { ReportComponent } from './report/report.component';
+import { APP_ROUTES } from './constants/app.routes';
 
 const routes: Routes = [ 
-  {
-    path:'listing/:solutionType',
-    component:ListingComponent
-  },
-  { 
-    path: 'entityList/:id/:name/:entityType',
-    component:ObservationEntityComponent
-  },
-  {
-    path: 'details/:name/:observationId/:entityId/:allowMultipleAssessemts',
-    component:ObservationDetailsComponent,
-  },
-  {
-    path: 'domain/:observationId/:entityId/:id',
-    component:ObservationDomainComponent
-  },
-  {
-    path:"questionnaire",
-    component:QuestionnaireComponent
-  },
-  {
-    path: 'reports/:observationId/:entityId/:entityType/:isMultiple/:scores',
-    component:ReportComponent
-  }
+  { path: APP_ROUTES.LISTING, component: ListingComponent },
+  { path: APP_ROUTES.ENTITY_LIST, component: ObservationEntityComponent },
+  { path: APP_ROUTES.DETAILS, component: ObservationDetailsComponent },
+  { path: APP_ROUTES.DOMAIN, component: ObservationDomainComponent },
+  { path: APP_ROUTES.QUESTIONNAIRE, component: QuestionnaireComponent },
+  { path: APP_ROUTES.REPORTS, component: ReportComponent },
 ];
 
 @NgModule({

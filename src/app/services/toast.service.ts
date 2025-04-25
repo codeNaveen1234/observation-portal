@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ToastService {
 
-  constructor(private snackBar: MatSnackBar) { }
+  constructor(private snackBar: MatSnackBar,private translate: TranslateService) { }
 
   showToast(message:string,type?:string,duration?:number,verticalPosition?:any,horizontalPosition?:any){
     let styleClass = type ? type : "default"
@@ -16,6 +17,8 @@ export class ToastService {
       horizontalPosition: horizontalPosition ? horizontalPosition : "center",
       panelClass: [styleClass]
     }
-    this.snackBar.open(message,'',snackBarConfig)
+    this.translate.get(message).subscribe((translatedMsg: string) => {
+      this.snackBar.open(translatedMsg, '',snackBarConfig);
+    });
   }
 }
