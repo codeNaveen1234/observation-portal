@@ -13,7 +13,7 @@ export class UrlParamsService implements OnDestroy {
     public submissionId: any;
     public allowMultipleAssessemts: any;
     public reports: any;
-    public id: any;
+    public solutionId: any;
     public name: any;
     public entityType: any;
     public submissionNumber: any;
@@ -41,7 +41,7 @@ export class UrlParamsService implements OnDestroy {
       this.submissionId = params.get('submissionId');
       this.allowMultipleAssessemts = params.get('allowMultipleAssessemts');
       this.reports = params.get('reports');
-      this.id = params.get('id');
+      this.solutionId = params.get('solutionId');
       this.name = params.get('name');
       this.entityType = params.get('entityType');
       this.submissionNumber = params.get('submissionNumber');

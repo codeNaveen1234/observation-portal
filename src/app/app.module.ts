@@ -43,6 +43,16 @@ import { ObservationDetailsComponent } from './observation-details/observation-d
 import { ObservationDomainComponent } from './observation-domain/observation-domain.component';
 import { QuestionnaireComponent } from './questionnaire/questionnaire.component';
 import { ReportComponent } from './report/report.component';
+import { 
+  TranslateLoader,
+  TranslateModule,
+  TranslateService,
+} from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+export function translateHttpLoaderFactory(httpClient: HttpClient) {
+  return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -88,7 +98,14 @@ import { ReportComponent } from './report/report.component';
     MatMenuModule,
     MatSelectModule,
     FormsModule,
-    MatExpansionModule
+    MatExpansionModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: translateHttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
   ],
   providers: [
     {
@@ -101,4 +118,12 @@ import { ReportComponent } from './report/report.component';
   bootstrap: [AppComponent],
   
 })
-export class AppModule { }
+export class AppModule { 
+  constructor(private translate:TranslateService){
+    this.setLanguage();
+  }
+  setLanguage() {
+    this.translate.setDefaultLang('en');
+    this.translate.use('en'); 
+  }
+}

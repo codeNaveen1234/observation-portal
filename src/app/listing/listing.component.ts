@@ -44,7 +44,7 @@ export class ListingComponent implements OnInit {
  
   ngOnInit(): void {
     this.urlParamService.parseRouteParams(this.route)
-    this.reportPage = this.urlParamService.solutionType === 'observation' ? false : true ;
+    this.reportPage = this.urlParamService.solutionType === 'survey';
     this.pageTitle = this.reportPage ? 'Observation Reports' : 'Observations';
     this.loadInitialData();
   }
@@ -120,7 +120,7 @@ export class ListingComponent implements OnInit {
           data?.isRubricDriven ? true : false
         ]);
       } else {
-        this.toaster.showToast("No solution found", 'Close');
+        this.toaster.showToast("NO_SOLUTION_MSG", 'Close');
       }
     } else {
       this.router.navigate([

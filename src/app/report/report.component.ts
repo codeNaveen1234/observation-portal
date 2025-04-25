@@ -298,7 +298,7 @@ export class ReportComponent implements OnInit {
     this.cdr.detectChanges();
     this.objectType == 'questions' ? this.renderCharts(this.reportDetails, false) : this.renderCharts(this.reportDetails, true);
     if (!reset && this.filteredQuestions.length === 0) {
-      this.toaster.showToast('Select at least one question', 'danger');
+      this.toaster.showToast('SELECT_ATLEAST_ONE_QUESTION', 'danger');
     }
 
     if (reset || this.filteredQuestions.length > 0) {

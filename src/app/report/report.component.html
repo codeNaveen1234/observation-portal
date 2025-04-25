@@ -9,7 +9,7 @@
     <div class="report-container">
       <div class="select-wrapper">
         <mat-form-field class="custom-select" *ngIf="isMultiple == 'true'">
-          <mat-label>Select Submission</mat-label>
+          <mat-label>{{"SELECT_SUBMISSION"|translate}}</mat-label>
           <mat-select (selectionChange)="onSelectionChange($event.value)">
             <mat-option *ngFor="let item of filterData" [value]="item._id">
               {{ item.name }}
@@ -19,17 +19,16 @@
       </div>
       <div class="buttons-left">
         <button [ngClass]="{'border-bottom-button': observationType === 'questions'}"
-          (click)="toggleObservationType('questions')" class="switch-buttons">Questions</button>
+          (click)="toggleObservationType('questions')" class="switch-buttons">{{'QUESTIONS' | translate}}</button>
         <button [ngClass]="{'border-bottom-button': observationType === 'criteria'}"
-          (click)="toggleObservationType('criteria')" class="switch-buttons" *ngIf="!domainView">Criteria</button>
+          (click)="toggleObservationType('criteria')" class="switch-buttons" *ngIf="!domainView">{{"CRITERIA"|translate}}</button>
       </div>
 
       <hr>
       <div class="buttons-right" *ngIf="reportDetails?.length > 0;">
-        <button (click)="openFilter()" class="apply-filter" *ngIf="!domainView">Filters</button>
+        <button (click)="openFilter()" class="apply-filter" *ngIf="!domainView">{{"FILTERS" | translate}}</button>
         <button class="apply-filter"
-          (click)="downloadPDF(submissionId, observationType === 'questions' ? false : true, true)">Export As
-          PDF</button>
+          (click)="downloadPDF(submissionId, observationType === 'questions' ? false : true, true)">{{"EXPORT_PDF"|translate}}</button>
       </div>
       
      <div *ngIf="reportDetails?.length > 0; else noData">
@@ -104,7 +103,7 @@
             </div>
 
             <div class="evidence-section" *ngIf="question?.evidences && question?.evidences?.length">
-              <h4>Evidences: {{ question?.evidences?.length }}</h4>
+              <h4>{{ 'EVIDENCES' | translate }} {{ question?.evidences?.length }}</h4>
               <div class="evidence-icons">
                 <div *ngFor="let evidence of question?.evidences" class="iconList">
                   <ng-container [ngSwitch]="evidence.extension">
@@ -133,7 +132,7 @@
 
           <div class="question-card" *ngIf="domainView">
             <mat-accordion>
-              <h2 class="mb-2">Descriptive view</h2>
+              <h2 class="mb-2">{{"DESCRIPTIVE_VIEW" | translate}}</h2>
               <mat-expansion-panel class="expansion-panel" *ngFor="let view of domainView?.domains; let i = index">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
@@ -237,7 +236,7 @@
               </div>
 
               <div class="evidence-section" *ngIf="question?.evidences && question?.evidences?.length">
-                <h4>Evidences: {{ question?.evidences?.length  }}</h4>
+                <h4>{{ 'EVIDENCES' | translate }}{{ question?.evidences?.length  }}</h4>
                 <div class="evidence-icons">
                   <div *ngFor="let evidence of question?.evidences" class="iconList">
                     <ng-container [ngSwitch]="evidence.extension">
@@ -272,7 +271,7 @@
       <div *ngIf="isFilterModalOpen" class="modal">
         <div class="modal-content">
           <header class="d-flex align-items-center">
-            <h1 class="modal-title">Select Questions to filter</h1>
+            <h1 class="modal-title">{{'SELECT_QUESTIONS_FILTER'|translate}}</h1>
             <mat-icon class="close-btn" (click)="closeFilter()">close</mat-icon>
           </header>
           <div>
@@ -286,7 +285,7 @@
             </ul>
           </div>
           <footer class="question-footer">
-            <button (click)="applyFilter()" class="apply-filter">Apply Filters</button>
+            <button (click)="applyFilter()" class="apply-filter">{{"APPLY_FILTERS" | translate}}</button>
           </footer>
         </div>
       </div>
@@ -295,7 +294,7 @@
         <div class="modal-content">
           <header>
             <h2>Preview</h2>
-            <button (click)="closeDialog()">Close</button>
+            <button (click)="closeDialog()">{{"CLOSE"|translate}}</button>
           </header>
           <div>
             <img *ngIf="objectType == 'image'" [src]="objectURL" alt="Preview">
@@ -308,7 +307,7 @@
   </main>
 
 <ng-template #noData>
-  <p class="no-data-found">No data found</p>
+  <p class="no-data-found">{{"NO_DATA_MSG" |translate}}</p>
 </ng-template>
 
 <app-spinner *ngIf="!loaded"></app-spinner>
