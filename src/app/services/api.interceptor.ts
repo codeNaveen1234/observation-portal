@@ -72,7 +72,7 @@ export class ApiInterceptor implements HttpInterceptor {
   }
 
   async getToken(): Promise<string | null> {
-    let token = localStorage.getItem('accToken')
+    let token = this.apiService.userAuthToken
     if (!token) {
       return null;
     }
@@ -88,14 +88,18 @@ export class ApiInterceptor implements HttpInterceptor {
   }
 
   private addAuthHeader(request: HttpRequest<any>, token: string | null): HttpRequest<any> {
-    let headers: any = localStorage.getItem('headers');
-    let extraHeaders = JSON.parse(headers);
-    if (token) {
-      return request.clone({
-        setHeaders: extraHeaders ? { 'X-auth-token': `${token}`,...extraHeaders } : { 'X-auth-token': `${token}` }
-      });
+    if (!token) {
+      return request;
     }
-    return request;
+  
+    return request.clone({
+      setHeaders: {
+        'Authorization': `Bearer ${token}`,
+        'x-auth-token': token,
+        'x-authenticated-user-token': token,
+        'Content-Type': 'application/json',
+        'x-app-ver':'' }
+    });;
   }
   private handleError(error: HttpErrorResponse): Observable<never> {
     if (!this.onlineStatus) {
