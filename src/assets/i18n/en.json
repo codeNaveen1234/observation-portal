@@ -51,5 +51,6 @@
     "APPLY_FILTERS":"Apply Filters",
     "CLOSE":"Close",
     "NO_SOLUTION_MSG":"No solution found",
-    "SELECT_ATLEAST_ONE_QUESTION": "Select at least one question"
+    "SELECT_ATLEAST_ONE_QUESTION": "Select at least one question",
+    "NETWORK_OFFLINE":"You are offline. Please connect to a network."
 }

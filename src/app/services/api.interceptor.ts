@@ -23,7 +23,6 @@ export class ApiInterceptor implements HttpInterceptor {
     private toaster: ToastService,
     private utilService: UtilsService
   ) {
-    this.apiService.userAuthToken=
     this.setupNetworkStatusListener();
   }
 
@@ -45,7 +44,7 @@ export class ApiInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (!this.onlineStatus) {
       this.offline = true;
-      this.toaster.showToast('You are offline. Please connect to a network.', 'danger');
+      this.toaster.showToast('NETWORK_OFFLINE', 'danger');
       return of();
     }
 
@@ -73,7 +72,7 @@ export class ApiInterceptor implements HttpInterceptor {
   }
 
   async getToken(): Promise<string | null> {
-    let token = localStorage.getItem('accToken') || this.apiService.userAuthToken;
+    let token = localStorage.getItem('accToken')
     if (!token) {
       return null;
     }
@@ -89,11 +88,11 @@ export class ApiInterceptor implements HttpInterceptor {
   }
 
   private addAuthHeader(request: HttpRequest<any>, token: string | null): HttpRequest<any> {
+    let headers: any = localStorage.getItem('headers');
+    let extraHeaders = JSON.parse(headers);
     if (token) {
       return request.clone({
-        setHeaders: {
-          'X-auth-token': token,
-        },
+        setHeaders: extraHeaders ? { 'X-auth-token': `${token}`,...extraHeaders } : { 'X-auth-token': `${token}` }
       });
     }
     return request;

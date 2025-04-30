@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, ViewEncapsulation} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../services/api.service';
 
@@ -6,7 +6,8 @@ import { ApiService } from '../services/api.service';
   selector: 'app-questionnaire',
   standalone: false,
   templateUrl: './questionnaire.component.html',
-  styleUrl: './questionnaire.component.scss'
+  styleUrl: './questionnaire.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class QuestionnaireComponent implements OnInit{
   apiConfig: any = {};

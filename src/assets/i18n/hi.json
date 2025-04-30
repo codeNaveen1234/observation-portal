@@ -51,5 +51,6 @@
   "APPLY_FILTERS": "फ़िल्टर लागू करें",
   "CLOSE": "बंद करें",
   "NO_SOLUTION_MSG": "कोई समाधान नहीं मिला",
-  "SELECT_ATLEAST_ONE_QUESTION": "कम से कम एक प्रश्न चुनें"
+  "SELECT_ATLEAST_ONE_QUESTION": "कम से कम एक प्रश्न चुनें",
+  "NETWORK_OFFLINE":" आप ऑफलाइन हैं। कृपया नेटवर्क से कनेक्ट करें।"
 }

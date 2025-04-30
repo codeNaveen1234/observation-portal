@@ -1,1 +1,12 @@
 @import 'questionnaire-webcomponent/styles.css';
+
+.details-background {
+    display: flex;
+    justify-content: flex-start;
+    padding: 0.5rem;
+    max-height: 100%;
+  }
+  
+  .details-section {
+    width: 100%;
+  }
