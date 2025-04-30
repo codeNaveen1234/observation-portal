@@ -88,18 +88,14 @@ export class ApiInterceptor implements HttpInterceptor {
   }
 
   private addAuthHeader(request: HttpRequest<any>, token: string | null): HttpRequest<any> {
-    if (!token) {
-      return request;
+    let headers: any = localStorage.getItem('headers');
+    let extraHeaders = JSON.parse(headers);
+    if (token) {
+      return request.clone({
+        setHeaders: extraHeaders ? { 'X-auth-token': `bearer ${token}`,...extraHeaders } : { 'X-auth-token': `bearer ${token}` }
+      });; 
     }
-  
-    return request.clone({
-      setHeaders: {
-        'Authorization': `Bearer ${token}`,
-        'x-auth-token': token,
-        'x-authenticated-user-token': token,
-        'Content-Type': 'application/json',
-        'x-app-ver':'' }
-    });;
+    return request
   }
   private handleError(error: HttpErrorResponse): Observable<never> {
     if (!this.onlineStatus) {
