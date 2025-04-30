@@ -52,7 +52,7 @@ export class ApiService {
     const options = {
         url: urlConfig['profileListing'].refreshTokenUrl,
         headers: { 'Content-Type': 'application/json' },
-        body: { refresh_token: this.userAuthToken},
+        body: { refresh_token: localStorage.getItem('refToken')},
     };
         try {
         const res = await this.http.post<any>(this.baseUrl + options.url, options.body, { headers: options.headers }).toPromise();

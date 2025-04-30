@@ -80,7 +80,6 @@ export class ListingComponent implements OnInit {
     ).pipe(
       finalize(() => this.loaded = true),
       catchError((err: any) => {
-        console.log('err',err)
         this.toaster.showToast(err?.error?.message, 'Close');
         throw Error(err);
       })
@@ -117,7 +116,7 @@ export class ListingComponent implements OnInit {
           data?.entities[0]?._id,
           data?.entityType,
           false,
-          data?.isRubricDriven ? true : false
+          data?.isRubricDriven
         ]);
       } else {
         this.toaster.showToast("NO_SOLUTION_MSG", 'Close');
@@ -153,7 +152,7 @@ export class ListingComponent implements OnInit {
       selectedEntity[0]?._id,
       this.selectedObservation?.entityType,
       false,
-      this.selectedObservation?.isRubricDriven ? true : false
+      this.selectedObservation?.isRubricDriven
     ]);
   }
 

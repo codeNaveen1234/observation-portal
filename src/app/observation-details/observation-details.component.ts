@@ -179,7 +179,7 @@ getObservationsByStatus(statuses: ('draft' | 'inprogress' | 'completed' | 'start
       this.entityId,
       entity ? entity?.entityType : this.observations[0]?.entityType,
       entity ? false : true,
-      this.isRubricDriven ? true : false
+      this.isRubricDriven
     ],{
       queryParams:{
         'submissionId': entity?._id,
