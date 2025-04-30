@@ -92,7 +92,7 @@ export class ApiInterceptor implements HttpInterceptor {
     let extraHeaders = JSON.parse(headers);
     if (token) {
       return request.clone({
-        setHeaders: extraHeaders ? { 'X-auth-token': `${token}`,...extraHeaders } : { 'X-auth-token': `${token}` }
+        setHeaders: extraHeaders ? { 'X-auth-token': token,...extraHeaders } : { 'X-auth-token': token }
       });; 
     }
     return request
