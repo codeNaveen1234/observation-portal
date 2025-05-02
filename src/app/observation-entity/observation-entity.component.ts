@@ -21,6 +21,7 @@ export class ObservationEntityComponent  {
   entityToAdd: string;
   filteredEntities: any;
   filteredEntitiesOne: any;
+  entity:any;
   addedEntities: string[] = [];
   entities = new FormControl();
   @ViewChild('searchEntityModal') searchEntityModal: TemplateRef<any>;
@@ -44,6 +45,7 @@ export class ObservationEntityComponent  {
   ngOnInit() {
     this.urlParamsService.parseRouteParams(this.route);
     this.solutionId = this.urlParamsService?.solutionId;
+    this.entity=this.urlParamsService?.entity
     this.solutionName=decodeURIComponent(decodeURIComponent(this.urlParamsService?.name || ''))
     this.entityToAdd=this.urlParamsService?.entityType;
     this.getEntities();
@@ -52,7 +54,8 @@ export class ObservationEntityComponent  {
   getEntities() {
     this.selectedEntities = [];
     this.observationId = "";
-    this.apiService.post(urlConfig.observation.getSelectedEntities + this.solutionId, this.apiService.profileData)
+    let url = urlConfig.observation.getSelectedEntities
+    this.apiService.post(url+`${this.entity}`+`?solutionId=${this.solutionId}`, this.apiService.profileData)
       .pipe(
         finalize(() => this.loaded = true),
         catchError((err: any) => {
@@ -104,7 +107,7 @@ export class ObservationEntityComponent  {
   }
 
   getSearchEntities() {
-    this.apiService.post(urlConfig.observation.searchEntities + this.observationId + `&parentEntityId=${this.apiService.profileData?.state}`, this.apiService.profileData)
+    this.apiService.post(urlConfig.observation.searchEntities +`?observationId=${this.observationId}`  + `&parentEntityId=${this.apiService.profileData?.state}`, this.apiService.profileData)
 
       .subscribe((res: any) => {
         if (res.result) {

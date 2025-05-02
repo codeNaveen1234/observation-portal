@@ -1,6 +1,6 @@
 export const APP_ROUTES = {
     LISTING: 'listing/:solutionType',
-    ENTITY_LIST: 'entityList/:solutionId/:name/:entityType',
+    ENTITY_LIST: 'entityList/:solutionId/:name/:entityType/:entity',
     DETAILS: 'details/:name/:observationId/:entityId/:allowMultipleAssessemts',
     DOMAIN: 'domain/:observationId/:entityId/:solutionId',
     QUESTIONNAIRE: 'questionnaire',

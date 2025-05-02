@@ -96,13 +96,12 @@ export class ReportComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        this.resultData = res?.result?.result;
-        this.observationDetails = res?.result;
+        this.resultData = res?.result;
+        this.observationDetails = res;
         this.filterData = submissionId ? this.filterData : this.observationDetails?.filters[0]?.filter?.data;
         this.totalSubmissions = res?.result?.totalSubmissions;
-        this.observationId = res?.result?.observationId;
-        let reportSections:any = this.scores ? [res?.result?.reportSections[0]] : res?.result?.reportSections;
-        this.domainView = this.scores ? res?.result?.reportSections[1]?.chart: "";
+        let reportSections:any = this.scores ? [res?.reportSections[0]] : res?.reportSections;
+        this.domainView = this.scores ? res?.reportSections[1]?.chart: "";
         this.allQuestions = reportSections?.map((question:any) => {
           return { ...question, selected: true };
         });
@@ -328,7 +327,6 @@ export class ReportComponent implements OnInit {
   downloadPDF(submissionId: string, criteria: boolean, pdf: boolean) {
     this.loaded = false;
     let payload = this.createPayload(submissionId, criteria, pdf);
-
     this.apiService.post(urlConfig.survey.reportUrl, payload)
       .pipe(
         finalize(() =>this.loaded = true),
@@ -337,7 +335,7 @@ export class ReportComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        this.openUrl(res?.result?.pdfUrl);
+        this.openUrl(res?.pdfUrl);
       });
   }
 

@@ -126,8 +126,10 @@ export class ListingComponent implements OnInit {
         'entityList',
         data.solutionId,
         data.name,
-        data.entityType
-      ]);
+        data.entityType,
+        data?._id
+      ],
+      );
     }
   }
 

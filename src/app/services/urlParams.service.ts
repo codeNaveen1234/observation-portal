@@ -24,7 +24,7 @@ export class UrlParamsService implements OnDestroy {
     public isMultiple: any;
     public scores: any;
     public solutionType:any;
-
+    public entity:any;
 
   constructor(private router: Router, private route: ActivatedRoute,private apiService:ApiService) {}
 
@@ -36,6 +36,7 @@ export class UrlParamsService implements OnDestroy {
       }
       this.apiService.solutionType=params.get('solutionType')
       this.entityId = params.get('entityId');
+      this.entity=params.get('entity')
       this.entityName = params.get('name');
       this.observationId = params.get('observationId');
       this.submissionId = params.get('submissionId');
