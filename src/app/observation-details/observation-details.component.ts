@@ -8,6 +8,7 @@ import { catchError, finalize } from 'rxjs';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { UrlParamsService } from '../services/urlParams.service';
 import { QueryParamsService } from '../services/queryParams.service';
+import { offlineSaveObservation } from '../services/offlineSaveObservation.service';
 @Component({
   selector: 'app-observation-details',
   standalone: false,
@@ -32,7 +33,6 @@ export class ObservationDetailsComponent implements OnInit {
   @ViewChild('confirmDialogModel') confirmDialogModel: TemplateRef<any>;
   @ViewChild('updateDialogModel') updateDialogModel: TemplateRef<any>;
 
-
   constructor(
     private apiService: ApiService, 
     private toaster: ToastService, 
@@ -40,7 +40,8 @@ export class ObservationDetailsComponent implements OnInit {
     private dialog: MatDialog,
     private urlParamsService:UrlParamsService,
     private route: ActivatedRoute,
-    private queryParamsService: QueryParamsService, 
+    private queryParamsService: QueryParamsService,
+    private offlineData:offlineSaveObservation
   ) {
   }
 
@@ -96,8 +97,12 @@ getObservationsByStatus(statuses: ('draft' | 'inprogress' | 'completed' | 'start
       })
   }
 
-  navigateToDetails(data) {
+  async navigateToDetails(data) {
+    let isDataInIndexDb = await this.offlineData.checkAndMapIndexDbDataToVariables(this.submissionId);
 
+    if (!isDataInIndexDb?.data) {
+      this.offlineData.getFullObservationData(this.observationId,this.entityId,this.submissionId);
+    }
     if (data?.isRubricDriven) {
       this.router.navigate([
         'domain',
@@ -107,7 +112,7 @@ getObservationsByStatus(statuses: ('draft' | 'inprogress' | 'completed' | 'start
       ]);
     } else {
       this.router.navigate(['questionnaire'], {
-        queryParams: {observationId: data?.observationId, entityId: data?.entityId, submissionNumber: data?.submissionNumber, evidenceCode: data?.evidencesStatus[0]?.code, index: 0
+        queryParams: {observationId: data?.observationId, entityId: data?.entityId, submissionNumber: data?.submissionNumber, evidenceCode: data?.evidencesStatus[0]?.code, index: 0, submissionId:this.submissionId
         }
       });
     }

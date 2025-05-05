@@ -82,3 +82,31 @@
   .observation-list {
     padding: 1rem;
   }
+  .progress-container{
+    width: 100%;
+  }
+  .progress-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+  }
+  
+  .progress-text {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+  
+  .custom-progress-bar {
+    width: 80%;
+    height: 10px; 
+    border-radius: 8px;
+  }
+  
+  ::ng-deep .mat-progress-bar-fill::after {
+    border-radius: 8px;
+  }
+  

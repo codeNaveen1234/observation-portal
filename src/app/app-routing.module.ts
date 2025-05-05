@@ -15,6 +15,7 @@ const routes: Routes = [
   { path: APP_ROUTES.DOMAIN, component: ObservationDomainComponent },
   { path: APP_ROUTES.QUESTIONNAIRE, component: QuestionnaireComponent },
   { path: APP_ROUTES.REPORTS, component: ReportComponent },
+  { path: '', redirectTo: 'listing/observation', pathMatch: 'full' },
 ];
 
 @NgModule({
