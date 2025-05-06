@@ -102,11 +102,11 @@
   
   .custom-progress-bar {
     width: 80%;
-    height: 10px; 
-    border-radius: 8px;
+    height: 0.625rem; 
+    border-radius: 0.5rem; 
   }
   
   ::ng-deep .mat-progress-bar-fill::after {
-    border-radius: 8px;
+    border-radius: 0.5rem;
   }
   
