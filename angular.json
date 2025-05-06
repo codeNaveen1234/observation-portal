@@ -23,6 +23,8 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "baseHref": "/ml-observation/",
+            "deployUrl": "/ml-observation/",
             "outputPath": "dist/observation-portal",
             "index": "src/index.html",
             "browser": "src/main.ts",
