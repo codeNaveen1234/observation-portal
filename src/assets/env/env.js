@@ -1,3 +1,4 @@
 window["env"] = {
-    surveyBaseURL: ''
+    surveyBaseURL: '',
+    capabilities: 'survey'
 };
