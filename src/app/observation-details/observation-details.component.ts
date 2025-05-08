@@ -24,7 +24,6 @@ export class ObservationDetailsComponent implements OnInit {
   observationInit: boolean = false;
   selectedTabIndex = 0;
   allowMultipleAssessemts: any;
-  submissionId: any;
   loaded = false;
   isPendingTabSelected: boolean = true;
   filteredObservations:any =[];
@@ -51,7 +50,6 @@ export class ObservationDetailsComponent implements OnInit {
     this.entityId=this.urlParamsService?.entityId
     this.entityName = decodeURIComponent(decodeURIComponent(this.urlParamsService?.entityName || ''));
     this.observationId = this.urlParamsService?.observationId;
-    this.submissionId = this.queryParamsService?.submissionId;
     this.allowMultipleAssessemts = this.urlParamsService?.allowMultipleAssessemts;
     this.observationInit = true;
     this.getObservationByEntityId();
@@ -98,11 +96,12 @@ getObservationsByStatus(statuses: ('draft' | 'inprogress' | 'completed' | 'start
   }
 
   async navigateToDetails(data) {
-    let isDataInIndexDb = await this.offlineData.checkAndMapIndexDbDataToVariables(this.submissionId);
+    let isDataInIndexDb = await this.offlineData.checkAndMapIndexDbDataToVariables(data?._id);
 
     if (!isDataInIndexDb?.data) {
-      this.offlineData.getFullObservationData(this.observationId,this.entityId,this.submissionId);
+      this.offlineData.getFullObservationData(this.observationId,this.entityId,data?._id);
     }
+    
     if (data?.isRubricDriven) {
       this.router.navigate([
         'domain',
@@ -112,7 +111,7 @@ getObservationsByStatus(statuses: ('draft' | 'inprogress' | 'completed' | 'start
       ]);
     } else {
       this.router.navigate(['questionnaire'], {
-        queryParams: {observationId: data?.observationId, entityId: data?.entityId, submissionNumber: data?.submissionNumber, evidenceCode: data?.evidencesStatus[0]?.code, index: 0, submissionId:this.submissionId
+        queryParams: {observationId: data?.observationId, entityId: data?.entityId, submissionNumber: data?.submissionNumber, evidenceCode: data?.evidencesStatus[0]?.code, index: 0, submissionId:data?._id
         }
       });
     }
