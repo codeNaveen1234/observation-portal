@@ -55,7 +55,7 @@ export class ObservationEntityComponent  {
     this.selectedEntities = [];
     this.observationId = "";
     let url = urlConfig.observation.getSelectedEntities
-    this.apiService.post(url+`${this.entity}`+`?solutionId=${this.solutionId}`, this.apiService.profileData)
+    this.apiService.post(url+`?solutionId=${this.solutionId}`, this.apiService.profileData)
       .pipe(
         finalize(() => this.loaded = true),
         catchError((err: any) => {
