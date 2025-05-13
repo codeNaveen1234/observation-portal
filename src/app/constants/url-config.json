@@ -2,7 +2,7 @@
     "survey":{
         "details":"/survey/v1/surveys/details?solutionId=",
         "update":"/survey/v1/surveySubmissions/update/",
-        "reportUrl":"/api/reports/mlreports/v1/fetch"
+        "reportUrl":"/reports/mlreports/v1/fetch"
     },
     "observation":{
         "listing":"/kendra/solutions/mlcore/v1/targetedSolutions",
