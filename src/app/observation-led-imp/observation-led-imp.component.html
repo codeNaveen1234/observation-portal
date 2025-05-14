@@ -1,0 +1,21 @@
+<div class="list-title">
+    <h1 class="heading">{{programName}}</h1>
+</div>
+
+<div class="accordion">
+    <mat-accordion>
+        <mat-expansion-panel *ngFor="let imp of improvementProjectSuggestions" class="panel-spacing">
+          <mat-expansion-panel-header>
+            <div class="header-flex">
+    <span class="title">{{ imp?.criteriaName }}</span>
+    <span class="description">{{ imp?.label }}</span>
+  </div>
+          </mat-expansion-panel-header>
+          <p class="suggested-projects">Suggested Projects</p>
+          <div *ngFor="let project of imp?.improvementProjects">
+          <h4 class="project-tab" (click)="navigateToProjectPlayer(project?.externalId)">{{project?.name}}</h4>
+        </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+</div>
+  

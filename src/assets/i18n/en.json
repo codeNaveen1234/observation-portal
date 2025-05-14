@@ -52,5 +52,6 @@
     "CLOSE":"Close",
     "NO_SOLUTION_MSG":"No solution found",
     "SELECT_ATLEAST_ONE_QUESTION": "Select at least one question",
-    "NETWORK_OFFLINE":"You are offline. Please connect to a network."
+    "NETWORK_OFFLINE":"You are offline. Please connect to a network.",
+    "CLICK_HERE_TO_IMPROVE":"Click here to improve"
 }

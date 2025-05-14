@@ -1,0 +1,34 @@
+.accordion{
+    margin: 0.625rem;
+}
+
+.header-flex {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .title {
+    font-weight: 600;
+  }
+  
+  .description {
+    margin-left: 1rem;
+    margin-right: 0.438rem;
+    color: gray;
+  }
+
+  .panel-spacing {
+    margin-top: 1rem;
+  }
+
+  .suggested-projects{
+    background-color: var(--primary-color);
+    color: var(--color-light);
+    padding: 0.313rem;
+  }
+
+  .project-tab{
+    cursor: pointer;
+  }
+  

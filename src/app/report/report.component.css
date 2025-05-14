@@ -310,6 +310,11 @@
     font-size: 1.125rem;
     margin-left: 0.938rem;
     }
+
+    .led-imp-div{
+      display: flex;
+      justify-content: center;
+    }
   
   @media (max-width: 47.9375rem) {
     .chip {
