@@ -50,6 +50,7 @@ import {
 } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { ObservationLedImpComponent } from './observation-led-imp/observation-led-imp.component';
 
 export function translateHttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -65,6 +66,7 @@ export function translateHttpLoaderFactory(httpClient: HttpClient) {
     ObservationDomainComponent,
     QuestionnaireComponent,
     ReportComponent,
+    ObservationLedImpComponent,
   ],
   imports: [
     BrowserModule,

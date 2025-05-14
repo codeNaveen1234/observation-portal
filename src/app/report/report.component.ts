@@ -54,7 +54,7 @@ export class ReportComponent implements OnInit {
   initialLoad:boolean = true;
 
   constructor(
-    router: Router,
+    public router: Router,
     public apiService: ApiService,
     public toaster: ToastService,
     private cdr: ChangeDetectorRef,
@@ -140,6 +140,9 @@ export class ReportComponent implements OnInit {
 
   processSurveyData(data: any): any[] {
     const mapAnswersToLabels = (answers: any[], options: any[]) => {
+      if (!Array.isArray(answers)) {
+        return [];
+      }
       return answers.map((answer: any) => {
         if (typeof answer === 'string') {
           const trimmedAnswer = answer.trim();
@@ -342,5 +345,9 @@ export class ReportComponent implements OnInit {
   onSelectionChange(submissionId: string): void {
     this.submissionId = submissionId;
     this.observationType == 'questions' ? this.loadObservationReport(submissionId, false, false) : this.loadObservationReport(submissionId, true, false);
+  }
+
+  navigateToObservationLedImpPage(){
+    this.router.navigate(['/observation-led-imp'], { state: { improvementProjectSuggestions: this.observationDetails?.improvementProjectSuggestions, programName : this.observationDetails?.programName } });
   }
 }
