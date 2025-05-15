@@ -46,8 +46,6 @@ export class ListingComponent implements OnInit {
   }
  
   ngOnInit(): void {
-    this.setProfile()
-    this.setHeader()
     this.urlParamService.parseRouteParams(this.route)
     this.setPageTitle()
     if(this.pageTitle === " Survey" || this.pageTitle === "Observation Reports" || this.pageTitle === "Survey Reports"){
@@ -71,33 +69,6 @@ export class ListingComponent implements OnInit {
     this.pageTitle = typeKey ? titleMap[typeKey] : 'Observations';
   }
   
-  setHeader(){
-    let data:any ={
-      "authorization":"Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJvcmcuc3VuYmlyZHNhYXMuYXBwLTUxYjc4OTdlMjZjZDRmOGQwYzMzZDZhZmVmMGNjMmJlYjBjYTQ2MjkiLCJpYXQiOjE3NDU4MzQzOTJ9.5UcyccSPAbUhXxmURgcL1T51pqGYLuWnnIa1LnVDV4Y",
-      "x-channel-id": "0138786843639234561",
-      "x-device-id":  "51b7897e26cd4f8d0c33d6afef0cc2beb0ca4629",
-      "x-session-id": "49f3a247-d598-445e-92bb-29116f4ddc5e",
-      "x-app-id":"shikshalokam",
-      "x-app-ver":"5.0-debug",
-      "x-authenticated-user-token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6ImFjY2Vzc3YxX2tleTUifQ.eyJhdWQiOiJodHRwczovL3N1bmJpcmRzYWFzLmNvbS9hdXRoL3JlYWxtcy9zdW5iaXJkIiwic3ViIjoiZjplNGZkMmNmNy0xYjE4LTQ1Y2YtYjBiMy01NWNjM2VkZWE1MzM6MGM1ZGQ4OTgtNTAyMS00NDlhLWE3M2YtMWRjODFiZmZlNmY5Iiwicm9sZXMiOlt7InJvbGUiOiJCT09LX0NSRUFUT1IiLCJzY29wZSI6W3sib3JnYW5pc2F0aW9uSWQiOiIwMTM4Nzg2ODQzNjM5MjM0NTYxIn1dfSx7InJvbGUiOiJDT05URU5UX0NSRUFUT1IiLCJzY29wZSI6W3sib3JnYW5pc2F0aW9uSWQiOiIwMTM4Nzg2ODQzNjM5MjM0NTYxIn1dfSx7InJvbGUiOiJDT1VSU0VfTUVOVE9SIiwic2NvcGUiOlt7Im9yZ2FuaXNhdGlvbklkIjoiMDEzODc4Njg0MzYzOTIzNDU2MSJ9XX0seyJyb2xlIjoiUFJPR1JBTV9ERVNJR05FUiIsInNjb3BlIjpbeyJvcmdhbmlzYXRpb25JZCI6IjAxMzg3ODY4NDM2MzkyMzQ1NjEifV19LHsicm9sZSI6IlBVQkxJQyIsInNjb3BlIjpbXX1dLCJpc3MiOiJodHRwczovL3N1bmJpcmRzYWFzLmNvbS9hdXRoL3JlYWxtcy9zdW5iaXJkIiwibmFtZSI6IlBEIiwidHlwIjoiQmVhcmVyIiwiZXhwIjoxNzQ3MzI0MTA5LCJpYXQiOjE3NDcyODA5MDl9.Zfd7z1cHdXS1bnGqqiML3cH5mjW7Hx5Mc3KqNSbhszNH4ZrZfNp_jd_9IA0FPL8TFAKggi1_VTPhAyBLwBJoINf_7X9kCC0SsLvsWWhsc1Vio_XrpQrg2PBzcwiI-gJ7zgMF2KyQLutLA5RC-LtN2UxBpNFke6AvJYB4VxR1ZmAJfnybax8xwvdidWtoHU9SoShlSzlkcRLAwJiK51bh-rItpxEnv4be0Bjgc5Noo6JQLKg1yLD996CUwwZGhAZic_pd_75C5ccCzn2iDmoIzPTQGy1MVQecMfkDOtruluAYkFGIGBfcmYlF1kci9VxhFwNjf4KEzJabSkO9joySJw",
-      "x-auth-token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6ImFjY2Vzc3YxX2tleTUifQ.eyJhdWQiOiJodHRwczovL3N1bmJpcmRzYWFzLmNvbS9hdXRoL3JlYWxtcy9zdW5iaXJkIiwic3ViIjoiZjplNGZkMmNmNy0xYjE4LTQ1Y2YtYjBiMy01NWNjM2VkZWE1MzM6MGM1ZGQ4OTgtNTAyMS00NDlhLWE3M2YtMWRjODFiZmZlNmY5Iiwicm9sZXMiOlt7InJvbGUiOiJCT09LX0NSRUFUT1IiLCJzY29wZSI6W3sib3JnYW5pc2F0aW9uSWQiOiIwMTM4Nzg2ODQzNjM5MjM0NTYxIn1dfSx7InJvbGUiOiJDT05URU5UX0NSRUFUT1IiLCJzY29wZSI6W3sib3JnYW5pc2F0aW9uSWQiOiIwMTM4Nzg2ODQzNjM5MjM0NTYxIn1dfSx7InJvbGUiOiJDT1VSU0VfTUVOVE9SIiwic2NvcGUiOlt7Im9yZ2FuaXNhdGlvbklkIjoiMDEzODc4Njg0MzYzOTIzNDU2MSJ9XX0seyJyb2xlIjoiUFJPR1JBTV9ERVNJR05FUiIsInNjb3BlIjpbeyJvcmdhbmlzYXRpb25JZCI6IjAxMzg3ODY4NDM2MzkyMzQ1NjEifV19LHsicm9sZSI6IlBVQkxJQyIsInNjb3BlIjpbXX1dLCJpc3MiOiJodHRwczovL3N1bmJpcmRzYWFzLmNvbS9hdXRoL3JlYWxtcy9zdW5iaXJkIiwibmFtZSI6IlBEIiwidHlwIjoiQmVhcmVyIiwiZXhwIjoxNzQ3MzI0MTA5LCJpYXQiOjE3NDcyODA5MDl9.Zfd7z1cHdXS1bnGqqiML3cH5mjW7Hx5Mc3KqNSbhszNH4ZrZfNp_jd_9IA0FPL8TFAKggi1_VTPhAyBLwBJoINf_7X9kCC0SsLvsWWhsc1Vio_XrpQrg2PBzcwiI-gJ7zgMF2KyQLutLA5RC-LtN2UxBpNFke6AvJYB4VxR1ZmAJfnybax8xwvdidWtoHU9SoShlSzlkcRLAwJiK51bh-rItpxEnv4be0Bjgc5Noo6JQLKg1yLD996CUwwZGhAZic_pd_75C5ccCzn2iDmoIzPTQGy1MVQecMfkDOtruluAYkFGIGBfcmYlF1kci9VxhFwNjf4KEzJabSkO9joySJw"
-    }
-    let token ="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6ImFjY2Vzc3YxX2tleTUifQ.eyJhdWQiOiJodHRwczovL3N1bmJpcmRzYWFzLmNvbS9hdXRoL3JlYWxtcy9zdW5iaXJkIiwic3ViIjoiZjplNGZkMmNmNy0xYjE4LTQ1Y2YtYjBiMy01NWNjM2VkZWE1MzM6MGM1ZGQ4OTgtNTAyMS00NDlhLWE3M2YtMWRjODFiZmZlNmY5Iiwicm9sZXMiOlt7InJvbGUiOiJCT09LX0NSRUFUT1IiLCJzY29wZSI6W3sib3JnYW5pc2F0aW9uSWQiOiIwMTM4Nzg2ODQzNjM5MjM0NTYxIn1dfSx7InJvbGUiOiJDT05URU5UX0NSRUFUT1IiLCJzY29wZSI6W3sib3JnYW5pc2F0aW9uSWQiOiIwMTM4Nzg2ODQzNjM5MjM0NTYxIn1dfSx7InJvbGUiOiJDT1VSU0VfTUVOVE9SIiwic2NvcGUiOlt7Im9yZ2FuaXNhdGlvbklkIjoiMDEzODc4Njg0MzYzOTIzNDU2MSJ9XX0seyJyb2xlIjoiUFJPR1JBTV9ERVNJR05FUiIsInNjb3BlIjpbeyJvcmdhbmlzYXRpb25JZCI6IjAxMzg3ODY4NDM2MzkyMzQ1NjEifV19LHsicm9sZSI6IlBVQkxJQyIsInNjb3BlIjpbXX1dLCJpc3MiOiJodHRwczovL3N1bmJpcmRzYWFzLmNvbS9hdXRoL3JlYWxtcy9zdW5iaXJkIiwibmFtZSI6IlBEIiwidHlwIjoiQmVhcmVyIiwiZXhwIjoxNzQ3MzI0MTA5LCJpYXQiOjE3NDcyODA5MDl9.Zfd7z1cHdXS1bnGqqiML3cH5mjW7Hx5Mc3KqNSbhszNH4ZrZfNp_jd_9IA0FPL8TFAKggi1_VTPhAyBLwBJoINf_7X9kCC0SsLvsWWhsc1Vio_XrpQrg2PBzcwiI-gJ7zgMF2KyQLutLA5RC-LtN2UxBpNFke6AvJYB4VxR1ZmAJfnybax8xwvdidWtoHU9SoShlSzlkcRLAwJiK51bh-rItpxEnv4be0Bjgc5Noo6JQLKg1yLD996CUwwZGhAZic_pd_75C5ccCzn2iDmoIzPTQGy1MVQecMfkDOtruluAYkFGIGBfcmYlF1kci9VxhFwNjf4KEzJabSkO9joySJw"
-    localStorage.setItem('accToken',token)
-    localStorage.setItem("headers",JSON.stringify(data))
-  }
-
-  setProfile(){
-    let data:any = {
-       "state": "0e576f3e-ee8b-49b0-9ce3-a36a4b6c0a7d",
-  "cluster": "2d781ed8-23c9-4553-bf1a-c95d017d35fd",
-  "district": "6e7e8200-6ed4-4185-8003-c5955539984e",
-  "block": "944e7e59-efb8-41ac-b3d9-7119b9b0da1f",
-  "school": "28222501308",
-  "role": "HM,DEO"
-    }
-    localStorage.setItem("profileData",JSON.stringify(data))
-  }
   loadInitialData(): void {
     this.page = 1;
     this.solutionList = [];
