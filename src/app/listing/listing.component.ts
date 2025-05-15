@@ -34,7 +34,7 @@ export class ListingComponent implements OnInit {
   selectedObservation:any;
   isAnyEntitySelected: boolean = false;
   surveyDate:any;
-  type:any=localStorage.getItem('solutionType')
+  solutionType:any=localStorage.getItem('solutionType')
   constructor(
     public router: Router,
     private toaster: ToastService,
@@ -48,11 +48,7 @@ export class ListingComponent implements OnInit {
   ngOnInit(): void {
     this.urlParamService.parseRouteParams(this.route)
     this.setPageTitle()
-    if(this.pageTitle === " Survey" || this.pageTitle === "Observation Reports" || this.pageTitle === "Survey Reports"){
-      this.reportPage = false
-    }else if(this.pageTitle === "Observations") {
-      this.reportPage = true
-    }
+    this.reportPage = this.pageTitle === 'Observations';
     this.loadInitialData();
   }
   setPageTitle() {
@@ -92,18 +88,27 @@ export class ListingComponent implements OnInit {
 
 
   async getListData(): Promise<void> {
-    let urlPath:any;
-    let queryItems:any;
-    if(this.pageTitle === 'Survey' || this.pageTitle === 'Survey Reports'){
-      urlPath= urlConfig[this.listType].listing
-      queryItems=`?type=${this.type}&page=${this.page}&limit=${this.limit}&surveyReportPage=${this.pageTitle === 'Survey Reports'}`
-    }else if(this.pageTitle === 'Observation Reports'){
-       urlPath= urlConfig[this.listType].reportListing
-       queryItems=`?page=${this.page}&limit=${this.limit}&entityType=${this.selectedEntityType}`
-    }else if(this.pageTitle === 'Observations'){
-      urlPath= urlConfig[this.listType].listing
-      queryItems=`?type=${this.type}&page=${this.page}&limit=${this.limit}&search=${this.searchTerm}`
-    }
+    const configMap = {
+      'Survey': {
+        urlPath: () => urlConfig[this.listType].listing,
+        queryParams: () => `?type=${this.solutionType}&page=${this.page}&limit=${this.limit}&surveyReportPage=false`
+      },
+      'Survey Reports': {
+        urlPath: () => urlConfig[this.listType].listing,
+        queryParams: () => `?type=${this.solutionType}&page=${this.page}&limit=${this.limit}&surveyReportPage=true`
+      },
+      'Observation Reports': {
+        urlPath: () => urlConfig[this.listType].reportListing,
+        queryParams: () => `?page=${this.page}&limit=${this.limit}&entityType=${this.selectedEntityType}`
+      },
+      'Observations': {
+        urlPath: () => urlConfig[this.listType].listing,
+        queryParams: () => `?type=${this.solutionType}&page=${this.page}&limit=${this.limit}&search=${this.searchTerm}`
+      }
+    };
+    const config = configMap[this.pageTitle as keyof typeof configMap];
+    if (!config) return;
+    const [urlPath, queryItems] = [config.urlPath(), config.queryParams()];
     this.apiService.post(
       urlPath + queryItems,
       this.apiService?.profileData
@@ -117,20 +122,12 @@ export class ListingComponent implements OnInit {
       .subscribe((res: any) => {
         if (res?.status === 200) {
           this.solutionListCount = res?.result?.count;
-          if(this.pageTitle === 'Observation Reports'){
-            this.entityType = res?.result?.entityType
-          }
-          if(this.pageTitle === 'Survey'){
-            res?.result?.data?.map((item)=>{
-              this.utils.createExpiryMsg(item)}
-            )
-          }
-          if(!this.selectedEntityType){
-            this.solutionList = [...this.solutionList, ...res?.result?.data];
-            this.initialSolutionData = this.solutionList;
-          }else{
-            this.solutionList=res?.result?.data
-          }
+          this.pageTitle === 'Observation Reports' && (this.entityType = res?.result?.entityType);
+          this.pageTitle === 'Survey' && res?.result?.data?.forEach(item => this.utils.createExpiryMsg(item));
+          this.solutionList = this.selectedEntityType 
+        ? res?.result?.data 
+        : [...this.solutionList, ...res?.result?.data];
+      this.initialSolutionData = this.solutionList;
         } else {
           this.toaster.showToast(res?.message, 'Close');
         }
