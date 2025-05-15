@@ -6,7 +6,7 @@
         <p class="heading-paragraph">{{'OBSERVATION_LISTING_MESSAGE' | translate}}</p>
       </div>
 
-      <div class="srch" *ngIf="!reportPage">
+      <div class="srch" *ngIf="reportPage">
         <div class="srch-bar">
           <span class="icon">
             <i class="material-icons">search</i>
@@ -26,7 +26,7 @@
   
     <div class="observation-list" *ngIf="solutionListCount !== 0">
 
-     <div class="select-filter" *ngIf="reportPage">
+     <div class="select-filter" *ngIf="pageTitle === 'Observation Reports'">
       <mat-form-field>
         <mat-label>{{'ENTITY_FILTER' | translate}}</mat-label>
         <mat-select (selectionChange)="changeEntityType($event.value)" [(ngModel)]="selectedEntityType">
@@ -42,7 +42,12 @@
             <mat-card class="observation-card">
               <mat-card-content>
                 <h2 class="observation-name">{{ solution?.name }}</h2>
-                <p>{{ reportPage == 'true' ? solution?.programName : solution?.description }}</p>
+                @if(pageTitle === 'Observation Reports' ||pageTitle === 'Observations' ){
+                  <p>{{solution?.programName}}</p>
+                }
+                @if(pageTitle === 'Survey'){
+                  <p>{{solution?.generatedExpMsg}}</p>
+                }
               </mat-card-content>
             </mat-card>
           </div>
