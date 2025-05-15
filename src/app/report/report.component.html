@@ -7,7 +7,7 @@
     </div>
      </div>
     <div class="report-container">
-      <div class="select-wrapper">
+      <!-- <div class="select-wrapper">
         <mat-form-field class="custom-select" *ngIf="isMultiple == 'true'">
           <mat-label>{{"SELECT_SUBMISSION"|translate}}</mat-label>
           <mat-select (selectionChange)="onSelectionChange($event.value)">
@@ -16,7 +16,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-      </div>
+      </div> -->
       <div class="buttons-left">
         <button [ngClass]="{'border-bottom-button': observationType === 'questions'}"
           (click)="toggleObservationType('questions')" class="switch-buttons">{{'QUESTIONS' | translate}}</button>
@@ -266,15 +266,7 @@
           </div>
         </div>
       </ng-template>
-
-     
      </div>
-     <div class="led-imp-div">
-      <button class="apply-filter" (click)="navigateToObservationLedImpPage()">
-        {{"CLICK_HERE_TO_IMPROVE" | translate}}
-      </button>
-    </div>
-    
 
       <div *ngIf="isFilterModalOpen" class="modal">
         <div class="modal-content">

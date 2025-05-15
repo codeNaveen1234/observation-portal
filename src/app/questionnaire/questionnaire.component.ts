@@ -32,7 +32,7 @@ export class QuestionnaireComponent implements OnInit{
       this.apiConfig['evidenceCode']=param['evidenceCode']
       this.apiConfig['index']=param['index']
       this.apiConfig['submissionNumber']=param['submissionNumber']
-      this.apiConfig['solutionId']=this.apiService.solutionId
+      this.apiConfig['solutionId']=param['solutionId']
     })
       this.showDetails = true
   }
