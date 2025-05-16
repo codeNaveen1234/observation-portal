@@ -15,7 +15,9 @@
         "observationSubmissions":"/assessment/observationSubmissions/mlsurvey/v1/list/",
         "update":"/assessment/observationSubmissions/mlsurvey/v1/update/",
         "create":"/assessment/observationSubmissions/mlsurvey/v1/create/",
-        "refreshTokenUrl":"/user/v1/account/generateToken"
+        "refreshTokenUrl":"/user/v1/account/generateToken",
+        "project": "/ml/project/mlprojects/v1/templates/details/"
+
     },
     "presignedUrl":"/survey/v1/files/preSignedUrls"
 }
