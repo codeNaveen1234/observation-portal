@@ -53,6 +53,15 @@
   "NO_SOLUTION_MSG": "कोई समाधान नहीं मिला",
   "SELECT_ATLEAST_ONE_QUESTION": "कम से कम एक प्रश्न चुनें",
   "NETWORK_OFFLINE":" आप ऑफलाइन हैं। कृपया नेटवर्क से कनेक्ट करें।",
-  "CLICK_HERE_TO_IMPROVE":"सुधार करने के लिए यहां क्लिक करें"
-
+  "CLICK_HERE_TO_IMPROVE": "सुधार के लिए यहां क्लिक करें",
+  "EXPIRE_IN_ONE_DAY": "एक दिन में समाप्त होगा",
+  "EXPIRE_IN_TWO_DAY": "दो दिन में समाप्त होगा",
+  "MSG_VALID_TILL": "मान्य है तक",
+  "MSG_EXPIRED_ON": "को समाप्त हो गया",
+  "REDIRECTING": "पुनः निर्देशित किया जा रहा है....",
+  "MSG_TEMPLATE_DETAILS_NOTFOUND": "टेम्पलेट विवरण नहीं मिला",
+  "MSG_INVALID_LINK": "अमान्य लिंक, कृपया अन्य लिंक के साथ प्रयास करें",
+  "MSG_FOR_NONTARGETED_USERS_QUESTIONNAIRE": "प्रिय उपयोगकर्ता, यह ऑब्जर्वेशन आपकी उपभूमिका और स्थान के लिए प्रासंगिक नहीं है",
+  "SURVEY_EXPIRED": "सर्वे समाप्त हो गया",
+  "SURVEY_COMPLETED": "सर्वे पूरा हो गया"
 }

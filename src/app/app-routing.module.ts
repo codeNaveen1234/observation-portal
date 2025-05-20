@@ -8,6 +8,7 @@ import { QuestionnaireComponent } from './questionnaire/questionnaire.component'
 import { ReportComponent } from './report/report.component';
 import { APP_ROUTES } from './constants/app.routes';
 import { ObservationLedImpComponent } from './observation-led-imp/observation-led-imp.component';
+import { DeeplinkRedirectComponent } from './deeplink-redirect/deeplink-redirect.component';
 
 const routes: Routes = [ 
   { path: APP_ROUTES.LISTING, component: ListingComponent },
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: APP_ROUTES.QUESTIONNAIRE, component: QuestionnaireComponent },
   { path: APP_ROUTES.REPORTS, component: ReportComponent },
   { path: APP_ROUTES.Observation_Led_Imp, component: ObservationLedImpComponent },
+  { path: APP_ROUTES.VERIFYLINK,component:DeeplinkRedirectComponent},
   { path: '', redirectTo: 'listing/observation', pathMatch: 'full' },
 ];
 
