@@ -14,23 +14,26 @@ export class offlineSaveObservation {
     private db: DbService
   ) {
   }
-  getFullObservationData(observationId, entityId, submissionId) {
-    this.apiService.post(urlConfig.observation.details + `${observationId}` + `?entityId=${entityId}`, this.apiService.profileData)
-      .pipe(
-        catchError((err: any) => {
-          this.toaster.showToast(err?.error?.message, 'Close');
-          throw Error(err);
-        })
-      )
-      .subscribe((res: any) => {
-
-        if (res?.result) {
-
-          this.setDataInIndexDb(res?.result, submissionId);
-        } else {
-          this.toaster.showToast(res?.message, 'danger');
-        }
-      })
+  getFullObservationData(observationId, entityId, submissionId): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.apiService.post(urlConfig.observation.details + `${observationId}` + `?entityId=${entityId}`, this.apiService.profileData)
+        .pipe(
+          catchError((err: any) => {
+            this.toaster.showToast(err?.error?.message, 'Close');
+            reject(err);
+            return [];
+          })
+        )
+        .subscribe(async (res: any) => {
+          if (res?.result) {
+            await this.setDataInIndexDb(res?.result, submissionId);
+            resolve();
+          } else {
+            this.toaster.showToast(res?.message, 'danger');
+            reject(res?.message);
+          }
+        });
+    });
   }
   async setDataInIndexDb(observationData, submissionId) {
     const data = {

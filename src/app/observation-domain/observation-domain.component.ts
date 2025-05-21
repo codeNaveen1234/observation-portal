@@ -29,6 +29,7 @@ export class ObservationDomainComponent implements OnInit {
   submissionNumber:any;
   submissionId: any;
   completeObservationData: any;
+  stateData:any
 
   constructor(
     private apiService: ApiService, 
@@ -41,7 +42,11 @@ export class ObservationDomainComponent implements OnInit {
   ) {}
 
   async ngOnInit(){
-    this.urlParamsService.parseRouteParams(this.route)
+    this.stateData = history.state?.data;
+    if(this.stateData){
+      this.mapDataToVariables(this.stateData)
+    }else{
+      this.urlParamsService.parseRouteParams(this.route)
     this.observationId = this.urlParamsService?.observationId;
     this.entityId = this.urlParamsService?.entityId;
     this.id = this.urlParamsService?.solutionId;
@@ -51,6 +56,7 @@ export class ObservationDomainComponent implements OnInit {
       this.mapDataToVariables(isDataInIndexDb?.data)
     }else {
       this.getObservationByEntityId();
+    }
     }
   }
   mapDataToVariables(observationData) {
@@ -105,6 +111,12 @@ export class ObservationDomainComponent implements OnInit {
   }
 
   navigateToDetails(data,index) {
+    this.stateData ? this.router.navigate(['questionnaire'],{
+      queryParams:{
+        solutionType:this.stateData?.solutionType
+      },
+      state:{data:this.stateData}
+    }):
     this.router.navigate(['questionnaire'], {
       queryParams: { observationId:this.observationId, entityId:this.entityId, submissionNumber:this.submissionNumber,evidenceCode:data?.code, index:index,submissionId: this.submissionId }
     });

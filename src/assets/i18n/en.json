@@ -53,5 +53,15 @@
     "NO_SOLUTION_MSG":"No solution found",
     "SELECT_ATLEAST_ONE_QUESTION": "Select at least one question",
     "NETWORK_OFFLINE":"You are offline. Please connect to a network.",
-    "CLICK_HERE_TO_IMPROVE":"Click here to improve"
+    "CLICK_HERE_TO_IMPROVE":"Click here to improve",
+    "EXPIRE_IN_ONE_DAY":"Will expire in one day",
+    "EXPIRE_IN_TWO_DAY": "Will expire in two days",
+    "MSG_VALID_TILL": "Valid till",
+    "MSG_EXPIRED_ON": "Expired On",
+    "REDIRECTING":"Redirecting....",
+    "MSG_TEMPLATE_DETAILS_NOTFOUND":"Template details not found",
+    "MSG_INVALID_LINK": "Invalid Link, please try with other link",
+    "MSG_FOR_NONTARGETED_USERS_QUESTIONNAIRE":"Dear User, this Observation is not relevant for your subrole and location",
+    "SURVEY_EXPIRED":"survey Expired",
+    "SURVEY_COMPLETED":"survey Completed"
 }

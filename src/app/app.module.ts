@@ -51,6 +51,7 @@ import {
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ObservationLedImpComponent } from './observation-led-imp/observation-led-imp.component';
+import { DeeplinkRedirectComponent } from './deeplink-redirect/deeplink-redirect.component';
 
 export function translateHttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -67,6 +68,7 @@ export function translateHttpLoaderFactory(httpClient: HttpClient) {
     QuestionnaireComponent,
     ReportComponent,
     ObservationLedImpComponent,
+    DeeplinkRedirectComponent
   ],
   imports: [
     BrowserModule,

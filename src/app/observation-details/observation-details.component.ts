@@ -99,7 +99,7 @@ getObservationsByStatus(statuses: ('draft' | 'inprogress' | 'completed' | 'start
     let isDataInIndexDb = await this.offlineData.checkAndMapIndexDbDataToVariables(data?._id);
 
     if (!isDataInIndexDb?.data) {
-      this.offlineData.getFullObservationData(this.observationId,this.entityId,data?._id);
+      await this.offlineData.getFullObservationData(this.observationId,this.entityId,data?._id);
     }
     
     if (data?.isRubricDriven) {
