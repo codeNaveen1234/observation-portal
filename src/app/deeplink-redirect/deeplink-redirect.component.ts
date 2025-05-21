@@ -166,19 +166,17 @@ export class DeeplinkRedirectComponent {
           })
         )
           .subscribe(async (res: any) => {
-            if (res && res?.result) {
             if (res.result === false) {
               this.toastService.showToast('SURVEY_EXPIRED', 'close');
+              await this.router.navigate([`/listing/${this.type}`]);
               return;
             }
             if (res.result.status && res.result.status === 'completed') {
               this.toastService.showToast('SURVEY_COMPLETED', 'close');
+              await this.router.navigate([`/listing/${this.type}`]);
               return;
             }
             this.navigateToSurvey(res?.result);
-            }else{
-              this.location.back()
-            }
           },(err:any)=>{
             this.toastService.showToast('MSG_INVALID_LINK',"danger")
             this.router.navigate([`/listing/${this.type}`]);
