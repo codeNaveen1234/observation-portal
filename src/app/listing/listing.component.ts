@@ -146,9 +146,11 @@ export class ListingComponent implements OnInit {
         queryParams: {observationId: data?.observationId, entityId: data?.entityId, submissionNumber: data?.submissionNumber, index: 0, submissionId:data?.submissionId,solutionId:data?.solutionId
         }
       });
+      return
     }
     if(this.pageTitle === 'Survey Reports'){
-        return;
+        window.location.href=`/managed-learn/report-details/${data?.submissionId}`
+        return
     }
     if (!this.reportPage) {
       if (data?.entities?.length > 1) {
