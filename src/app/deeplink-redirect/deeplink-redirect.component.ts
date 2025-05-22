@@ -56,9 +56,7 @@ export class DeeplinkRedirectComponent {
           stateData?.solution?._id,
           false
         ]);
-        }else {
-          this.toastService.showToast('MSG_FOR_NONTARGETED_USERS_QUESTIONNAIRE', 'danger', 5000)
-      }
+        }
     }
   };
 
@@ -117,14 +115,14 @@ export class DeeplinkRedirectComponent {
         resp?.assessment?.name,
         resp?.solution?._id
       ],{
-        state:{data:{...resp,solutionType:this.type}}
+        state:{data:{...resp,solutionType:this.type,isSurvey:false}}
       });
     } else {
       this.router.navigate(['questionnaire'], {
         queryParams:{
           solutionType:this.type,
         },
-        state: { data: resp }
+        state:{ data:{...resp,isSurvey:false}}
       });
     }
   }
