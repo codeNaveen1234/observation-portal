@@ -12,6 +12,7 @@ import { ApiService } from './api.service';
 import * as urlConfig from '../constants/url-config.json';
 import { ToastService } from './toast.service';
 import { UtilsService } from './utils.service';
+import { environment } from 'src/assets/envirnoments/environment';
 
 @Injectable()
 export class ApiInterceptor implements HttpInterceptor {
@@ -75,6 +76,9 @@ export class ApiInterceptor implements HttpInterceptor {
     let token = this.apiService.userAuthToken
     if (!token) {
       return null;
+    }
+    if(environment.isAuthBypassed){
+      return token
     }
     const isValidToken = await this.utilService.validateToken(token);
     if (!isValidToken) {
