@@ -9,16 +9,19 @@ import { ReportComponent } from './report/report.component';
 import { APP_ROUTES } from './constants/app.routes';
 import { ObservationLedImpComponent } from './observation-led-imp/observation-led-imp.component';
 import { DeeplinkRedirectComponent } from './deeplink-redirect/deeplink-redirect.component';
+import { ObservationAsTaskComponent } from './observation-as-task/observation-as-task.component';
 
 const routes: Routes = [ 
   { path: APP_ROUTES.LISTING, component: ListingComponent },
   { path: APP_ROUTES.ENTITY_LIST, component: ObservationEntityComponent },
+  { path: APP_ROUTES.ENTITY_LIST_2, component: ObservationEntityComponent },
   { path: APP_ROUTES.DETAILS, component: ObservationDetailsComponent },
   { path: APP_ROUTES.DOMAIN, component: ObservationDomainComponent },
   { path: APP_ROUTES.QUESTIONNAIRE, component: QuestionnaireComponent },
   { path: APP_ROUTES.REPORTS, component: ReportComponent },
   { path: APP_ROUTES.Observation_Led_Imp, component: ObservationLedImpComponent },
   { path: APP_ROUTES.VERIFYLINK,component:DeeplinkRedirectComponent},
+  { path: APP_ROUTES.OBSERVATION_AS_TASK,component:ObservationAsTaskComponent},
   { path: '', redirectTo: 'listing/observation', pathMatch: 'full' },
 ];
 

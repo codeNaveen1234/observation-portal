@@ -45,9 +45,9 @@ export class ObservationEntityComponent  {
   ngOnInit() {
     this.urlParamsService.parseRouteParams(this.route);
     this.solutionId = this.urlParamsService?.solutionId;
-    this.entity=this.urlParamsService?.entity
+    this.entity=this.urlParamsService?.entity;
     this.solutionName=decodeURIComponent(decodeURIComponent(this.urlParamsService?.name || ''))
-    this.entityToAdd=this.urlParamsService?.entityType;
+    this.entityToAdd=this.urlParamsService?.entityType || "entity";
     this.getEntities();
   }
 
