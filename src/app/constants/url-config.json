@@ -19,7 +19,7 @@
         "refreshTokenUrl":"/user/v1/account/generateToken",
         "project": "/ml/project/mlprojects/v1/templates/details/",
         "observationVerifyLink":"/solutions/mlcore/v1/verifyLink/",
-        "templateDetails":"/solutions/mlcore/v1/details/"
+        "templateDetails":"/ml/solutions/mlcore/v1/details/"
     },
     "presignedUrl":"/survey/v1/files/preSignedUrls"
 }
