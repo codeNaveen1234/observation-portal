@@ -3,7 +3,7 @@
     <div class="list-title">
       <div class="list-heading">
         <h1 class="heading">{{pageTitle}}</h1>
-        <p class="heading-paragraph">{{'OBSERVATION_LISTING_MESSAGE' | translate}}</p>
+        <p class="heading-paragraph">{{description}}</p>
       </div>
 
       <div class="srch" *ngIf="reportPage">
@@ -42,7 +42,7 @@
             <mat-card class="observation-card">
               <mat-card-content>
                 <h2 class="observation-name">{{ solution?.name }}</h2>
-                @if(pageTitle === 'Observation Reports' ||pageTitle === 'Observations' ){
+                @if(pageTitle === 'Observation Reports' || pageTitle === 'Observation' ){
                   <p>{{solution?.programName}}</p>
                 }
                 @if(pageTitle === 'Survey'){

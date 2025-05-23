@@ -6,6 +6,8 @@ import { ToastService } from '../services/toast.service';
 import { ApiService } from '../services/api.service';
 import { UrlParamsService } from '../services/urlParams.service';
 import { UtilsService } from '../services/utils.service';
+import { TranslateService } from '@ngx-translate/core';
+import { TITLE_MAP, DESC_KEY_MAP } from '../constants/actionContants';
 
 @Component({
   selector: 'app-listing',
@@ -22,7 +24,7 @@ export class ListingComponent implements OnInit {
   page: number = 1;
   limit: number = 10;
   reportPage: any = false;
-  pageTitle: string = 'Observations';
+  pageTitle: string;
   entityType: any;
   initialSolutionData: any = [];
   selectedEntityType: any = '';
@@ -34,35 +36,33 @@ export class ListingComponent implements OnInit {
   selectedObservation:any;
   isAnyEntitySelected: boolean = false;
   surveyDate:any;
-  solutionType:any=localStorage.getItem('solutionType')
+  solutionType:any=localStorage.getItem('solutionType');
+  description:any;
   constructor(
     public router: Router,
     private toaster: ToastService,
     private apiService: ApiService,
     private urlParamService:UrlParamsService,
     private route:ActivatedRoute,
-    private utils:UtilsService
+    private utils:UtilsService,
+    private translate: TranslateService
   ) {
   }
- 
   ngOnInit(): void {
     this.urlParamService.parseRouteParams(this.route)
     this.setPageTitle()
-    this.reportPage = this.pageTitle === 'Observations';
+    this.reportPage = this.pageTitle === 'Observation';
     this.loadInitialData();
   }
+
   setPageTitle() {
     const solutionType = this.urlParamService.solutionType;
-    const titleMap: { [key: string]: string } = {
-      'observationReports': 'Observation Reports',
-      'survey': 'Survey',
-      'observation': 'Observations',
-      'surveyReports':'Survey Reports'
-    };
-    const typeKey = Object.keys(titleMap).find(key => 
-      key.toLowerCase() === solutionType?.toLowerCase()
-    );
-    this.pageTitle = typeKey ? titleMap[typeKey] : 'Observations';
+    const typeKey = Object.keys(TITLE_MAP).includes(solutionType) ? solutionType : 'observation';
+  
+    this.pageTitle = TITLE_MAP[typeKey];
+    this.translate.get(DESC_KEY_MAP[typeKey]).subscribe((translatedDesc: string) => {
+      this.description = translatedDesc;
+    });
   }
   
   loadInitialData(): void {
@@ -101,7 +101,7 @@ export class ListingComponent implements OnInit {
         urlPath: () => urlConfig[this.listType].reportListing,
         queryParams: () => `?page=${this.page}&limit=${this.limit}&entityType=${this.selectedEntityType}`
       },
-      'Observations': {
+      'Observation': {
         urlPath: () => urlConfig[this.listType].listing,
         queryParams: () => `?type=${this.solutionType}&page=${this.page}&limit=${this.limit}&search=${this.searchTerm}`
       }
