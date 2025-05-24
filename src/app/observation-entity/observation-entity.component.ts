@@ -138,7 +138,6 @@ export class ObservationEntityComponent  {
   navigateToDetails(data) {
     this.router.navigate([
       'details',
-      data.name,
       this.observationId,
       data?._id,
       this.selectedEntities?.allowMultipleAssessemts
