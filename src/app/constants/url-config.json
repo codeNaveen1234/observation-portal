@@ -1,9 +1,9 @@
 {
     "survey":{
-        "details":"/survey/v1/surveys/details/",
-        "update":"/survey/v1/surveySubmissions/update/",
-        "reportUrl":"/reports/mlreports/v1/fetch",
-        "surveyVerifyLink":"/surveys/mlsurvey/v1/details/"
+        "details":"/ml/surveys/mlsurvey/v1/details?solutionId=",
+        "update":"/ml/surveySubmissions/mlsurvey/v1/update/",
+        "reportUrl":"/ml/reports/mlreports/v1/fetch",
+        "surveyVerifyLink":"/ml/surveys/mlsurvey/v1/details/"
     },
     "observation":{
         "listing":"/kendra/solutions/mlcore/v1/targetedSolutions",
@@ -18,7 +18,7 @@
         "create":"/assessment/observationSubmissions/mlsurvey/v1/create/",
         "refreshTokenUrl":"/user/v1/account/generateToken",
         "project": "/ml/project/mlprojects/v1/templates/details/",
-        "observationVerifyLink":"/solutions/mlcore/v1/verifyLink/",
+        "observationVerifyLink":"/ml/solutions/mlcore/v1/verifyLink/",
         "templateDetails":"/ml/solutions/mlcore/v1/details/"
     },
     "presignedUrl":"/survey/v1/files/preSignedUrls"
