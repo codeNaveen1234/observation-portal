@@ -2,8 +2,8 @@
     "survey":{
         "details":"/ml/surveys/mlsurvey/v1/details?solutionId=",
         "update":"/ml/surveySubmissions/mlsurvey/v1/update/",
-        "reportUrl":"ml/reports/mlreports/v1/fetch",
-        "surveyVerifyLink":"ml/surveys/mlsurvey/v1/details/"
+        "reportUrl":"/ml/reports/mlreports/v1/fetch",
+        "surveyVerifyLink":"/ml/surveys/mlsurvey/v1/details/"
     },
     "observation":{
         "listing":"/kendra/solutions/mlcore/v1/targetedSolutions",
