@@ -14,9 +14,9 @@ export class offlineSaveObservation {
     private db: DbService
   ) {
   }
-  getFullObservationData(observationId, entityId, submissionId): Promise<void> {
+  getFullObservationData(observationId, entityId, submissionId,submissionNumber): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.apiService.post(urlConfig.observation.details + `${observationId}` + `?entityId=${entityId}`, this.apiService.profileData)
+      this.apiService.post(urlConfig.observation.details + `${observationId}` + `?entityId=${entityId}`+`&submissionNumber=${submissionNumber}`, this.apiService.profileData)
         .pipe(
           catchError((err: any) => {
             this.toaster.showToast(err?.error?.message, 'Close');
