@@ -59,9 +59,12 @@ export class ObservationAsTaskComponent implements OnInit {
           throw Error(err);
         })
       ).subscribe((res: any) => {
-        if (res?.result) {
+        if (
+          (Array.isArray(res.result) && res.result.length > 0) ||
+          (res.result && typeof res.result === 'object' && !Array.isArray(res.result))
+        ) {
           const templateData = {
-            ...res?.result
+            ...res.result
           };
           this.redirectObservation(templateData);
         } else {
@@ -70,6 +73,7 @@ export class ObservationAsTaskComponent implements OnInit {
             this.location.back();
           }, 2000);
         }
+        
       }, error => {
         this.toastService.showToast('MSG_TEMPLATE_DETAILS_NOTFOUND', 'danger');
         setTimeout(() => {
