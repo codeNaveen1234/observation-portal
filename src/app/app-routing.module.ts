@@ -11,10 +11,12 @@ import { APP_ROUTES } from './constants/app.routes';
 const routes: Routes = [ 
   { path: APP_ROUTES.LISTING, component: ListingComponent },
   { path: APP_ROUTES.ENTITY_LIST, component: ObservationEntityComponent },
+  { path: APP_ROUTES.ENTITY_LIST_2, component: ObservationEntityComponent },
   { path: APP_ROUTES.DETAILS, component: ObservationDetailsComponent },
   { path: APP_ROUTES.DOMAIN, component: ObservationDomainComponent },
   { path: APP_ROUTES.QUESTIONNAIRE, component: QuestionnaireComponent },
   { path: APP_ROUTES.REPORTS, component: ReportComponent },
+  { path: '', redirectTo: 'listing/observation', pathMatch: 'full' }
 ];
 
 @NgModule({

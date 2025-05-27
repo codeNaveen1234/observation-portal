@@ -52,5 +52,9 @@
   "CLOSE": "बंद करें",
   "NO_SOLUTION_MSG": "कोई समाधान नहीं मिला",
   "SELECT_ATLEAST_ONE_QUESTION": "कम से कम एक प्रश्न चुनें",
-  "NETWORK_OFFLINE":" आप ऑफलाइन हैं। कृपया नेटवर्क से कनेक्ट करें।"
+  "NETWORK_OFFLINE":" आप ऑफलाइन हैं। कृपया नेटवर्क से कनेक्ट करें।",
+  "EXPIRED_ON": "समाप्ति तिथि",
+  "EXPIRED_IN": "में समाप्त होगा",
+  "COMPLETED_ON": "पूर्ण हुआ",
+  "VALID_TILL": "मान्य तिथि तक"
 }
