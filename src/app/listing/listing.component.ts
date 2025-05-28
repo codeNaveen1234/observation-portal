@@ -7,7 +7,7 @@ import { ApiService } from '../services/api.service';
 import { UrlParamsService } from '../services/urlParams.service';
 import { UtilsService } from '../services/utils.service';
 import { TranslateService } from '@ngx-translate/core';
-import { TITLE_MAP, DESC_KEY_MAP } from '../constants/actionContants';
+import { TITLE_MAP, DESC_KEY_MAP, solutionTypeMap } from '../constants/actionContants';
 
 @Component({
   selector: 'app-listing',
@@ -36,7 +36,7 @@ export class ListingComponent implements OnInit {
   selectedObservation:any;
   isAnyEntitySelected: boolean = false;
   surveyDate:any;
-  solutionType:any=localStorage.getItem('solutionType');
+  solutionType:any;
   description:any;
   constructor(
     public router: Router,
@@ -60,6 +60,7 @@ export class ListingComponent implements OnInit {
     const typeKey = Object.keys(TITLE_MAP).includes(solutionType) ? solutionType : 'observation';
   
     this.pageTitle = TITLE_MAP[typeKey];
+    this.solutionType =solutionTypeMap[solutionType];
     this.translate.get(DESC_KEY_MAP[typeKey]).subscribe((translatedDesc: string) => {
       this.description = translatedDesc;
     });
@@ -143,7 +144,7 @@ export class ListingComponent implements OnInit {
   navigateTo(data?: any) {
     if(this.pageTitle === 'Survey'){
       this.router.navigate(['/questionnaire'], {
-        queryParams: {observationId: data?.observationId, entityId: data?.entityId, submissionNumber: data?.submissionNumber, index: 0, submissionId:data?.submissionId,solutionId:data?.solutionId
+        queryParams: {observationId: data?.observationId, entityId: data?.entityId, submissionNumber: data?.submissionNumber, index: 0, submissionId:data?.submissionId,solutionId:data?.solutionId, solutionType:"survey"
         }
       });
       return

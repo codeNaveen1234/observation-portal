@@ -26,7 +26,7 @@ export class QuestionnaireComponent implements OnInit{
     this.router.queryParams.subscribe(param => {
       this.apiConfig['baseURL'] = this.apiService.baseUrl
       this.apiConfig['userAuthToken'] = this.apiService.userAuthToken;
-      this.apiConfig['solutionType'] = localStorage.getItem('solutionType')
+      this.apiConfig['solutionType'] = param['solutionType']
       this.apiConfig['fileSizeLimit'] = 50;
       this.apiConfig['profileData'] =JSON.parse(localStorage.getItem('profileData'));
       this.apiConfig['observationId']=param['observationId'];

@@ -11,3 +11,10 @@ export const TITLE_MAP: Record<string, string> = {
     observation: 'OBSERVATION_LISTING_MESSAGE',
     observationReports: 'OBSERVATION_REPORTS_DESC'
 };
+
+export const solutionTypeMap = {
+  surveyReports: 'survey',
+  observation: 'observation',
+  survey: 'survey',
+  observationReports:'observation'
+};
