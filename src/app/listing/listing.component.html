@@ -2,8 +2,8 @@
 <div class="content" *ngIf="loaded">
     <div class="list-title">
       <div class="list-heading">
-        <h1 class="heading">{{pageTitle}}</h1>
-        <p class="heading-paragraph">{{'OBSERVATION_LISTING_MESSAGE' | translate}}</p>
+        <h1 class="heading">{{pageTitle?.title}}</h1>
+        <p class="heading-paragraph">{{ description }}</p>
       </div>
 
       <div class="srch" *ngIf="!observationReportPage">

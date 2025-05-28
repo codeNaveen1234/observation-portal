@@ -125,6 +125,12 @@ export class AppModule {
   }
   setLanguage() {
     this.translate.setDefaultLang('en');
-    this.translate.use('en'); 
+    this.translate.use('en');
+    let theme:any=JSON.parse(localStorage.getItem('theme'))
+    if(theme){
+      document.documentElement.style.setProperty('--color-primary', theme?.primaryColor);
+      document.documentElement.style.setProperty('--primary-color', theme?.primaryColor);
+      document.documentElement.style.setProperty('--color-secondary', theme?.secondaryColor);
+    }
   }
 }

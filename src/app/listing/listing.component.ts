@@ -5,7 +5,7 @@ import * as urlConfig from '../constants/url-config.json';
 import { ToastService } from '../services/toast.service';
 import { ApiService } from '../services/api.service';
 import { UrlParamsService } from '../services/urlParams.service';
-import { TITLE_MAP } from '../constants/actionContants';
+import { listingConfig} from '../constants/actionContants';
 import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 
@@ -23,7 +23,7 @@ export class ListingComponent implements OnInit {
   stateData: any;
   page: number = 1;
   limit: number = 10;
-  pageTitle: string;
+  pageTitle: any;
   entityType: any;
   initialSolutionData: any = [];
   selectedEntityType: any = '';
@@ -34,10 +34,10 @@ export class ListingComponent implements OnInit {
   solutionListCount :any = 0;
   selectedObservation:any;
   isAnyEntitySelected: boolean = false;
-  solutionType:any=localStorage.getItem('solutionType');
   surveyExpiry:any;
   surveyPage:any;
   observationReportPage: any;
+  description:any;
 
   constructor(
     public router: Router,
@@ -53,14 +53,17 @@ export class ListingComponent implements OnInit {
   ngOnInit(): void {
     this.urlParamService.parseRouteParams(this.route)
     this.setPageTitle()
-    this.observationReportPage = this.pageTitle === 'Observation Reports';
-    this.surveyPage = this.pageTitle === 'Survey'
+    this.observationReportPage = this.pageTitle?.title === 'Observation Reports';
+    this.surveyPage = this.pageTitle?.title === 'Survey'
     this.loadInitialData();
   }
   setPageTitle() {
     const solutionType = this.urlParamService.solutionType;
-    const typeKey = Object.keys(TITLE_MAP).includes(solutionType) ? solutionType : 'observation';
-    this.pageTitle = TITLE_MAP[typeKey];
+    this.pageTitle = listingConfig[solutionType]
+    this.description = this.pageTitle?.description
+    this.translate.get(this.pageTitle?.description).subscribe((msg: string) => {
+      this.description = msg;
+    });
   }
 
   loadInitialData(): void {
@@ -86,29 +89,25 @@ export class ListingComponent implements OnInit {
 
 
   async getListData(): Promise<void> {
-    const configMap = {
-      'Survey': {
-        urlPath: () => urlConfig[this.listType].listing,
-        queryParams: () => `?type=${this.solutionType}&page=${this.page}&limit=${this.limit}&search=${this.searchTerm}&surveyReportPage=${this.pageTitle === 'Survey Reports'}`
-      },
-      'Survey Reports': {
-        urlPath: () => urlConfig[this.listType].listing,
-        queryParams: () => `?type=${this.solutionType}&page=${this.page}&limit=${this.limit}&search=${this.searchTerm}&surveyReportPage=${this.pageTitle === 'Survey Reports'}`
-      },
-      'Observation Reports': {
-        urlPath: () => urlConfig[this.listType].reportListing,
-        queryParams: () => `?page=${this.page}&limit=${this.limit}&entityType=${this.selectedEntityType}`
-      },
-      'Observation': {
-        urlPath: () => urlConfig[this.listType].listing,
-        queryParams: () => `?type=${this.solutionType}&page=${this.page}&limit=${this.limit}&search=${this.searchTerm}`
-      }
-    };
-    const config = configMap[this.pageTitle as keyof typeof configMap];
-    if (!config) return;
-    const [urlPath, queryItems] = [config.urlPath(), config.queryParams()];
+    let urlPath:any = this.observationReportPage ? urlConfig[this.listType].reportListing : urlConfig[this.listType].listing
+    let queryParams;
+    switch (this.pageTitle?.title){
+      case 'Survey':
+      case 'Survey Reports':
+        queryParams =`?type=${this.pageTitle?.solutionType}&page=${this.page}&limit=${this.limit}&search=${this.searchTerm}&surveyReportPage=${this.pageTitle?.title === 'Survey Reports'}`
+        break;
+      case 'Observation Reports':
+        queryParams = `?page=${this.page}&limit=${this.limit}&entityType=${this.selectedEntityType}`
+        break;
+      case 'Observation':
+        queryParams = `?type=${this.pageTitle?.solutionType}&page=${this.page}&limit=${this.limit}&search=${this.searchTerm}`
+        break;
+
+      default:
+          console.warn('Unknown Page:', this.pageTitle?.title);
+    }
     this.apiService.post(
-      urlPath + queryItems,
+      urlPath + queryParams,
       this.apiService?.profileData
     ).pipe(
       finalize(() => this.loaded = true),
@@ -145,9 +144,9 @@ export class ListingComponent implements OnInit {
   }
 
   navigateTo(data?: any) {
-    switch (this.pageTitle){
+    switch (this.pageTitle?.title){
       case 'Observation':
-      case 'Obseravtion Reports':
+      case 'Observation Reports':
         this.navigateObservation(data)
         break ;
 
@@ -159,6 +158,9 @@ export class ListingComponent implements OnInit {
         break ;
 
       case 'Survey Reports':
+        this.router.navigate(['surveyReports',
+          data?.submissionId
+        ])
         break;
 
       default:
@@ -168,7 +170,7 @@ export class ListingComponent implements OnInit {
   }
 
   navigateObservation(data:any){
-    if (!(this.pageTitle === 'Observation')) {
+    if (!(this.pageTitle?.title === 'Observation')) {
       if (data?.entities?.length > 1) {
         this.allEntities = data?.entities;
         this.selectedObservation = data

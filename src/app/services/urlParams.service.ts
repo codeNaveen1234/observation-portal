@@ -2,7 +2,6 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { ActivatedRoute,Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ApiService } from './api.service';
-import { solutionTypeMap } from '../constants/actionContants';
 
 @Injectable({
   providedIn: 'root'
@@ -32,11 +31,6 @@ export class UrlParamsService implements OnDestroy {
   parseRouteParams(route: ActivatedRoute) {
     route.paramMap.subscribe(params => {
       this.solutionType = params.get('solutionType');
-      const mappedType = solutionTypeMap[this.solutionType];
-      if (mappedType) {
-        localStorage.setItem('solutionType', mappedType);
-      }
-      this.apiService.solutionType=params.get('solutionType')
       this.entityId = params.get('entityId');
       this.entityName = params.get('name');
       this.observationId = params.get('observationId');
