@@ -267,7 +267,11 @@
         </div>
       </ng-template>
      </div>
-
+     <div class="led-imp-div" *ngIf="observationDetails?.improvementProjectSuggestions?.length > 0">
+      <button class="apply-filter" (click)="navigateToObservationLedImpPage()">
+        {{"CLICK_HERE_TO_IMPROVE" | translate}}
+      </button>
+       </div>
       <div *ngIf="isFilterModalOpen" class="modal">
         <div class="modal-content">
           <header class="d-flex align-items-center">

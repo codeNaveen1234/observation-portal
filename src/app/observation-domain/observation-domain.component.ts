@@ -6,6 +6,7 @@ import * as urlConfig from '../constants/url-config.json';
 import { MatDialog } from '@angular/material/dialog';
 import { catchError, finalize } from 'rxjs';
 import { UrlParamsService } from '../services/urlParams.service';
+import { offlineSaveObservation } from '../services/offlineSaveObservation.service';
 @Component({
   selector: 'app-observation-domain',
   standalone: false,
@@ -26,6 +27,9 @@ export class ObservationDomainComponent implements OnInit {
   @ViewChild('notApplicableModel') notApplicableModel: TemplateRef<any>;
   loaded = false;
   submissionNumber:any;
+  submissionId: any;
+  completeObservationData: any;
+  stateData:any
 
   constructor(
     private apiService: ApiService, 
@@ -33,17 +37,33 @@ export class ObservationDomainComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog, 
     private urlParamsService:UrlParamsService,
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
+    private offlineData:offlineSaveObservation 
   ) {}
 
-  ngOnInit(): void {
-    this.urlParamsService.parseRouteParams(this.route)
+  async ngOnInit(){
+    this.stateData = history.state?.data;
+    if(this.stateData){
+      this.mapDataToVariables(this.stateData)
+    }else{
+      this.urlParamsService.parseRouteParams(this.route)
     this.observationId = this.urlParamsService?.observationId;
     this.entityId = this.urlParamsService?.entityId;
     this.id = this.urlParamsService?.solutionId;
-    this.getObservationByEntityId();
+    this.submissionId = this.urlParamsService?.solutionId;
+    let isDataInIndexDb = await this.offlineData.checkAndMapIndexDbDataToVariables(this.submissionId);
+    if (isDataInIndexDb?.data) {
+      this.mapDataToVariables(isDataInIndexDb?.data)
+    }else {
+      this.getObservationByEntityId();
+    }
+    }
   }
-
+  mapDataToVariables(observationData) {
+    this.entities = observationData?.assessment?.evidences;
+    this.evidences = this.entities;
+    this.loaded = true
+  }
   getObservationByEntityId() {
     this.evidences = [];
     this.apiService.post(urlConfig.observation.observationSubmissions + this.observationId + `?entityId=${this.entityId}`, this.apiService.profileData)
@@ -91,8 +111,14 @@ export class ObservationDomainComponent implements OnInit {
   }
 
   navigateToDetails(data,index) {
+    this.stateData ? this.router.navigate(['questionnaire'],{
+      queryParams:{
+        solutionType:this.stateData?.solutionType
+      },
+      state:{data:this.stateData}
+    }):
     this.router.navigate(['questionnaire'], {
-      queryParams: { observationId:this.observationId, entityId:this.entityId, submissionNumber:this.submissionNumber,evidenceCode:data?.code, index:index }
+      queryParams: { observationId:this.observationId, entityId:this.entityId, submissionNumber:this.submissionNumber,evidenceCode:data?.code, index:index,submissionId: this.submissionId }
     });
   }
 
@@ -114,7 +140,11 @@ export class ObservationDomainComponent implements OnInit {
   }
 
   updateEntity(evidence) {
-    this.apiService.post(urlConfig.observation.update + this.id, { evidence: evidence })
+    let payload={
+        ...evidence,
+        ...this.apiService.profileData
+    }
+    this.apiService.post(urlConfig.observation.update + this.id, payload)
 
       .subscribe((res: any) => {
 
