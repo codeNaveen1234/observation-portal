@@ -49,6 +49,8 @@ import {
   TranslateService,
 } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { ObservationLedImpComponent } from './observation-led-imp/observation-led-imp.component';
+import { ObservationAsTaskComponent } from './observation-as-task/observation-as-task.component';
 
 export function translateHttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -64,6 +66,8 @@ export function translateHttpLoaderFactory(httpClient: HttpClient) {
     ObservationDomainComponent,
     QuestionnaireComponent,
     ReportComponent,
+    ObservationLedImpComponent,
+    ObservationAsTaskComponent,
   ],
   imports: [
     BrowserModule,

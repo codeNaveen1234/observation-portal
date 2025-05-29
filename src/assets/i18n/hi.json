@@ -58,5 +58,12 @@
   "EXPIRED_ON": "समाप्ति तिथि",
   "EXPIRED_IN": "में समाप्त होगा",
   "COMPLETED_ON": "पूर्ण हुआ",
-  "VALID_TILL": "मान्य तिथि तक"
+  "VALID_TILL": "मान्य तिथि तक",
+  "CLICK_HERE_TO_IMPROVE": "सुधारने के लिए यहां क्लिक करें",
+  "REDIRECTING": "पुनः निर्देशित किया जा रहा है....",
+  "MSG_TEMPLATE_DETAILS_NOTFOUND": "टेम्पलेट विवरण नहीं मिला",
+  "MSG_INVALID_LINK": "अमान्य लिंक, कृपया किसी अन्य लिंक के साथ प्रयास करें",
+  "MSG_FOR_NONTARGETED_USERS_QUESTIONNAIRE": "प्रिय उपयोगकर्ता, यह अवलोकन आपकी उपभूमिका और स्थान के लिए प्रासंगिक नहीं है",
+  "SURVEY_EXPIRED": "सर्वेक्षण की अवधि समाप्त हो गई है",
+  "SURVEY_COMPLETED": "सर्वेक्षण पूर्ण हुआ"
 }

@@ -21,6 +21,7 @@ export class ObservationEntityComponent  {
   entityToAdd: string;
   filteredEntities: any;
   filteredEntitiesOne: any;
+  entity:any;
   addedEntities: string[] = [];
   entities = new FormControl();
   @ViewChild('searchEntityModal') searchEntityModal: TemplateRef<any>;
@@ -44,8 +45,9 @@ export class ObservationEntityComponent  {
   ngOnInit() {
     this.urlParamsService.parseRouteParams(this.route);
     this.solutionId = this.urlParamsService?.solutionId;
+    this.entity=this.urlParamsService?.entity;
     this.solutionName=decodeURIComponent(decodeURIComponent(this.urlParamsService?.name || ''))
-    this.entityToAdd=this.urlParamsService?.entityType;
+    this.entityToAdd=this.urlParamsService?.entityType || "entity";
     this.getEntities();
   }
 
@@ -135,12 +137,12 @@ export class ObservationEntityComponent  {
   navigateToDetails(data) {
     this.router.navigate([
       'details',
-      data.name,
       this.observationId,
       data?._id,
       this.selectedEntities?.allowMultipleAssessemts
     ],{
       queryParams:{
+        'name':data?.name,
         'submissionId': data?.submissionId,
       }
     });

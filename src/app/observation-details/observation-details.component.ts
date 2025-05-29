@@ -8,6 +8,7 @@ import { catchError, finalize } from 'rxjs';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { UrlParamsService } from '../services/urlParams.service';
 import { QueryParamsService } from '../services/queryParams.service';
+import { offlineSaveObservation } from '../services/offlineSaveObservation.service';
 @Component({
   selector: 'app-observation-details',
   standalone: false,
@@ -23,7 +24,6 @@ export class ObservationDetailsComponent implements OnInit {
   observationInit: boolean = false;
   selectedTabIndex = 0;
   allowMultipleAssessemts: any;
-  submissionId: any;
   loaded = false;
   isPendingTabSelected: boolean = true;
   filteredObservations:any =[];
@@ -40,7 +40,8 @@ export class ObservationDetailsComponent implements OnInit {
     private dialog: MatDialog,
     private urlParamsService:UrlParamsService,
     private route: ActivatedRoute,
-    private queryParamsService: QueryParamsService, 
+    private queryParamsService: QueryParamsService,
+    private offlineData:offlineSaveObservation 
   ) {
   }
 
@@ -48,9 +49,8 @@ export class ObservationDetailsComponent implements OnInit {
     this.queryParamsService.parseQueryParams()
     this.urlParamsService.parseRouteParams(this.route)
     this.entityId=this.urlParamsService?.entityId
-    this.entityName = decodeURIComponent(decodeURIComponent(this.urlParamsService?.entityName || ''));
+    this.entityName = decodeURIComponent(decodeURIComponent(this.queryParamsService?.entityName || ''));
     this.observationId = this.urlParamsService?.observationId;
-    this.submissionId = this.queryParamsService?.submissionId;
     this.allowMultipleAssessemts = this.urlParamsService?.allowMultipleAssessemts;
     this.observationInit = true;
     this.getObservationByEntityId();
@@ -96,7 +96,12 @@ getObservationsByStatus(statuses: ('draft' | 'inprogress' | 'completed' | 'start
       })
   }
 
-  navigateToDetails(data) {
+  async navigateToDetails(data) {
+    let isDataInIndexDb = await this.offlineData.checkAndMapIndexDbDataToVariables(data?._id);
+
+    if (!isDataInIndexDb?.data) {
+      await this.offlineData.getFullObservationData(this.observationId,this.entityId,data?._id,data?.submissionNumber);
+    }
 
     if (data?.isRubricDriven) {
       this.router.navigate([
@@ -107,7 +112,7 @@ getObservationsByStatus(statuses: ('draft' | 'inprogress' | 'completed' | 'start
       ]);
     } else {
       this.router.navigate(['questionnaire'], {
-        queryParams: {observationId: data?.observationId, entityId: data?.entityId, submissionNumber: data?.submissionNumber, evidenceCode: data?.evidencesStatus[0]?.code, index: 0
+        queryParams: {observationId: data?.observationId, entityId: data?.entityId, submissionNumber: data?.submissionNumber, evidenceCode: data?.evidencesStatus[0]?.code, index: 0,submissionId:data?._id
         }
       });
     }

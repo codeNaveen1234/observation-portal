@@ -9,30 +9,58 @@
         <div class="grid-container">
             <ng-container>
                 <div class="grid-item" *ngFor="let entity of evidences; let i = index">
-                    <mat-card class="observation-card">
+                    <mat-card class="observation-card" (click)="navigateToDetails(entity,i)">
                         <mat-card-content>
                             <div class="card-header">
                                 <div>
                                     <h2 class="observation-name">{{ entity?.name }}</h2>
                                 </div>
                             </div>
-
-                            <div class="btn-container" *ngIf="!entity?.notApplicable">
-                                <div class="">
-                                    <p>{{ 'STATUS' | translate }}:
-                                        {{ entity?.status == 'notstarted' ? ('NOT_STARTED' | translate) : entity?.status }}</p>
+                            <div class="btn-container">
+                                <div>
+                                  <p>{{ 'STATUS' | translate }}:
+                                    {{
+                                      !entity?.progressStatus
+                                        ? ('NOT_STARTED' | translate)
+                                        : (entity?.progressStatus | translate)
+                                    }}
+                                  </p>
                                 </div>
-                                <div class="">
-                                    <button class="not-applicable mr-5 primary-btn" (click)="navigateToDetails(entity,i)"
-                                    *ngIf="entity?.status == 'completed'">{{"VIEW" | translate}}</button>
-                                    <button class="not-applicable mr-5 secondary-btn" (click)="navigateToDetails(entity,i)"
-                                    *ngIf="entity?.status == 'draft'">{{"CONTINUE" | translate}}</button> 
-                                <button class="not-applicable mr-5 secondary-btn" (click)="navigateToDetails(entity,i)"
-                                    *ngIf="entity?.status == 'notstarted'">{{"START" | translate}}</button>
-                                <button class="not-applicable primary-btn" (click)="notApplicable(entity)"
+                              
+                                <div class="progress-container">
+                                    <div class="progress-box">
+                                        <span class="progress-text">{{ entity?.completePercentage || 0 }}%</span>
+                                      
+                                        <mat-progress-bar
+                                          *ngIf="entity?.progressStatus === 'completed' || entity?.progressStatus === 'submitted'"
+                                          mode="determinate"
+                                          value="100"
+                                          color="primary"
+                                          class="custom-progress-bar">
+                                        </mat-progress-bar>
+                                      
+                                        <mat-progress-bar
+                                          *ngIf="entity?.progressStatus === 'inProgress'"
+                                          mode="determinate"
+                                          [value]="entity?.completePercentage || 0"
+                                          color="accent"
+                                          class="custom-progress-bar">
+                                        </mat-progress-bar>
+                                      
+                                        <mat-progress-bar
+                                          *ngIf="!entity?.progressStatus || entity?.progressStatus === 'notStarted'"
+                                          mode="determinate"
+                                          value="0"
+                                          color="warn"
+                                          class="custom-progress-bar">
+                                        </mat-progress-bar>
+                                      </div>
+                                  <div class="_na" *ngIf="entity?.notApplicable">
+                                    <button class="not-applicable primary-btn" (click)="notApplicable(entity); $event.stopPropagation()"
                                     *ngIf="entity?.canBeNotApplicable && entity?.status != 'completed'">{{"NOT_APPLICABLE" | translate}}</button>
+                                  </div>
                                 </div>
-                            </div>
+                              </div>
                             <div class="btn-container" *ngIf="entity?.notApplicable">
                             <p>{{"NOT_APPLICABLE" | translate}}</p>
                         </div>
