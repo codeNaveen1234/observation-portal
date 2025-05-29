@@ -1,5 +1,7 @@
 {
-    "OBSERVATION_LISTING_MESSAGE":"Access and record your observations easily and plan your improvement journeys",
+    "OBSERVATION_LISTING_MESSAGE":"Access and record your classroom and school observations easily, and plan your improvement journeys",
+    "SURVEY_DESC": "Provide information and feedback through quick and easy surveys",
+    "OBSERVATION_REPORTS_DESC": "Access and record your observations easily and plan your improvement journeys",
     "SEARCH_OBSERVATION_PLACEHOLDER":"Search your observation here",
     "ENTITY_FILTER":"Entity Filter",
     "LOAD_MORE":"LOAD MORE",
@@ -52,5 +54,9 @@
     "CLOSE":"Close",
     "NO_SOLUTION_MSG":"No solution found",
     "SELECT_ATLEAST_ONE_QUESTION": "Select at least one question",
-    "NETWORK_OFFLINE":"You are offline. Please connect to a network."
+    "NETWORK_OFFLINE":"You are offline. Please connect to a network.",
+    "EXPIRED_ON":"Expired on",
+    "EXPIRED_IN":"Expires in",
+    "COMPLETED_ON":"Completed on",
+    "VALID_TILL":"Valid till"
 }

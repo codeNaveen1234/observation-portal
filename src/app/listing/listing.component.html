@@ -2,11 +2,11 @@
 <div class="content" *ngIf="loaded">
     <div class="list-title">
       <div class="list-heading">
-        <h1 class="heading">{{pageTitle}}</h1>
-        <p class="heading-paragraph">{{'OBSERVATION_LISTING_MESSAGE' | translate}}</p>
+        <h1 class="heading">{{pageTitle?.title}}</h1>
+        <p class="heading-paragraph">{{ description }}</p>
       </div>
 
-      <div class="srch" *ngIf="!reportPage">
+      <div class="srch" *ngIf="!observationReportPage">
         <div class="srch-bar">
           <span class="icon">
             <i class="material-icons">search</i>
@@ -26,7 +26,7 @@
   
     <div class="observation-list" *ngIf="solutionListCount !== 0">
 
-     <div class="select-filter" *ngIf="reportPage">
+    <div class="select-filter" *ngIf="observationReportPage">
       <mat-form-field>
         <mat-label>{{'ENTITY_FILTER' | translate}}</mat-label>
         <mat-select (selectionChange)="changeEntityType($event.value)" [(ngModel)]="selectedEntityType">
@@ -41,8 +41,20 @@
           <div class="grid-item" *ngFor="let solution of solutionList" (click)="navigateTo(solution)">
             <mat-card class="observation-card">
               <mat-card-content>
-                <h2 class="observation-name">{{ solution?.name }}</h2>
-                <p>{{ reportPage == 'true' ? solution?.programName : solution?.description }}</p>
+                <div class="card-header">
+                  <h2 class="observation-name"><b>{{ solution?.name }}</b></h2>
+                   @if(surveyPage){
+                    <span [ngClass]="solution?.tagClass" class="label">
+                      {{ solution?.statusLabel }}
+                    </span>
+                   }
+                </div>
+                @if(!surveyPage){
+                <p>{{solution?.description}}</p>
+                }
+                @if(surveyPage){
+                  <p>{{surveyExpiry}}</p>
+              }
               </mat-card-content>
             </mat-card>
           </div>

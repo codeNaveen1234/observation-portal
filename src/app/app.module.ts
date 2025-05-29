@@ -34,7 +34,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { SpinnerComponent } from './shared/spinner/spinner.component';
 import { ApiInterceptor } from './services/api.interceptor';
@@ -108,6 +108,7 @@ export function translateHttpLoaderFactory(httpClient: HttpClient) {
     }),
   ],
   providers: [
+    DatePipe,
     {
       provide:HTTP_INTERCEPTORS,
       useClass:ApiInterceptor,
@@ -124,6 +125,12 @@ export class AppModule {
   }
   setLanguage() {
     this.translate.setDefaultLang('en');
-    this.translate.use('en'); 
+    this.translate.use('en');
+    let theme:any=JSON.parse(localStorage.getItem('theme'))
+    if(theme){
+      document.documentElement.style.setProperty('--color-primary', theme?.primaryColor);
+      document.documentElement.style.setProperty('--primary-color', theme?.primaryColor);
+      document.documentElement.style.setProperty('--color-secondary', theme?.secondaryColor);
+    }
   }
 }

@@ -10,7 +10,6 @@ import { environment } from 'src/assets/envirnoments/environment';
 export class ApiService {
   public baseUrl:string=environment.surveyBaseURL;
   public token:string;
-  public solutionType:any=localStorage.getItem('solutionType');
   public profileData:any=JSON.parse(localStorage.getItem('profileData'));
   public solutionId :any; 
   public entityType:any

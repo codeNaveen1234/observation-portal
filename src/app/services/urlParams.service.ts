@@ -31,10 +31,6 @@ export class UrlParamsService implements OnDestroy {
   parseRouteParams(route: ActivatedRoute) {
     route.paramMap.subscribe(params => {
       this.solutionType = params.get('solutionType');
-      if (this.solutionType === 'observation' || this.solutionType === 'survey') {
-        localStorage.setItem('solutionType',this.solutionType);
-      }
-      this.apiService.solutionType=params.get('solutionType')
       this.entityId = params.get('entityId');
       this.entityName = params.get('name');
       this.observationId = params.get('observationId');
