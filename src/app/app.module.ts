@@ -51,6 +51,7 @@ import {
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ObservationLedImpComponent } from './observation-led-imp/observation-led-imp.component';
 import { ObservationAsTaskComponent } from './observation-as-task/observation-as-task.component';
+import { DeeplinkRedirectComponent } from './deeplink-redirect/deeplink-redirect.component';
 
 export function translateHttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -68,6 +69,7 @@ export function translateHttpLoaderFactory(httpClient: HttpClient) {
     ReportComponent,
     ObservationLedImpComponent,
     ObservationAsTaskComponent,
+    DeeplinkRedirectComponent,
   ],
   imports: [
     BrowserModule,
