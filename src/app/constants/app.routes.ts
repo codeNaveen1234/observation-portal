@@ -7,5 +7,6 @@ export const APP_ROUTES = {
     QUESTIONNAIRE: 'questionnaire',
     REPORTS: 'reports/:observationId/:entityId/:entityType/:isMultiple/:scores',
     Observation_Led_Imp: 'observation-led-imp',
-    OBSERVATION_AS_TASK: "task/:solutionId"
+    OBSERVATION_AS_TASK: "task/:solutionId",
+    VERIFYLINK:'view/:type/:id'
 };

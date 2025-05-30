@@ -14,6 +14,7 @@ export class QuestionnaireComponent implements OnInit{
   isDirty: boolean = false;
   saveQuestioner: boolean = false;
   showDetails = false;
+  state:any
 
   constructor(
      private router: ActivatedRoute,
@@ -21,10 +22,11 @@ export class QuestionnaireComponent implements OnInit{
   ) { }
 
   ngOnInit() {
+    this.state = history.state?.data;
     this.router.queryParams.subscribe(param => {
       this.apiConfig['baseURL'] = this.apiService.baseUrl
       this.apiConfig['userAuthToken'] = this.apiService.userAuthToken;
-      this.apiConfig['solutionType'] = localStorage.getItem('solutionType')
+      this.apiConfig['solutionType'] = param['solutionType']
       this.apiConfig['fileSizeLimit'] = 50;
       this.apiConfig['profileData'] =JSON.parse(localStorage.getItem('profileData'));
       this.apiConfig['observationId']=param['observationId'];
@@ -32,7 +34,8 @@ export class QuestionnaireComponent implements OnInit{
       this.apiConfig['evidenceCode']=param['evidenceCode']
       this.apiConfig['index']=param['index']
       this.apiConfig['submissionNumber']=param['submissionNumber']
-      this.apiConfig['solutionId']=this.apiService.solutionId
+      this.apiConfig['solutionId']=param['solutionId']
+      this.apiConfig['stateData']=this.state
     })
       this.showDetails = true
   }
