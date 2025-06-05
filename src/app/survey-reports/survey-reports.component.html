@@ -1,0 +1,98 @@
+<div class="report-container">
+    <div class="header-container">
+        <h1 class="survey-title">{{surveyName}}</h1>
+        <button class="filter-button" (click)="openFilterDialog()">
+            <mat-icon>tune</mat-icon>
+        </button>
+    </div>
+
+    <hr class="custom-divider" />
+
+<div class="list-container">
+
+    <mat-card *ngFor="let question of reportDetails; let qi = index" class="question-card">
+
+        <mat-card-header style="background-color: whitesmoke;">
+          <mat-card-title style="font-size: 1rem;">{{question.questionNumber}}. {{ question.question }}</mat-card-title>
+        </mat-card-header>
+    
+        <mat-card-content>
+          <ng-container [ngSwitch]="question.responseType">
+            <div *ngSwitchCase="'text'" class="response-item">
+              <span class="response-text">{{ question.answers[0]}}</span>
+            </div>
+            <div *ngSwitchCase="'date'" class="response-item">
+              <span class="response-text">{{ question.answers[0] | date}}</span>
+            </div>
+            <div *ngSwitchCase="'radio'" class="response-item">
+              <span class="response-text">{{ question.answers[0]}}</span>
+            </div>
+            <div *ngSwitchCase="'slider'" class="response-item">
+              <span class="response-text">{{ question.answers[0]}}</span>
+            </div>
+            <div *ngSwitchCase="'number'" class="response-item">
+              <span class="response-text">{{ question.answers[0] }}</span>
+            </div>
+    
+            <div *ngSwitchCase="'multiselect'" class="response-chip">
+              <mat-chip-list>
+                <mat-chip *ngFor="let answer of question.answers" 
+                         style="background-color: var(--color-primary); color: white;">
+                  {{ answer }}
+                </mat-chip>
+              </mat-chip-list>
+            </div>
+    
+            <div *ngSwitchCase="'matrix'" class="matrix-container">
+              <div *ngFor="let key of objectKeys(question.instanceQuestions[0]); let k = index" class="matrix-row">
+                <div *ngIf="key !== 'instanceIdentifier'">
+                  <h2>{{question.instanceQuestions[0][key].questionNumber}}. {{ question.instanceQuestions[0][key].question }}</h2>
+                  
+                  <div class="matrix-instances">
+                    <mat-card *ngFor="let instance of question.instanceQuestions" class="instance-card">
+                      <div class="instance-header">
+                        <mat-icon>arrow_forward</mat-icon>
+                        <strong>{{ instance.instanceIdentifier }}</strong>
+                      </div>
+                      
+                      <div *ngFor="let answer of instance[key].answers" class="instance-answer">
+                        <mat-icon>arrow_right</mat-icon>
+                        <span>{{ checkAnswerValue(answer) }}</span>
+                      </div>
+                    </mat-card>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </mat-card-content>
+        <div class="evidence-section" *ngIf="question.evidences && question.evidences.length">
+            <hr class="evidence-divider" />
+            <h4 class="evidence-title">{{'EVIDENCE'| translate }} {{ question.evidence_count }}</h4>
+            <div class="evidence-icons">
+              <ng-container *ngFor="let evidence of question.evidences">
+                <ng-container [ngSwitch]="evidence.extension">
+                  <mat-icon *ngSwitchCase="'jpg'"
+                            class="evidence-icon"
+                            matTooltip="View the uploaded image"
+                            (click)="openDialog(evidence.url,'image')">image</mat-icon>
+                  <mat-icon *ngSwitchCase="'png'"
+                            class="evidence-icon"
+                            matTooltip="View the uploaded image"
+                            (click)="openDialog(evidence.url,'image')">image</mat-icon>
+                  <mat-icon *ngSwitchCase="'pdf'"
+                            class="evidence-icon"
+                            matTooltip="View PDF"
+                            (click)="openUrl(evidence.url)">picture_as_pdf</mat-icon>
+                  <mat-icon *ngSwitchCase="'mp4'"
+                            class="evidence-icon"
+                            matTooltip="View the uploaded video"
+                            (click)="openDialog(evidence.url,'video')">videocam</mat-icon>
+                </ng-container>
+              </ng-container>
+            </div>
+          </div>
+          
+      </mat-card>
+</div>
+</div>  

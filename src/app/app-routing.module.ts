@@ -10,6 +10,7 @@ import { APP_ROUTES } from './constants/app.routes';
 import { ObservationLedImpComponent } from './observation-led-imp/observation-led-imp.component';
 import { ObservationAsTaskComponent } from './observation-as-task/observation-as-task.component';
 import { DeeplinkRedirectComponent } from './deeplink-redirect/deeplink-redirect.component';
+import { SurveyReportsComponent } from './survey-reports/survey-reports.component';
 
 const routes: Routes = [ 
   { path: APP_ROUTES.LISTING, component: ListingComponent },
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: APP_ROUTES.Observation_Led_Imp, component: ObservationLedImpComponent },
   { path: APP_ROUTES.OBSERVATION_AS_TASK,component:ObservationAsTaskComponent},
   { path: APP_ROUTES.VERIFYLINK,component:DeeplinkRedirectComponent},
+  { path:APP_ROUTES.SURVEYREPORTS,component:SurveyReportsComponent},
   { path: '', redirectTo: 'listing/observation', pathMatch: 'full' }
 ];
 

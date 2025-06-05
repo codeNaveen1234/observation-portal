@@ -1,0 +1,30 @@
+<div class="custom-dialog-backdrop" (click)="closeDialog()"></div>
+
+<div class="custom-dialog">
+  <div class="preview-header">
+    <div class="toolbar">
+      <span class="title">{{"PREVIEW" | translate}}</span>
+      <button class="close-button" (click)="closeDialog()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="preview-content">
+    <img *ngIf="objectType === 'image'" 
+         [src]="objectURL" 
+         alt="Preview" 
+         class="preview-media" />
+
+    <video *ngIf="objectType === 'video'" 
+           [src]="objectURL" 
+           controls 
+           class="preview-media">
+    </video>
+
+    <iframe *ngIf="objectType === 'pdf'" 
+            [src]="objectURL" 
+            class="preview-pdf">
+    </iframe>
+  </div>
+</div>

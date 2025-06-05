@@ -52,6 +52,10 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ObservationLedImpComponent } from './observation-led-imp/observation-led-imp.component';
 import { ObservationAsTaskComponent } from './observation-as-task/observation-as-task.component';
 import { DeeplinkRedirectComponent } from './deeplink-redirect/deeplink-redirect.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { SurveyReportsComponent } from './survey-reports/survey-reports.component';
+import { SurveyFilterComponent } from './shared/survey-filter/survey-filter.component';
+import { SurveyPreviewComponent } from './shared/survey-preview/survey-preview.component';
 
 export function translateHttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -70,6 +74,9 @@ export function translateHttpLoaderFactory(httpClient: HttpClient) {
     ObservationLedImpComponent,
     ObservationAsTaskComponent,
     DeeplinkRedirectComponent,
+    SurveyReportsComponent,
+    SurveyFilterComponent,
+    SurveyPreviewComponent
   ],
   imports: [
     BrowserModule,
@@ -105,6 +112,7 @@ export function translateHttpLoaderFactory(httpClient: HttpClient) {
     MatSelectModule,
     FormsModule,
     MatExpansionModule,
+    MatChipsModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
