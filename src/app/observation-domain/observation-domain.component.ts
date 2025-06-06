@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { catchError, finalize } from 'rxjs';
 import { UrlParamsService } from '../services/urlParams.service';
 import { offlineSaveObservation } from '../services/offlineSaveObservation.service';
+import { DownloadService } from '../services/download.service';
 @Component({
   selector: 'app-observation-domain',
   standalone: false,
@@ -29,7 +30,10 @@ export class ObservationDomainComponent implements OnInit {
   submissionNumber:any;
   submissionId: any;
   completeObservationData: any;
-  stateData:any
+  stateData:any;
+  observationDownloaded:boolean = false;
+  isQuestionerDataInIndexDb:any;
+  isDataInDownloadsIndexDb:any;
 
   constructor(
     private apiService: ApiService, 
@@ -38,7 +42,9 @@ export class ObservationDomainComponent implements OnInit {
     private dialog: MatDialog, 
     private urlParamsService:UrlParamsService,
     private route: ActivatedRoute,
-    private offlineData:offlineSaveObservation 
+    private offlineData:offlineSaveObservation,
+    private downloadService:DownloadService 
+
   ) {}
 
   async ngOnInit(){
@@ -51,11 +57,22 @@ export class ObservationDomainComponent implements OnInit {
     this.entityId = this.urlParamsService?.entityId;
     this.id = this.urlParamsService?.solutionId;
     this.submissionId = this.urlParamsService?.solutionId;
-    let isDataInIndexDb = await this.offlineData.checkAndMapIndexDbDataToVariables(this.submissionId);
-    if (isDataInIndexDb?.data) {
-      this.mapDataToVariables(isDataInIndexDb?.data)
+    this.isQuestionerDataInIndexDb = await this.offlineData.checkAndMapIndexDbDataToVariables(this.submissionId);
+    
+    this.isDataInDownloadsIndexDb = await this.downloadService.checkAndFetchDownloadsData(this.submissionId, "downloadObservation");
+    console.log("isDataInDownloadsIndexDb", this.isDataInDownloadsIndexDb)
+    if (this.isQuestionerDataInIndexDb?.data) {
+      this.mapDataToVariables(this.isQuestionerDataInIndexDb?.data)
     }else {
       this.getObservationByEntityId();
+    }
+
+    if(this.isDataInDownloadsIndexDb){
+      console.log("this.observationDownloaded = true");
+      this.observationDownloaded = true;
+    }else{
+      console.log("this.observationDownloaded = false");
+      this.observationDownloaded = false;
     }
     }
   }
@@ -157,5 +174,29 @@ export class ObservationDomainComponent implements OnInit {
         this.toaster.showToast(err.error.message, 'Close');
       })
 
+  }
+
+
+  async downloadObservation(){
+    let fullQuestionerData = this.isQuestionerDataInIndexDb?.data;
+
+    let data =[{
+      title : fullQuestionerData?.assessment?.name,
+      subTitle : fullQuestionerData?.program?.name,
+      // route:`/domain/${this.observationId}/${this.entityId}/${this.submissionId}`,
+      route:`/details/${this.observationId}/${this.entityId}/true`,
+      metaData:{
+        isRubric : fullQuestionerData?.solution?.isRubricDriven,
+        observationId: this.observationId,
+        submissionId:this.submissionId,
+        entityId:this.entityId
+      }
+    }]
+    console.log("data",data)
+    console.log("fullQuestionerData",fullQuestionerData);
+    if(this.isQuestionerDataInIndexDb?.data){
+      await this.downloadService.setDownloadsDataInIndexDb(data, this.submissionId);
+      this.observationDownloaded = true;
+    }
   }
 }

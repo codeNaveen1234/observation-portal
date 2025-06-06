@@ -14,16 +14,33 @@
                     <p *ngIf="entity?.status == 'completed'">{{ 'SUBMITTED_ON' | translate }} : {{entity?.submissionDate | date:'shortDate'}}</p>
 
                   </mat-card-content>
-  
+
+                  <div class="download-wrapper" *ngIf="dbKeys.includes(entity?._id)">
+                    <button mat-icon-button (click)="$event.stopPropagation()" class="download-btn">
+                      <mat-icon>check</mat-icon>
+                    </button>
+                    <p class="download-text">Downloaded</p>
+                  </div>
+                  
+                  <div class="download-wrapper" *ngIf="!dbKeys.includes(entity?._id)">
+                    <button mat-icon-button (click)="downloadObservation()" class="download-btn">
+                      <mat-icon>arrow_downward</mat-icon>
+                    </button>
+                    <p class="download-text">Download</p>
+                  </div>
+                  
+                
                   <div *ngIf="!entity?.isRubricDriven || allowMultipleAssessemts == 'true'">
                   <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
                     <mat-icon>more_vert</mat-icon>
                   </button>
-  
+
+
                   <mat-menu #menu="matMenu">
                     <button mat-menu-item (click)="editEntity(entity?.title, entity?._id)">{{'EDIT' | translate}}</button>
                     <button mat-menu-item (click)="deleteEntity(entity?._id)">{{'DELETE' | translate}}</button>
                   </mat-menu>
+
                   </div>
                 </div>
               </mat-card>

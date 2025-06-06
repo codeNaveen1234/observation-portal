@@ -9,6 +9,8 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { UrlParamsService } from '../services/urlParams.service';
 import { QueryParamsService } from '../services/queryParams.service';
 import { offlineSaveObservation } from '../services/offlineSaveObservation.service';
+import { DownloadService } from '../services/download.service';
+import { DbDownloadService } from '../services/dbDownload.service';
 @Component({
   selector: 'app-observation-details',
   standalone: false,
@@ -27,6 +29,12 @@ export class ObservationDetailsComponent implements OnInit {
   isPendingTabSelected: boolean = true;
   filteredObservations:any =[];
   isRubricDriven:any;
+  isQuestionerDataInIndexDb:any;
+  observationDownloaded:boolean = false;
+  isDataInDownloadsIndexDb:any;
+  allObservationDownloadedDataInIndexDb:any;
+  dbKeys:any
+
 
   @ViewChild('confirmDialogModel') confirmDialogModel: TemplateRef<any>;
   @ViewChild('updateDialogModel') updateDialogModel: TemplateRef<any>;
@@ -39,11 +47,14 @@ export class ObservationDetailsComponent implements OnInit {
     private urlParamsService:UrlParamsService,
     private route: ActivatedRoute,
     private queryParamsService: QueryParamsService,
-    private offlineData:offlineSaveObservation
+    private offlineData:offlineSaveObservation,
+        private downloadService:DownloadService,
+        private dbDownloadService : DbDownloadService 
+    
   ) {
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.queryParamsService.parseQueryParams()
     this.urlParamsService.parseRouteParams(this.route)
     this.entityId=this.urlParamsService?.entityId
@@ -51,6 +62,22 @@ export class ObservationDetailsComponent implements OnInit {
     this.allowMultipleAssessemts = this.urlParamsService?.allowMultipleAssessemts;
     this.observationInit = true;
     this.getObservationByEntityId();
+    // this.isQuestionerDataInIndexDb = await this.offlineData.checkAndMapIndexDbDataToVariables(this.submissionId);
+
+    // this.isDataInDownloadsIndexDb = await this.downloadService.checkAndFetchDownloadsData(this.submissionId, "downloadObservation");
+    this.allObservationDownloadedDataInIndexDb = await this.dbDownloadService.getAllDownloadsData();
+    console.log("this.allObservationDownloadedDataInIndexDb",this.allObservationDownloadedDataInIndexDb)
+
+    this.dbKeys = this.allObservationDownloadedDataInIndexDb.map(item => item.key);
+
+console.log(this.dbKeys);
+    // if(this.isDataInDownloadsIndexDb){
+    //   console.log("this.observationDownloaded = true");
+    //   this.observationDownloaded = true;
+    // }else{
+    //   console.log("this.observationDownloaded = false");
+    //   this.observationDownloaded = false;
+    // }
   }
 
 getObservationsByStatus(statuses: ('draft' | 'inprogress' | 'completed' | 'started')[]): void {
@@ -198,5 +225,21 @@ getObservationsByStatus(statuses: ('draft' | 'inprogress' | 'completed' | 'start
       this.isPendingTabSelected = false;
       this.getObservationsByStatus(['completed']);
     }
+}
+
+async downloadObservation(){
+//   let fullQuestionerData = this.isQuestionerDataInIndexDb?.data;
+
+//   let data =[{
+//     title : fullQuestionerData?.assessment?.name,
+//     route:`/domain/${this.observationId}/${this.entityId}/${this.submissionId}`,
+//     isRubric : fullQuestionerData?.solution?.isRubricDriven
+//   }]
+//   console.log("data",data)
+//   console.log("fullQuestionerData",fullQuestionerData);
+//   if(this.isQuestionerDataInIndexDb?.data){
+//     await this.downloadService.setDownloadsDataInIndexDb(data, this.submissionId);
+//     this.observationDownloaded = true;
+//   }
 }
 }

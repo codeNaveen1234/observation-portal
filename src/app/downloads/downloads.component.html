@@ -1,0 +1,66 @@
+<div class="content" *ngIf="loaded">
+    <div class="list-title">
+      <div class="list-heading">
+        <h1 class="heading">Downloads</h1>
+      </div>
+  </div>
+
+  @if(true){
+    <mat-tab-group [(selectedIndex)]="selectedIndex" (selectedIndexChange)="onTabChange($event)">
+        <mat-tab *ngFor="let filter of filters" [label]="filter.label | translate">
+          <ng-template matTabContent>
+            <div class="d-flex flex-dc gap-4">
+              <div class="observation-list">
+                  <div class="grid-container">
+
+
+            <div *ngIf="filter.value === 'observation'">
+              <div *ngFor="let allData of isDataInDownloadsIndexDb; let i = index">
+              <div class="grid-item" *ngFor="let entity of allData?.data; let i = index">
+
+                <mat-card class="observation-card" (click)="navigateTo(entity?.route)">
+                  <mat-card-content>
+                    <div >
+                      <h2 class="observation-name">{{ entity?.title }}</h2>
+                      <p>{{entity?.subTitle}}</p>
+                    </div>
+                      <div class="download-wrapper">
+                        <button mat-icon-button class="download-btn" (click)="deleteData()">
+                            <mat-icon>delete</mat-icon>
+                          </button>
+                          <p class="download-text">Delete</p>
+                    </div>
+                  </mat-card-content>
+                  
+                </mat-card>
+            </div>
+          </div>
+
+          <div class="centered-container">
+            <p>No Data Downloaded</p>
+          </div>
+          
+
+      
+
+            </div>
+            <div *ngIf="filter.value === 'survey'">
+              <!-- Survey content -->
+              <p>Survey content here</p>
+            </div>
+            <div *ngIf="filter.value === 'projects'">
+              <!-- Projects content -->
+              <p>Projects content here</p>
+            </div>
+          </div>
+        </div>
+        </div>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+      
+      
+  
+  }
+
+<app-spinner *ngIf="!loaded"></app-spinner>
