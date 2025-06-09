@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ToastService } from './toast.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,9 @@ export class DbDownloadService {
   private db!: IDBDatabase
   private observationDbInitialized: Promise<void>;
 
-  constructor() {
+  constructor(
+    private toaster: ToastService,
+  ) {
     this.observationDbInitialized = this.initializeDownloadDb();
   }
 
@@ -114,7 +117,9 @@ export class DbDownloadService {
     const store = transaction.objectStore(this.observationStoreName);
     const request = store.delete(key);
 
-    request.onsuccess = (event) => {};
+    request.onsuccess = (event) => {
+      this.toaster.showToast("Content deleted from device")
+    };
 
     request.onerror = (event) => {
       console.error('Error deleting item: ',);

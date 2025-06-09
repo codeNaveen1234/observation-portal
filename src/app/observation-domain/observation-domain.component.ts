@@ -192,41 +192,46 @@ export class ObservationDomainComponent implements OnInit {
 
   }
 
+  // async downloadObservation() {
+  //   const fullQuestionerData = this.isQuestionerDataInIndexDb?.data;
+
+  //   const newItem = {
+  //     title: fullQuestionerData?.assessment?.name,
+  //     subTitle: fullQuestionerData?.program?.name,
+  //     route: `/details/${this.observationId}/${this.entityId}/${this.observationDetails?.allowMultipleAssessemts}`,
+  //     metaData: {
+  //       isRubric: fullQuestionerData?.solution?.isRubricDriven,
+  //       observationId: this.observationId,
+  //       submissionId: this.submissionId,
+  //       entityId: this.entityId,
+  //       observationName: this.observationDetails?.title,
+  //       observationCreatedDate: this.observationDetails?.createdAt,
+  //     }
+  //   };
+
+  //   let existingData: any[] = await this.dbDownloadService.getAllDownloadsData();
+  //   let matchedEntry = existingData.find(entry => entry.key === this.observationId);
+  //   if (matchedEntry) {
+  //     const existingIndex = matchedEntry.data.findIndex(
+  //       (item: any) => 
+  //         item.metaData.submissionId === this.submissionId &&
+  //         item.metaData.entityId === this.entityId
+  //     );
+
+  //     if (existingIndex !== -1) {
+  //       matchedEntry.data[existingIndex] = newItem;
+  //     } else {
+  //       matchedEntry.data.push(newItem);
+  //     }
+  //     await this.dbDownloadService.updateData(matchedEntry);
+  //   } else {
+  //     await this.downloadService.setDownloadsDataInIndexDb(newItem, this.observationId);
+  //   }
+  //   this.observationDownloaded = true;
+  // }
+
   async downloadObservation() {
-    const fullQuestionerData = this.isQuestionerDataInIndexDb?.data;
-
-    const newItem = {
-      title: fullQuestionerData?.assessment?.name,
-      subTitle: fullQuestionerData?.program?.name,
-      route: `/details/${this.observationId}/${this.entityId}/${this.observationDetails?.allowMultipleAssessemts}`,
-      metaData: {
-        isRubric: fullQuestionerData?.solution?.isRubricDriven,
-        observationId: this.observationId,
-        submissionId: this.submissionId,
-        entityId: this.entityId,
-        observationName: this.observationDetails?.title,
-        observationCreatedDate: this.observationDetails?.createdAt,
-      }
-    };
-
-    let existingData: any[] = await this.dbDownloadService.getAllDownloadsData();
-    let matchedEntry = existingData.find(entry => entry.key === this.observationId);
-    if (matchedEntry) {
-      const existingIndex = matchedEntry.data.findIndex(
-        (item: any) => 
-          item.metaData.submissionId === this.submissionId &&
-          item.metaData.entityId === this.entityId
-      );
-
-      if (existingIndex !== -1) {
-        matchedEntry.data[existingIndex] = newItem;
-      } else {
-        matchedEntry.data.push(newItem);
-      }
-      await this.dbDownloadService.updateData(matchedEntry);
-    } else {
-      await this.downloadService.setDownloadsDataInIndexDb(newItem, this.observationId);
-    }
+    await this.downloadService.downloadObservation(this.isQuestionerDataInIndexDb, this.observationId, this.entityId, this.observationDetails, this.submissionId)
     this.observationDownloaded = true;
   }
 }

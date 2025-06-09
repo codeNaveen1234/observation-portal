@@ -34,7 +34,9 @@ export class ObservationDetailsComponent implements OnInit {
   observationDownloaded:boolean = false;
   isDataInDownloadsIndexDb:any;
   allObservationDownloadedDataInIndexDb:any;
-  dbKeys:any
+  dbKeys:any;
+  submissionIdSet = new Set<string>();
+
 
 
   @ViewChild('confirmDialogModel') confirmDialogModel: TemplateRef<any>;
@@ -70,9 +72,12 @@ export class ObservationDetailsComponent implements OnInit {
     this.allObservationDownloadedDataInIndexDb = await this.dbDownloadService.getAllDownloadsData();
     console.log("this.allObservationDownloadedDataInIndexDb",this.allObservationDownloadedDataInIndexDb)
 
-    this.dbKeys = this.allObservationDownloadedDataInIndexDb.map(item => item.key);
-
+    const matchedEntry = this.allObservationDownloadedDataInIndexDb.find(
+      item => item.key === this.observationId
+    );
+    this.dbKeys = matchedEntry?.data || [];
 console.log(this.dbKeys);
+this.updateDownloadedSubmissions();
     // if(this.isDataInDownloadsIndexDb){
     //   console.log("this.observationDownloaded = true");
     //   this.observationDownloaded = true;
@@ -240,25 +245,43 @@ getObservationsByStatus(statuses: ('draft' | 'inprogress' | 'completed' | 'start
     }
 }
 
-async downloadObservation(){
-//   let fullQuestionerData = this.isQuestionerDataInIndexDb?.data;
-
-//   let data =[{
-//     title : fullQuestionerData?.assessment?.name,
-//     route:`/domain/${this.observationId}/${this.entityId}/${this.submissionId}`,
-//     isRubric : fullQuestionerData?.solution?.isRubricDriven
-//   }]
-//   console.log("data",data)
-//   console.log("fullQuestionerData",fullQuestionerData);
-//   if(this.isQuestionerDataInIndexDb?.data){
-//     await this.downloadService.setDownloadsDataInIndexDb(data, this.submissionId);
-//     this.observationDownloaded = true;
-//   }
-}
-
 
 async fetchDownloadedData(){
     this.isDataInDownloadsIndexDb = await this.dbDownloadService.getAllDownloadsData();
     console.log("downloaded in details", this.isDataInDownloadsIndexDb);
+
+    // if (Array.isArray(this.isDataInDownloadsIndexDb) && this.isDataInDownloadsIndexDb.length > 0) {
+    //   const existingIndex = this.isDataInDownloadsIndexDb.findIndex(
+    //     (item: any) => 
+    //       item.metaData.submissionId === this.submissionId &&
+    //     item.metaData.entityId === this.entityId
+    //   );
+
+    //   if (existingIndex !== -1) {
+    //   this.observationDownloaded = true;
+
+    //   } else {
+    //   this.observationDownloaded = false;
+    //   }
+    // }else{
+    //   this.observationDownloaded = false;
+    // }
+}
+
+async downloadObservation(observationDetail) {
+  let observationDetails = {
+    ...observationDetail,
+    allowMultipleAssessemts: this.allowMultipleAssessemts
+  };
+  let submissionId = observationDetails?._id;
+
+  await this.downloadService.downloadObservation(this.isQuestionerDataInIndexDb, this.observationId, this.entityId, observationDetails, submissionId)
+  this.observationDownloaded = true;
+}
+
+updateDownloadedSubmissions() {
+  this.submissionIdSet = new Set(
+    this.dbKeys?.map(item => item.metaData?.submissionId)
+  );
 }
 }

@@ -26,7 +26,7 @@
                       <p>{{allData?.data[0]?.subTitle}}</p>
                     </div>
                       <div class="download-wrapper">
-                        <button mat-icon-button class="download-btn" (click)="deleteData(allData.key)">
+                        <button mat-icon-button class="download-btn" (click)="deleteData(allData.key); $event.stopPropagation()">
                             <mat-icon>delete</mat-icon>
                           </button>
                           <p class="download-text">Delete</p>

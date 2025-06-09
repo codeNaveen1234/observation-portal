@@ -15,15 +15,15 @@
 
                   </mat-card-content>
 
-                  <div class="download-wrapper" *ngIf="dbKeys.includes(entity?._id)">
+                  <div class="download-wrapper" *ngIf="submissionIdSet.has(entity?._id)">
                     <button mat-icon-button (click)="$event.stopPropagation()" class="download-btn">
                       <mat-icon class="downloaded">check</mat-icon>
                     </button>
                     <p class="downloaded-text download-text">Downloaded</p>
                   </div>
                   
-                  <div class="download-wrapper" *ngIf="!dbKeys.includes(entity?._id)">
-                    <button mat-icon-button (click)="downloadObservation()" class="download-btn">
+                  <div class="download-wrapper" *ngIf="!submissionIdSet.has(entity?._id)">
+                    <button mat-icon-button (click)="downloadObservation(entity)" class="download-btn">
                       <mat-icon>arrow_downward</mat-icon>
                     </button>
                     <p class="download-text">Download</p>

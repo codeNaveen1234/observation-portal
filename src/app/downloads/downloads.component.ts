@@ -49,5 +49,7 @@ navigateTo(route){
 
 deleteData(key){
   this.dbDownloadService.deleteData(key);
+  this.fetchDownloadedData("observation");
+
 }
 }

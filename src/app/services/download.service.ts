@@ -11,7 +11,7 @@ export class DownloadService {
   constructor(
     private apiService: ApiService,
     private toaster: ToastService,
-    private dbDownloads: DbDownloadService
+    private dbDownloadService: DbDownloadService
   ) {
   }
 
@@ -21,14 +21,14 @@ export class DownloadService {
       data: [observationData]
     }
     try {
-      await this.dbDownloads.addDownloadsData(data);
+      await this.dbDownloadService.addDownloadsData(data);
     } catch (error) {
       console.error("Failed to store data in IndexedDB", error);
     }
   }
 
   async checkAndMapIndexDbDataToVariables(submissionId) {
-    let indexdbData = await this.dbDownloads.getDownloadsData(submissionId);
+    let indexdbData = await this.dbDownloadService.getDownloadsData(submissionId);
     let currentObservation = {
       data: indexdbData?.data
 
@@ -38,8 +38,45 @@ export class DownloadService {
 
 
   async checkAndFetchDownloadsData(submissionId, type) {
-    let indexdbData = await this.dbDownloads.getDownloadsData(submissionId, type);
+    let indexdbData = await this.dbDownloadService.getDownloadsData(submissionId, type);
     let data= indexdbData?.data
     return data;
+  }
+
+  async downloadObservation(isQuestionerDataInIndexDb, observationId, entityId, observationDetails, submissionId) {
+    const fullQuestionerData = isQuestionerDataInIndexDb?.data;
+
+    const newItem = {
+      title: fullQuestionerData?.assessment?.name,
+      subTitle: fullQuestionerData?.program?.name,
+      route: `/details/${observationId}/${entityId}/${observationDetails?.allowMultipleAssessemts}`,
+      metaData: {
+        isRubric: fullQuestionerData?.solution?.isRubricDriven,
+        observationId: observationId,
+        submissionId: submissionId,
+        entityId: entityId,
+        observationName: observationDetails?.title,
+        observationCreatedDate: observationDetails?.createdAt,
+      }
+    };
+
+    let existingData: any[] = await this.dbDownloadService.getAllDownloadsData();
+    let matchedEntry = existingData.find(entry => entry.key === observationId);
+    if (matchedEntry) {
+      const existingIndex = matchedEntry.data.findIndex(
+        (item: any) => 
+          item.metaData.submissionId === submissionId &&
+          item.metaData.entityId === entityId
+      );
+
+      if (existingIndex !== -1) {
+        matchedEntry.data[existingIndex] = newItem;
+      } else {
+        matchedEntry.data.push(newItem);
+      }
+      await this.dbDownloadService.updateData(matchedEntry);
+    } else {
+      await this.setDownloadsDataInIndexDb(newItem, observationId);
+    }
   }
 }
