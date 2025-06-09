@@ -3,6 +3,7 @@ import { DownloadService } from '../services/download.service';
 import { DbDownloadService } from '../services/dbDownload.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-downloads',
@@ -25,6 +26,7 @@ constructor(
   public router: Router,
   private dbDownloadService: DbDownloadService,
   private dialog: MatDialog,
+  private translate:TranslateService
 ) {
 }
 
@@ -61,5 +63,10 @@ deleteData(key) {
   this.fetchDownloadedData("observation");
     }
   });
+}
+
+setLanguage() {
+  this.translate.setDefaultLang('en');
+  this.translate.use('en');
 }
 }

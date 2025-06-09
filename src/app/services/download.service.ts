@@ -57,6 +57,7 @@ export class DownloadService {
         entityId: entityId,
         observationName: observationDetails?.title,
         observationCreatedDate: observationDetails?.createdAt,
+        status: observationDetails?.status
       }
     };
 

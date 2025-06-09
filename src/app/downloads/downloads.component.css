@@ -161,4 +161,18 @@
     align-items: center;
     height: 100vh;
   }
+
+  .confirm-delete-btn{
+    background-color: #b30f0f;
+    color: #fff;
+    border: none;
+    border-radius: 20px !important;
+    padding: 10px 10px !important;
+    
+  }
+
+  .mat-dialog-actions{
+    justify-content: end;
+    display: flex;
+  }
   

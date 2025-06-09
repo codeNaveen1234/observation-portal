@@ -12,6 +12,10 @@ import { offlineSaveObservation } from '../services/offlineSaveObservation.servi
 import { DownloadService } from '../services/download.service';
 import { DbDownloadService } from '../services/dbDownload.service';
 import { DataService } from '../services/data.service';
+import { NetworkServiceService } from 'network-service';
+import {
+  TranslateService
+} from '@ngx-translate/core';
 @Component({
   selector: 'app-observation-details',
   standalone: false,
@@ -51,7 +55,8 @@ export class ObservationDetailsComponent implements OnInit {
     private offlineData: offlineSaveObservation,
     private downloadService: DownloadService,
     private dbDownloadService: DbDownloadService,
-    private dataService: DataService
+    private network: NetworkServiceService,
+    private translate: TranslateService
 
   ) {
   }
@@ -63,8 +68,20 @@ export class ObservationDetailsComponent implements OnInit {
     this.observationId = this.urlParamsService?.observationId;
     this.allowMultipleAssessemts = this.urlParamsService?.allowMultipleAssessemts;
     this.observationInit = true;
-    this.getObservationByEntityId();
-    this.fetchDownloadedData();
+
+    this.network.isOnline$.subscribe(status => {
+      if (status == true) {
+        this.getObservationByEntityId();
+        this.fetchDownloadedData(false);
+
+      } else {
+        this.loaded = true;
+        this.setLanguage();
+        this.fetchDownloadedData(true);
+      }
+    }
+    );
+
   }
 
 
@@ -73,6 +90,7 @@ export class ObservationDetailsComponent implements OnInit {
       this.filteredObservations = [];
       return;
     }
+
 
     if (statuses.includes('completed')) {
       this.filteredObservations = this.observations.filter(obs => obs?.status === 'completed');
@@ -110,14 +128,11 @@ export class ObservationDetailsComponent implements OnInit {
 
   async navigateToDetails(data) {
     let isDataInIndexDb = await this.offlineData.checkAndMapIndexDbDataToVariables(data?._id);
-
     if (!isDataInIndexDb?.data) {
       await this.offlineData.getFullObservationData(this.observationId, this.entityId, data?._id, data?.submissionNumber);
     }
 
     if (data?.isRubricDriven) {
-
-      // this.dataService.setData({...data, allowMultipleAssessemts:this.allowMultipleAssessemts});
       this.router.navigate([
         'domain',
         data?.observationId,
@@ -233,7 +248,7 @@ export class ObservationDetailsComponent implements OnInit {
     let submissionId = observationDetails?._id;
 
     await this.downloadService.downloadObservation(this.observationId, this.entityId, observationDetails, submissionId)
-    this.fetchDownloadedData();
+    this.fetchDownloadedData(false);
   }
 
   updateDownloadedSubmissions() {
@@ -242,17 +257,39 @@ export class ObservationDetailsComponent implements OnInit {
     );
   }
 
- async fetchDownloadedData() {
-  
+  async fetchDownloadedData(mapData) {
+
 
     this.allObservationDownloadedDataInIndexDb = await this.dbDownloadService.getAllDownloadsData();
 
     this.isQuestionerDataInIndexDb = this.allObservationDownloadedDataInIndexDb.find(
       item => item.key === this.observationId
     );
+
     this.dbKeys = this.isQuestionerDataInIndexDb?.data || [];
 
     this.updateDownloadedSubmissions();
 
+    if (mapData) {
+      this.observations = this.isQuestionerDataInIndexDb?.data.map(item => ({
+        title: item.metaData.observationName,
+        createdAt: item.metaData.observationCreatedDate,
+        isRubricDriven: item.metaData.isRubric,
+        _id: item.metaData.submissionId,
+        status: item.metaData.status,
+        observationId: item.metaData.observationId,
+        entityId: item.metaData.entityId
+      }));
+      this.observationInit = false;
+      this.isRubricDriven = this.isQuestionerDataInIndexDb?.data[0]?.isRubric;
+      this.getObservationsByStatus(['draft', 'started', 'inprogress']);
+
+    }
+
+  }
+
+  setLanguage() {
+    this.translate.setDefaultLang('en');
+    this.translate.use('en');
   }
 }

@@ -8,8 +8,7 @@ import { catchError, finalize } from 'rxjs';
 import { UrlParamsService } from '../services/urlParams.service';
 import { offlineSaveObservation } from '../services/offlineSaveObservation.service';
 import { DownloadService } from '../services/download.service';
-import { DataService } from '../services/data.service';
-import { DbDownloadService } from '../services/dbDownload.service';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-observation-domain',
   standalone: false,
@@ -47,8 +46,7 @@ export class ObservationDomainComponent implements OnInit {
     private route: ActivatedRoute,
     private offlineData: offlineSaveObservation,
     private downloadService: DownloadService,
-    private dataService: DataService,
-    private dbDownloadService: DbDownloadService
+    private translate:TranslateService
   ) {
     const passedData = this.router.getCurrentNavigation()?.extras.state;
     this.observationDetails = passedData;
@@ -194,5 +192,10 @@ export class ObservationDomainComponent implements OnInit {
   async downloadObservation() {
     await this.downloadService.downloadObservation(this.observationId, this.entityId, this.observationDetails, this.submissionId)
     this.observationDownloaded = true;
+  }
+
+  setLanguage() {
+    this.translate.setDefaultLang('en');
+    this.translate.use('en');
   }
 }

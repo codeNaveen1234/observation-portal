@@ -26,7 +26,7 @@
                       <p>{{allData?.data[0]?.subTitle}}</p>
                     </div>
                       <div class="download-wrapper">
-                        <button class=" download-btn" (click)="deleteData(allData.key); $event.stopPropagation()">
+                        <button class="download-btn" (click)="deleteData(allData.key); $event.stopPropagation()">
                             Delete
                           </button>
                     </div>
@@ -69,7 +69,7 @@
     <mat-dialog-content>{{ 'DELETE_CONTENT_DESCRIPTION' | translate}}</mat-dialog-content>
   
     <mat-dialog-actions class="mat-dialog-actions">
-      <button [mat-dialog-close]="'delete'" class="primary-btn">{{'DELETE' | translate}}</button>
+      <button [mat-dialog-close]="'delete'" class="confirm-delete-btn">{{'DELETE' | translate}}</button>
     </mat-dialog-actions>
   </ng-template>
 
