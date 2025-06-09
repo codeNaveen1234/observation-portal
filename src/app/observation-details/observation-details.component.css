@@ -146,5 +146,14 @@
   }
 
   .downloaded-text{
-    color: green;
+    /* color: grey; */
   }
+
+  .margin-right-spacing{
+    margin-right: 20px !important;
+  }
+
+.actions-buttons{
+  display: flex;
+  flex-direction: row;
+}

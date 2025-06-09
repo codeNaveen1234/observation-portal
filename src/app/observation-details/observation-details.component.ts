@@ -28,13 +28,11 @@ export class ObservationDetailsComponent implements OnInit {
   allowMultipleAssessemts: any;
   loaded = false;
   isPendingTabSelected: boolean = true;
-  filteredObservations:any =[];
-  isRubricDriven:any;
-  isQuestionerDataInIndexDb:any;
-  observationDownloaded:boolean = false;
-  isDataInDownloadsIndexDb:any;
-  allObservationDownloadedDataInIndexDb:any;
-  dbKeys:any;
+  filteredObservations: any = [];
+  isRubricDriven: any;
+  isQuestionerDataInIndexDb: any;
+  allObservationDownloadedDataInIndexDb: any;
+  dbKeys: any;
   submissionIdSet = new Set<string>();
 
 
@@ -43,75 +41,56 @@ export class ObservationDetailsComponent implements OnInit {
   @ViewChild('updateDialogModel') updateDialogModel: TemplateRef<any>;
 
   constructor(
-    private apiService: ApiService, 
-    private toaster: ToastService, 
+    private apiService: ApiService,
+    private toaster: ToastService,
     private router: Router,
     private dialog: MatDialog,
-    private urlParamsService:UrlParamsService,
+    private urlParamsService: UrlParamsService,
     private route: ActivatedRoute,
     private queryParamsService: QueryParamsService,
-    private offlineData:offlineSaveObservation,
-        private downloadService:DownloadService,
-        private dbDownloadService : DbDownloadService,
-        private dataService: DataService
-    
+    private offlineData: offlineSaveObservation,
+    private downloadService: DownloadService,
+    private dbDownloadService: DbDownloadService,
+    private dataService: DataService
+
   ) {
   }
 
   async ngOnInit() {
     this.queryParamsService.parseQueryParams()
     this.urlParamsService.parseRouteParams(this.route)
-    this.entityId=this.urlParamsService?.entityId
+    this.entityId = this.urlParamsService?.entityId
     this.observationId = this.urlParamsService?.observationId;
     this.allowMultipleAssessemts = this.urlParamsService?.allowMultipleAssessemts;
     this.observationInit = true;
     this.getObservationByEntityId();
-    // this.isQuestionerDataInIndexDb = await this.offlineData.checkAndMapIndexDbDataToVariables(this.submissionId);
-
-    // this.isDataInDownloadsIndexDb = await this.downloadService.checkAndFetchDownloadsData(this.submissionId, "downloadObservation");
-    this.allObservationDownloadedDataInIndexDb = await this.dbDownloadService.getAllDownloadsData();
-    console.log("this.allObservationDownloadedDataInIndexDb",this.allObservationDownloadedDataInIndexDb)
-
-    const matchedEntry = this.allObservationDownloadedDataInIndexDb.find(
-      item => item.key === this.observationId
-    );
-    this.dbKeys = matchedEntry?.data || [];
-console.log(this.dbKeys);
-this.updateDownloadedSubmissions();
-    // if(this.isDataInDownloadsIndexDb){
-    //   console.log("this.observationDownloaded = true");
-    //   this.observationDownloaded = true;
-    // }else{
-    //   console.log("this.observationDownloaded = false");
-    //   this.observationDownloaded = false;
-    // }
-
     this.fetchDownloadedData();
   }
 
-getObservationsByStatus(statuses: ('draft' | 'inprogress' | 'completed' | 'started')[]): void {
-  if (!this.observations) {
-    this.filteredObservations = [];
-    return;
-  }
 
-  if (statuses.includes('completed')) {
-    this.filteredObservations = this.observations.filter(obs => obs?.status === 'completed');
-  } else {
-    this.filteredObservations = this.observations.filter(obs => statuses.includes(obs?.status));
+  getObservationsByStatus(statuses: ('draft' | 'inprogress' | 'completed' | 'started')[]): void {
+    if (!this.observations) {
+      this.filteredObservations = [];
+      return;
+    }
+
+    if (statuses.includes('completed')) {
+      this.filteredObservations = this.observations.filter(obs => obs?.status === 'completed');
+    } else {
+      this.filteredObservations = this.observations.filter(obs => statuses.includes(obs?.status));
+    }
   }
-}
 
 
   getObservationByEntityId() {
     this.apiService.post(urlConfig.observation.observationSubmissions + this.observationId + `?entityId=${this.entityId}`, this.apiService.profileData)
-    .pipe(
-      finalize(() =>this.loaded = true),
-      catchError((err: any) => {
-        this.toaster.showToast(err?.error?.message, 'Close');
-        throw Error(err);
-      })
-    )
+      .pipe(
+        finalize(() => this.loaded = true),
+        catchError((err: any) => {
+          this.toaster.showToast(err?.error?.message, 'Close');
+          throw Error(err);
+        })
+      )
       .subscribe((res: any) => {
         if (res?.result) {
           if (this.observationInit && !res?.result?.length) {
@@ -120,7 +99,7 @@ getObservationsByStatus(statuses: ('draft' | 'inprogress' | 'completed' | 'start
           } else {
             this.observationInit = false;
             this.observations = res?.result;
-            this.isRubricDriven = res?.result[0]?.isRubricDriven; 
+            this.isRubricDriven = res?.result[0]?.isRubricDriven;
             this.getObservationsByStatus(['draft', 'started', 'inprogress']);
           }
         } else {
@@ -133,28 +112,29 @@ getObservationsByStatus(statuses: ('draft' | 'inprogress' | 'completed' | 'start
     let isDataInIndexDb = await this.offlineData.checkAndMapIndexDbDataToVariables(data?._id);
 
     if (!isDataInIndexDb?.data) {
-      await this.offlineData.getFullObservationData(this.observationId,this.entityId,data?._id,data?.submissionNumber);
+      await this.offlineData.getFullObservationData(this.observationId, this.entityId, data?._id, data?.submissionNumber);
     }
-    
+
     if (data?.isRubricDriven) {
-      
-// this.dataService.setData({...data, allowMultipleAssessemts:this.allowMultipleAssessemts});
+
+      // this.dataService.setData({...data, allowMultipleAssessemts:this.allowMultipleAssessemts});
       this.router.navigate([
         'domain',
         data?.observationId,
         data.entityId,
         data?._id
       ],
-      {
-        state: {
-          ...data,
-          allowMultipleAssessemts: this.allowMultipleAssessemts
+        {
+          state: {
+            ...data,
+            allowMultipleAssessemts: this.allowMultipleAssessemts
+          }
         }
-      }
-    );
+      );
     } else {
       this.router.navigate(['questionnaire'], {
-        queryParams: {observationId: data?.observationId, entityId: data?.entityId, submissionNumber: data?.submissionNumber, evidenceCode: data?.evidencesStatus[0]?.code, index: 0, submissionId:data?._id
+        queryParams: {
+          observationId: data?.observationId, entityId: data?.entityId, submissionNumber: data?.submissionNumber, evidenceCode: data?.evidencesStatus[0]?.code, index: 0, submissionId: data?._id
         }
       });
     }
@@ -227,8 +207,8 @@ getObservationsByStatus(statuses: ('draft' | 'inprogress' | 'completed' | 'start
       entity ? entity?.entityType : this.observations[0]?.entityType,
       entity ? false : true,
       this.isRubricDriven
-    ],{
-      queryParams:{
+    ], {
+      queryParams: {
         'submissionId': entity?._id,
       }
     });
@@ -243,45 +223,34 @@ getObservationsByStatus(statuses: ('draft' | 'inprogress' | 'completed' | 'start
       this.isPendingTabSelected = false;
       this.getObservationsByStatus(['completed']);
     }
-}
+  }
 
+  async downloadObservation(observationDetail) {
+    let observationDetails = {
+      ...observationDetail,
+      allowMultipleAssessemts: this.allowMultipleAssessemts
+    };
+    let submissionId = observationDetails?._id;
 
-async fetchDownloadedData(){
-    this.isDataInDownloadsIndexDb = await this.dbDownloadService.getAllDownloadsData();
-    console.log("downloaded in details", this.isDataInDownloadsIndexDb);
+    await this.downloadService.downloadObservation(this.isQuestionerDataInIndexDb, this.observationId, this.entityId, observationDetails, submissionId)
+    this.fetchDownloadedData();
+  }
 
-    // if (Array.isArray(this.isDataInDownloadsIndexDb) && this.isDataInDownloadsIndexDb.length > 0) {
-    //   const existingIndex = this.isDataInDownloadsIndexDb.findIndex(
-    //     (item: any) => 
-    //       item.metaData.submissionId === this.submissionId &&
-    //     item.metaData.entityId === this.entityId
-    //   );
+  updateDownloadedSubmissions() {
+    this.submissionIdSet = new Set(
+      this.dbKeys?.map(item => item.metaData?.submissionId)
+    );
+  }
 
-    //   if (existingIndex !== -1) {
-    //   this.observationDownloaded = true;
+ async fetchDownloadedData() {
+    this.allObservationDownloadedDataInIndexDb = await this.dbDownloadService.getAllDownloadsData();
 
-    //   } else {
-    //   this.observationDownloaded = false;
-    //   }
-    // }else{
-    //   this.observationDownloaded = false;
-    // }
-}
+    const matchedEntry = this.allObservationDownloadedDataInIndexDb.find(
+      item => item.key === this.observationId
+    );
+    this.dbKeys = matchedEntry?.data || [];
 
-async downloadObservation(observationDetail) {
-  let observationDetails = {
-    ...observationDetail,
-    allowMultipleAssessemts: this.allowMultipleAssessemts
-  };
-  let submissionId = observationDetails?._id;
+    this.updateDownloadedSubmissions();
 
-  await this.downloadService.downloadObservation(this.isQuestionerDataInIndexDb, this.observationId, this.entityId, observationDetails, submissionId)
-  this.observationDownloaded = true;
-}
-
-updateDownloadedSubmissions() {
-  this.submissionIdSet = new Set(
-    this.dbKeys?.map(item => item.metaData?.submissionId)
-  );
-}
+  }
 }
