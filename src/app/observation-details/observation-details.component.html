@@ -17,9 +17,9 @@
 
                   <div class="download-wrapper" *ngIf="dbKeys.includes(entity?._id)">
                     <button mat-icon-button (click)="$event.stopPropagation()" class="download-btn">
-                      <mat-icon>check</mat-icon>
+                      <mat-icon class="downloaded">check</mat-icon>
                     </button>
-                    <p class="download-text">Downloaded</p>
+                    <p class="downloaded-text download-text">Downloaded</p>
                   </div>
                   
                   <div class="download-wrapper" *ngIf="!dbKeys.includes(entity?._id)">

@@ -16,16 +16,17 @@
 
             <div *ngIf="filter.value === 'observation'">
               <div *ngFor="let allData of isDataInDownloadsIndexDb; let i = index">
-              <div class="grid-item" *ngFor="let entity of allData?.data; let i = index">
+                <!-- *ngFor="let entity of allData?.data; let i = index" -->
+              <div class="grid-item">
 
-                <mat-card class="observation-card" (click)="navigateTo(entity?.route)">
+                <mat-card class="observation-card" (click)="navigateTo(allData?.data[0]?.route)">
                   <mat-card-content>
                     <div >
-                      <h2 class="observation-name">{{ entity?.title }}</h2>
-                      <p>{{entity?.subTitle}}</p>
+                      <h2 class="observation-name">{{ allData?.data[0]?.title }}</h2>
+                      <p>{{allData?.data[0]?.subTitle}}</p>
                     </div>
                       <div class="download-wrapper">
-                        <button mat-icon-button class="download-btn" (click)="deleteData()">
+                        <button mat-icon-button class="download-btn" (click)="deleteData(allData.key)">
                             <mat-icon>delete</mat-icon>
                           </button>
                           <p class="download-text">Delete</p>
@@ -36,7 +37,7 @@
             </div>
           </div>
 
-          <div class="centered-container">
+          <div class="centered-container" *ngIf="isDataInDownloadsIndexDb?.length ==0">
             <p>No Data Downloaded</p>
           </div>
           

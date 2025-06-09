@@ -18,7 +18,7 @@ export class DownloadService {
   async setDownloadsDataInIndexDb(observationData, submissionId) {
     const data = {
       key: submissionId,
-      data: observationData
+      data: [observationData]
     }
     try {
       await this.dbDownloads.addDownloadsData(data);

@@ -98,40 +98,28 @@ export class DbDownloadService {
   }
   
 
-  // updateData(data: any) {
-  //   let downloadData:any = null;
-  //   if(data.data.isDownload){
-  //     downloadData = {
-  //       keyid: data.key,
-  //       data: {
-  //         title : data.data.title,
-  //         description : data.data.description,
-  //         lastDownloadedAt : data.data.lastDownloadedAt,
-  //         isDownload : data.data.isDownload
-  //       }
-  //     }
-  //   }
-  //   const transaction = this.db.transaction([this.storeName], 'readwrite');
-  //   const store = transaction.objectStore(this.storeName);
-  //   const request = store.put(data);
-  //   request.onsuccess = (event) => {};
-  //   request.onerror = (event) => {
-  //     console.error('Error updating Data: ');
-  //   };
-  //   if(!downloadData) return
-  // }
+  updateData(data: any) {
+    const transaction = this.db.transaction([this.observationStoreName], 'readwrite');
+    const store = transaction.objectStore(this.observationStoreName);
+    const request = store.put(data);
+    request.onsuccess = (event) => {};
+    request.onerror = (event) => {
+      console.error('Error updating Data: ');
+    };
+    return
+  }
 
-  // deleteData(key: any) {
-  //   const transaction = this.db.transaction([this.storeName], 'readwrite');
-  //   const store = transaction.objectStore(this.storeName);
-  //   const request = store.delete(key);
+  deleteData(key: any) {
+    const transaction = this.db.transaction([this.observationStoreName], 'readwrite');
+    const store = transaction.objectStore(this.observationStoreName);
+    const request = store.delete(key);
 
-  //   request.onsuccess = (event) => {};
+    request.onsuccess = (event) => {};
 
-  //   request.onerror = (event) => {
-  //     console.error('Error deleting item: ',);
-  //   };
-  // }
+    request.onerror = (event) => {
+      console.error('Error deleting item: ',);
+    };
+  }
 
   // clearDb(){
   //   const transaction = this.db.transaction([this.storeName], "readwrite");

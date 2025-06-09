@@ -140,3 +140,11 @@
   .download-btn mat-icon {
     font-size: 22px;
   }
+
+  .download-btn .downloaded{
+    color: green;
+  }
+
+  .downloaded-text{
+    color: green;
+  }

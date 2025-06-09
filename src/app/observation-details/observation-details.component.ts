@@ -11,6 +11,7 @@ import { QueryParamsService } from '../services/queryParams.service';
 import { offlineSaveObservation } from '../services/offlineSaveObservation.service';
 import { DownloadService } from '../services/download.service';
 import { DbDownloadService } from '../services/dbDownload.service';
+import { DataService } from '../services/data.service';
 @Component({
   selector: 'app-observation-details',
   standalone: false,
@@ -49,7 +50,8 @@ export class ObservationDetailsComponent implements OnInit {
     private queryParamsService: QueryParamsService,
     private offlineData:offlineSaveObservation,
         private downloadService:DownloadService,
-        private dbDownloadService : DbDownloadService 
+        private dbDownloadService : DbDownloadService,
+        private dataService: DataService
     
   ) {
   }
@@ -78,6 +80,8 @@ console.log(this.dbKeys);
     //   console.log("this.observationDownloaded = false");
     //   this.observationDownloaded = false;
     // }
+
+    this.fetchDownloadedData();
   }
 
 getObservationsByStatus(statuses: ('draft' | 'inprogress' | 'completed' | 'started')[]): void {
@@ -128,12 +132,21 @@ getObservationsByStatus(statuses: ('draft' | 'inprogress' | 'completed' | 'start
     }
     
     if (data?.isRubricDriven) {
+      
+// this.dataService.setData({...data, allowMultipleAssessemts:this.allowMultipleAssessemts});
       this.router.navigate([
         'domain',
         data?.observationId,
         data.entityId,
         data?._id
-      ]);
+      ],
+      {
+        state: {
+          ...data,
+          allowMultipleAssessemts: this.allowMultipleAssessemts
+        }
+      }
+    );
     } else {
       this.router.navigate(['questionnaire'], {
         queryParams: {observationId: data?.observationId, entityId: data?.entityId, submissionNumber: data?.submissionNumber, evidenceCode: data?.evidencesStatus[0]?.code, index: 0, submissionId:data?._id
@@ -241,5 +254,11 @@ async downloadObservation(){
 //     await this.downloadService.setDownloadsDataInIndexDb(data, this.submissionId);
 //     this.observationDownloaded = true;
 //   }
+}
+
+
+async fetchDownloadedData(){
+    this.isDataInDownloadsIndexDb = await this.dbDownloadService.getAllDownloadsData();
+    console.log("downloaded in details", this.isDataInDownloadsIndexDb);
 }
 }

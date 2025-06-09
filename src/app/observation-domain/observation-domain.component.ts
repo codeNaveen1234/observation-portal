@@ -8,6 +8,8 @@ import { catchError, finalize } from 'rxjs';
 import { UrlParamsService } from '../services/urlParams.service';
 import { offlineSaveObservation } from '../services/offlineSaveObservation.service';
 import { DownloadService } from '../services/download.service';
+import { DataService } from '../services/data.service';
+import { DbDownloadService } from '../services/dbDownload.service';
 @Component({
   selector: 'app-observation-domain',
   standalone: false,
@@ -24,90 +26,105 @@ export class ObservationDomainComponent implements OnInit {
   remark: any = "";
   observationId: any = "";
   id: any = "";
-  entities:any=[]
+  entities: any = []
   @ViewChild('notApplicableModel') notApplicableModel: TemplateRef<any>;
   loaded = false;
-  submissionNumber:any;
+  submissionNumber: any;
   submissionId: any;
   completeObservationData: any;
-  stateData:any;
-  observationDownloaded:boolean = false;
-  isQuestionerDataInIndexDb:any;
-  isDataInDownloadsIndexDb:any;
+  stateData: any;
+  observationDownloaded: boolean = false;
+  isQuestionerDataInIndexDb: any;
+  isDataInDownloadsIndexDb: any = [];
+  observationDetails: any
 
   constructor(
-    private apiService: ApiService, 
-    private toaster: ToastService, 
+    private apiService: ApiService,
+    private toaster: ToastService,
     private router: Router,
-    private dialog: MatDialog, 
-    private urlParamsService:UrlParamsService,
+    private dialog: MatDialog,
+    private urlParamsService: UrlParamsService,
     private route: ActivatedRoute,
-    private offlineData:offlineSaveObservation,
-    private downloadService:DownloadService 
+    private offlineData: offlineSaveObservation,
+    private downloadService: DownloadService,
+    private dataService: DataService,
+    private dbDownloadService: DbDownloadService
+  ) {
+    const passedData = this.router.getCurrentNavigation()?.extras.state;
+    this.observationDetails = passedData;
+  }
 
-  ) {}
-
-  async ngOnInit(){
+  async ngOnInit() {
     this.stateData = history.state?.data;
-    if(this.stateData){
+    if (this.stateData) {
       this.mapDataToVariables(this.stateData)
-    }else{
+    } else {
       this.urlParamsService.parseRouteParams(this.route)
-    this.observationId = this.urlParamsService?.observationId;
-    this.entityId = this.urlParamsService?.entityId;
-    this.id = this.urlParamsService?.solutionId;
-    this.submissionId = this.urlParamsService?.solutionId;
-    this.isQuestionerDataInIndexDb = await this.offlineData.checkAndMapIndexDbDataToVariables(this.submissionId);
-    
-    this.isDataInDownloadsIndexDb = await this.downloadService.checkAndFetchDownloadsData(this.submissionId, "downloadObservation");
-    console.log("isDataInDownloadsIndexDb", this.isDataInDownloadsIndexDb)
-    if (this.isQuestionerDataInIndexDb?.data) {
-      this.mapDataToVariables(this.isQuestionerDataInIndexDb?.data)
-    }else {
-      this.getObservationByEntityId();
-    }
+      this.observationId = this.urlParamsService?.observationId;
+      this.entityId = this.urlParamsService?.entityId;
+      this.id = this.urlParamsService?.solutionId;
+      this.submissionId = this.urlParamsService?.solutionId;
+      this.isQuestionerDataInIndexDb = await this.offlineData.checkAndMapIndexDbDataToVariables(this.submissionId);
 
-    if(this.isDataInDownloadsIndexDb){
-      console.log("this.observationDownloaded = true");
-      this.observationDownloaded = true;
-    }else{
-      console.log("this.observationDownloaded = false");
-      this.observationDownloaded = false;
-    }
+      this.isDataInDownloadsIndexDb = await this.downloadService.checkAndFetchDownloadsData(this.observationId, "downloadObservation");
+      if (this.isQuestionerDataInIndexDb?.data) {
+        this.mapDataToVariables(this.isQuestionerDataInIndexDb?.data)
+      } else {
+        this.getObservationByEntityId();
+      }
+
+      if (Array.isArray(this.isDataInDownloadsIndexDb) && this.isDataInDownloadsIndexDb.length > 0) {
+        const existingIndex = this.isDataInDownloadsIndexDb.findIndex(
+          (item: any) => 
+            item.metaData.submissionId === this.submissionId &&
+          item.metaData.entityId === this.entityId
+        );
+
+        if (existingIndex !== -1) {
+        this.observationDownloaded = true;
+
+        } else {
+        this.observationDownloaded = false;
+        }
+      }else{
+        this.observationDownloaded = false;
+      }
     }
   }
+
   mapDataToVariables(observationData) {
     this.entities = observationData?.assessment?.evidences;
     this.evidences = this.entities;
     this.loaded = true
   }
+
   getObservationByEntityId() {
     this.evidences = [];
     this.apiService.post(urlConfig.observation.observationSubmissions + this.observationId + `?entityId=${this.entityId}`, this.apiService.profileData)
-    .pipe(
-      finalize(() =>this.loaded = true),
-      catchError((err: any) => {
-        this.toaster.showToast(err?.error?.message, 'Close');
-        throw Error(err);
-      })
-    )
+      .pipe(
+        finalize(() => this.loaded = true),
+        catchError((err: any) => {
+          this.toaster.showToast(err?.error?.message, 'Close');
+          throw Error(err);
+        })
+      )
       .subscribe((res: any) => {
-        
+
         if (res.result) {
           this.entities = res?.result;
 
-        let evidencesStatus = this.entities
-          .filter((obj: any) => obj?._id == this.id)
-          .map((obj: any) => obj.evidencesStatus);
+          let evidencesStatus = this.entities
+            .filter((obj: any) => obj?._id == this.id)
+            .map((obj: any) => obj.evidencesStatus);
 
           this.entities
-          .map((obj: any) => {
-            if(obj?._id == this.id){
-              this.submissionNumber = obj?.submissionNumber;
+            .map((obj: any) => {
+              if (obj?._id == this.id) {
+                this.submissionNumber = obj?.submissionNumber;
+              }
             }
-          }
-        )
-        this.evidences = evidencesStatus.flat();
+            )
+          this.evidences = evidencesStatus.flat();
         } else {
           this.toaster.showToast(res.message, 'danger');
         }
@@ -127,18 +144,17 @@ export class ObservationDomainComponent implements OnInit {
     this.expandedIndex = this.expandedIndex === index ? null : index;
   }
 
-  navigateToDetails(data,index) {
-    this.stateData ? this.router.navigate(['questionnaire'],{
-      queryParams:{
-        solutionType:this.stateData?.solutionType
+  navigateToDetails(data, index) {
+    this.stateData ? this.router.navigate(['questionnaire'], {
+      queryParams: {
+        solutionType: this.stateData?.solutionType
       },
-      state:{data:this.stateData}
-    }):
-    this.router.navigate(['questionnaire'], {
-      queryParams: { observationId:this.observationId, entityId:this.entityId, submissionNumber:this.submissionNumber,evidenceCode:data?.code, index:index,submissionId: this.submissionId }
-    });
+      state: { data: this.stateData }
+    }) :
+      this.router.navigate(['questionnaire'], {
+        queryParams: { observationId: this.observationId, entityId: this.entityId, submissionNumber: this.submissionNumber, evidenceCode: data?.code, index: index, submissionId: this.submissionId }
+      });
   }
-
 
   notApplicable(entity) {
     this.remark = "";
@@ -157,9 +173,9 @@ export class ObservationDomainComponent implements OnInit {
   }
 
   updateEntity(evidence) {
-    let payload={
-        ...evidence,
-        ...this.apiService.profileData
+    let payload = {
+      ...evidence,
+      ...this.apiService.profileData
     }
     this.apiService.post(urlConfig.observation.update + this.id, payload)
 
@@ -176,27 +192,41 @@ export class ObservationDomainComponent implements OnInit {
 
   }
 
+  async downloadObservation() {
+    const fullQuestionerData = this.isQuestionerDataInIndexDb?.data;
 
-  async downloadObservation(){
-    let fullQuestionerData = this.isQuestionerDataInIndexDb?.data;
-
-    let data =[{
-      title : fullQuestionerData?.assessment?.name,
-      subTitle : fullQuestionerData?.program?.name,
-      // route:`/domain/${this.observationId}/${this.entityId}/${this.submissionId}`,
-      route:`/details/${this.observationId}/${this.entityId}/true`,
-      metaData:{
-        isRubric : fullQuestionerData?.solution?.isRubricDriven,
+    const newItem = {
+      title: fullQuestionerData?.assessment?.name,
+      subTitle: fullQuestionerData?.program?.name,
+      route: `/details/${this.observationId}/${this.entityId}/${this.observationDetails?.allowMultipleAssessemts}`,
+      metaData: {
+        isRubric: fullQuestionerData?.solution?.isRubricDriven,
         observationId: this.observationId,
-        submissionId:this.submissionId,
-        entityId:this.entityId
+        submissionId: this.submissionId,
+        entityId: this.entityId,
+        observationName: this.observationDetails?.title,
+        observationCreatedDate: this.observationDetails?.createdAt,
       }
-    }]
-    console.log("data",data)
-    console.log("fullQuestionerData",fullQuestionerData);
-    if(this.isQuestionerDataInIndexDb?.data){
-      await this.downloadService.setDownloadsDataInIndexDb(data, this.submissionId);
-      this.observationDownloaded = true;
+    };
+
+    let existingData: any[] = await this.dbDownloadService.getAllDownloadsData();
+    let matchedEntry = existingData.find(entry => entry.key === this.observationId);
+    if (matchedEntry) {
+      const existingIndex = matchedEntry.data.findIndex(
+        (item: any) => 
+          item.metaData.submissionId === this.submissionId &&
+          item.metaData.entityId === this.entityId
+      );
+
+      if (existingIndex !== -1) {
+        matchedEntry.data[existingIndex] = newItem;
+      } else {
+        matchedEntry.data.push(newItem);
+      }
+      await this.dbDownloadService.updateData(matchedEntry);
+    } else {
+      await this.downloadService.setDownloadsDataInIndexDb(newItem, this.observationId);
     }
+    this.observationDownloaded = true;
   }
 }

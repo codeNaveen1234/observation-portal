@@ -156,6 +156,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* or 100% if inside a parent with set height */
+    height: 100vh;
   }
   
