@@ -232,7 +232,7 @@ export class ObservationDetailsComponent implements OnInit {
     };
     let submissionId = observationDetails?._id;
 
-    await this.downloadService.downloadObservation(this.isQuestionerDataInIndexDb, this.observationId, this.entityId, observationDetails, submissionId)
+    await this.downloadService.downloadObservation(this.observationId, this.entityId, observationDetails, submissionId)
     this.fetchDownloadedData();
   }
 
@@ -243,12 +243,14 @@ export class ObservationDetailsComponent implements OnInit {
   }
 
  async fetchDownloadedData() {
+  
+
     this.allObservationDownloadedDataInIndexDb = await this.dbDownloadService.getAllDownloadsData();
 
-    const matchedEntry = this.allObservationDownloadedDataInIndexDb.find(
+    this.isQuestionerDataInIndexDb = this.allObservationDownloadedDataInIndexDb.find(
       item => item.key === this.observationId
     );
-    this.dbKeys = matchedEntry?.data || [];
+    this.dbKeys = this.isQuestionerDataInIndexDb?.data || [];
 
     this.updateDownloadedSubmissions();
 

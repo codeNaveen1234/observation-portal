@@ -43,15 +43,15 @@ export class DownloadService {
     return data;
   }
 
-  async downloadObservation(isQuestionerDataInIndexDb, observationId, entityId, observationDetails, submissionId) {
-    const fullQuestionerData = isQuestionerDataInIndexDb?.data;
+  async downloadObservation( observationId, entityId, observationDetails, submissionId) {
 
+    // return
     const newItem = {
-      title: fullQuestionerData?.assessment?.name,
-      subTitle: fullQuestionerData?.program?.name,
+      title: observationDetails?.observationName,
+      subTitle: observationDetails?.program?.name,
       route: `/details/${observationId}/${entityId}/${observationDetails?.allowMultipleAssessemts}`,
       metaData: {
-        isRubric: fullQuestionerData?.solution?.isRubricDriven,
+        isRubric: observationDetails?.isRubricDriven,
         observationId: observationId,
         submissionId: submissionId,
         entityId: entityId,
