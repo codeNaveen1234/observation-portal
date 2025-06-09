@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { DownloadService } from '../services/download.service';
 import { DbDownloadService } from '../services/dbDownload.service';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-downloads',
@@ -17,10 +18,13 @@ export class DownloadsComponent {
     { value: 'projects', label: 'PROJECTS' },
   ];
   selectedIndex: number = 0;
+  @ViewChild('confirmDialogModel') confirmDialogModel: TemplateRef<any>;
+  dialogRef: any;
 
 constructor(
   public router: Router,
-  private dbDownloadService: DbDownloadService
+  private dbDownloadService: DbDownloadService,
+  private dialog: MatDialog,
 ) {
 }
 
@@ -47,9 +51,15 @@ navigateTo(route){
   this.router.navigateByUrl(route);
 }
 
-deleteData(key){
-  this.dbDownloadService.deleteData(key);
-  this.fetchDownloadedData("observation");
 
+deleteData(key) {
+  const dialogRef = this.dialog.open(this.confirmDialogModel);
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result === 'delete') {
+      this.dbDownloadService.deleteData(key);
+  this.fetchDownloadedData("observation");
+    }
+  });
 }
 }
