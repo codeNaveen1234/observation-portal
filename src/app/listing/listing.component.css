@@ -248,6 +248,43 @@
   .observation-card{
     height: 100%;
   }
+.card-header{
+  display: flex;
+  justify-content: space-between;
+  align-items:center; 
+}
+.label {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  min-width: 80px;
+}
+
+.tag-not-started {
+  background-color: #ffffff;
+  color: #000;
+  border: 1px solid #ccc;
+}
+.tag-in-progress {
+  background-color: #ffa500;
+  color: #fff;
+  border: 1px solid #ff8c00;
+}
+
+.tag-completed {
+  background-color: #800080;
+  color: #fff;
+  border: 1px solid #6a006a;
+}
+
+.tag-expired {
+  background-color: #808080;
+  color: #fff;
+  border: 1px solid #696969;
+}
   ::ng-deep .mat-mdc-option {
     --mat-option-selected-state-label-text-color: var(--color-primary);
   }

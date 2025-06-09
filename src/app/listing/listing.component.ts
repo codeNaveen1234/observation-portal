@@ -45,7 +45,7 @@ export class ListingComponent implements OnInit {
     private urlParamService:UrlParamsService,
     private route:ActivatedRoute,
     private utils:UtilsService,
-    private translate: TranslateService
+    private translate: TranslateService,
   ) {
   }
   ngOnInit(): void {
@@ -124,10 +124,15 @@ export class ListingComponent implements OnInit {
         if (res?.status === 200) {
           this.solutionListCount = res?.result?.count;
           this.pageTitle === 'Observation Reports' && (this.entityType = res?.result?.entityType);
-          this.pageTitle === 'Survey' && res?.result?.data?.forEach(item => this.utils.createExpiryMsg(item));
           this.solutionList = this.selectedEntityType 
-        ? res?.result?.data 
-        : [...this.solutionList, ...res?.result?.data];
+          ? res?.result?.data 
+          : [...this.solutionList, ...res?.result?.data];
+          if(this.pageTitle === 'Survey'){
+            this.solutionList.forEach((element: any) => {
+              this.utils.createExpiryMsg(element)
+              this.assignStatusAndClasses(element);
+            });
+          }
       this.initialSolutionData = this.solutionList;
         } else {
           this.toaster.showToast(res?.message, 'Close');
@@ -216,4 +221,17 @@ export class ListingComponent implements OnInit {
     });
     this.isAnyEntitySelected = this.allEntities.some(entity => entity.selected);
   }
+  assignStatusAndClasses(element: any) {
+    const statusMappings = {
+      'active': { tagClass: 'tag-not-started', statusLabel: 'Not Started' },
+      'draft': { tagClass: 'tag-in-progress', statusLabel: 'In Progress' },
+      'started': { tagClass: 'tag-in-progress', statusLabel: 'In Progress' },
+      'completed': { tagClass: 'tag-completed', statusLabel: 'Completed' },
+      'expired': { tagClass: 'tag-expired', statusLabel: 'Expired' }
+    };
+  
+    const statusInfo = (statusMappings as any)[element.status] || { tagClass: 'tag-not-started', statusLabel: 'Not Started' };
+    element.tagClass = statusInfo.tagClass;
+    element.statusLabel = statusInfo.statusLabel;
+  } 
 }

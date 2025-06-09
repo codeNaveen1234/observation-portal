@@ -41,7 +41,14 @@
           <div class="grid-item" *ngFor="let solution of solutionList" (click)="navigateTo(solution)">
             <mat-card class="observation-card">
               <mat-card-content>
-                <h2 class="observation-name">{{ solution?.name }}</h2>
+                <div class="card-header">
+                <h2 class="observation-name"><b>{{ solution?.name }}</b></h2>
+                   @if(pageTitle === 'Survey'){
+                    <span [ngClass]="solution?.tagClass" class="label">
+                      {{ solution?.statusLabel }}
+                    </span>
+                   }
+                </div>
                 @if(pageTitle === 'Observation Reports' || pageTitle === 'Observation' ){
                   <p>{{solution?.programName}}</p>
                 }
