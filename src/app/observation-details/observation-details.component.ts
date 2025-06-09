@@ -11,7 +11,6 @@ import { QueryParamsService } from '../services/queryParams.service';
 import { offlineSaveObservation } from '../services/offlineSaveObservation.service';
 import { DownloadService } from '../services/download.service';
 import { DbDownloadService } from '../services/dbDownload.service';
-import { DataService } from '../services/data.service';
 import { NetworkServiceService } from 'network-service';
 import {
   TranslateService
