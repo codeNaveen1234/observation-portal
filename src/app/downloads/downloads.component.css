@@ -100,6 +100,7 @@
   
   .grid-item {
     cursor: pointer;
+    margin-bottom: 20px;
   }
   .observation-card{
     height: 100%;
@@ -113,6 +114,10 @@
     padding: 1rem;
   }
 
+  mat-card-content{
+    display: flex;
+    justify-content: space-between;
+  }
 
 
 
@@ -120,7 +125,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: end;
+    justify-content: center;
+    margin-right: 10px;
   }
   
   .download-text {
@@ -132,28 +138,41 @@
   
   .download-btn {
     padding: 2px;
-    width: 32px;
-    height: 32px;
-    min-width: unset;
+    color: var(--color-light);
+    background-color: var(--primary-color) !important;
+    border: none;
+    padding: 6px 7px;
+    border-radius: 5px 5px 0 0;
+    box-shadow: 0 4px 6px -2px rgba(0, 0, 0, 0.3);
   }
   
   .download-btn mat-icon {
     font-size: 22px;
+    color: #b30f0f;
   }
 
-  .download-btn .downloaded{
-    color: green;
+  .download-text{
+    color: #b30f0f;
   }
 
-  .downloaded-text{
-    /* color: grey; */
+  .centered-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
   }
 
-  .margin-right-spacing{
-    margin-right: 20px !important;
+  .confirm-delete-btn{
+    background-color: #b30f0f;
+    color: #fff;
+    border: none;
+    border-radius: 20px !important;
+    padding: 10px 10px !important;
+    
   }
 
-.actions-buttons{
-  display: flex;
-  flex-direction: row;
-}
+  .mat-dialog-actions{
+    justify-content: end;
+    display: flex;
+  }
+  

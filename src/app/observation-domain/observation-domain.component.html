@@ -1,8 +1,20 @@
-<div class="list-title">
+<div class="domain-list-title">
     <div>
-        <h1 class="heading">{{"DOMAINS"|translate}}</h1>
+      <h1 class="heading">{{ "DOMAINS" | translate }}</h1>
     </div>
-</div>
+    <div class="download-wrapper" *ngIf="observationDownloaded">
+        <button mat-icon-button (click)="$event.stopPropagation()" class="download-btn">
+            <mat-icon>check</mat-icon>
+          </button>
+          <p class="download-text">Downloaded</p>
+    </div>
+    <div class="download-wrapper" *ngIf="!observationDownloaded">
+        <button mat-icon-button (click)="downloadObservation()" class="download-btn">
+            <mat-icon>arrow_downward</mat-icon>
+          </button>
+          <p class="download-text">Download</p>
+    </div>
+  </div>
 
 <div class="d-flex flex-dc gap-4" *ngIf="loaded">
     <div class="observation-list">

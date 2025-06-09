@@ -14,16 +14,34 @@
                     <p *ngIf="entity?.status == 'completed'">{{ 'SUBMITTED_ON' | translate }} : {{entity?.submissionDate | date:'shortDate'}}</p>
 
                   </mat-card-content>
-  
-                  <div *ngIf="!entity?.isRubricDriven || allowMultipleAssessemts == 'true'">
+
+              
+                  
+                
+                  <div class="actions-buttons" *ngIf="!entity?.isRubricDriven || allowMultipleAssessemts == 'true'">
+                    <div class="download-wrapper" [ngClass]="{ 'margin-right-spacing': (!entity?.isRubricDriven || allowMultipleAssessemts == 'false') }" *ngIf="submissionIdSet.has(entity?._id)">
+                      <button mat-icon-button (click)="$event.stopPropagation()" class="download-btn">
+                        <mat-icon class="downloaded">check</mat-icon>
+                      </button>
+                      <p class="downloaded-text download-text">Downloaded</p>
+                    </div>
+                    
+                    <div class="download-wrapper" *ngIf="!submissionIdSet.has(entity?._id)" [ngClass]="{ 'margin-right-spacing': (!entity?.isRubricDriven || allowMultipleAssessemts == 'false') }">
+                      <button mat-icon-button (click)="downloadObservation(entity); $event.stopPropagation()" class="download-btn">
+                        <mat-icon>arrow_downward</mat-icon>
+                      </button>
+                      <p class="download-text">Download</p>
+                    </div>
                   <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
                     <mat-icon>more_vert</mat-icon>
                   </button>
-  
+
+
                   <mat-menu #menu="matMenu">
                     <button mat-menu-item (click)="editEntity(entity?.title, entity?._id)">{{'EDIT' | translate}}</button>
                     <button mat-menu-item (click)="deleteEntity(entity?._id)">{{'DELETE' | translate}}</button>
                   </mat-menu>
+
                   </div>
                 </div>
               </mat-card>

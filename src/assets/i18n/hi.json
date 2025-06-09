@@ -65,5 +65,8 @@
   "MSG_INVALID_LINK": "अमान्य लिंक, कृपया अन्य लिंक के साथ प्रयास करें",
   "MSG_FOR_NONTARGETED_USERS_QUESTIONNAIRE": "प्रिय उपयोगकर्ता, यह ऑब्जर्वेशन आपकी उपभूमिका और स्थान के लिए प्रासंगिक नहीं है",
   "SURVEY_EXPIRED": "सर्वे समाप्त हो गया",
-  "SURVEY_COMPLETED": "सर्वे पूरा हो गया"
+  "SURVEY_COMPLETED": "सर्वे पूरा हो गया",
+  "DELETE_CONTENT": "सामग्री हटाएँ?",
+  "DELETE_CONTENT_DESCRIPTION": "सामग्री हटाने से डिवाइस से सामग्री हट जाएगी"
+
 }
