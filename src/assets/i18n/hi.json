@@ -67,6 +67,10 @@
   "SURVEY_EXPIRED": "सर्वे समाप्त हो गया",
   "SURVEY_COMPLETED": "सर्वे पूरा हो गया",
   "DELETE_CONTENT": "सामग्री हटाएँ?",
-  "DELETE_CONTENT_DESCRIPTION": "सामग्री हटाने से डिवाइस से सामग्री हट जाएगी"
+  "DELETE_CONTENT_DESCRIPTION": "सामग्री हटाने से डिवाइस से सामग्री हट जाएगी",
+  "APPLY_FILTER": "फ़िल्टर लागू करें",
+  "RESET_FILTER": "फ़िल्टर रीसेट करें",
+  "PREVIEW": "पूर्वावलोकन",
+  "EVIDENCE": "साक्ष्य:"
 
 }

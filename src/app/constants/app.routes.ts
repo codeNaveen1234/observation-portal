@@ -9,5 +9,6 @@ export const APP_ROUTES = {
     Observation_Led_Imp: 'observation-led-imp',
     VERIFYLINK:'view/:type/:id',
     OBSERVATION_AS_TASK: "task/:solutionId",
-    DOWNLOADS: "downloads"
+    DOWNLOADS: "downloads",
+    SURVEYREPORTS:'surveyReports/:id'
 };
