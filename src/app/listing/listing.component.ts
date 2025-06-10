@@ -155,7 +155,7 @@ export class ListingComponent implements OnInit {
       return
     }
     if(this.pageTitle === 'Survey Reports'){
-        window.location.href=`/managed-learn/report-details/${data?.submissionId}`
+      this.router.navigate(['surveyReports',data?.submissionId])
         return
     }
     if (!this.reportPage) {

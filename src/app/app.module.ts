@@ -55,6 +55,9 @@ import { DeeplinkRedirectComponent } from './deeplink-redirect/deeplink-redirect
 import { ObservationAsTaskComponent } from './observation-as-task/observation-as-task.component';
 import { DownloadsComponent } from './downloads/downloads.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { SurveyReportsComponent } from './survey-reports/survey-reports.component';
+import { SurveyFilterComponent } from './shared/survey-filter/survey-filter.component';
+import { SurveyPreviewComponent } from './shared/survey-preview/survey-preview.component';
 
 export function translateHttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -75,7 +78,10 @@ export function translateHttpLoaderFactory(httpClient: HttpClient) {
     ObservationAsTaskComponent,
     DownloadsComponent,
     ObservationAsTaskComponent,
-    DownloadsComponent
+    DownloadsComponent,
+    SurveyReportsComponent,
+    SurveyFilterComponent,
+    SurveyPreviewComponent
   ],
   imports: [
     BrowserModule,

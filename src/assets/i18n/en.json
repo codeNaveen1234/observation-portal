@@ -67,7 +67,9 @@
     "SURVEY_EXPIRED":"survey Expired",
     "SURVEY_COMPLETED":"survey Completed",
     "DELETE_CONTENT": "Delete Content?",
-    "DELETE_CONTENT_DESCRIPTION": "Deleting content will remove content from the device"
-
-
+    "DELETE_CONTENT_DESCRIPTION": "Deleting content will remove content from the device",
+    "APPLY_FILTER":"APPLY FILTER",
+    "RESET_FILTER":"RESET FILTER",
+    "PREVIEW":"Preview",
+    "EVIDENCE":"Evidences:"
 }
