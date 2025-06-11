@@ -31,7 +31,11 @@ export class SurveyReportsComponent implements OnInit {
   ngOnInit() {
     this.router.params.subscribe(param => {
       this.submissionId = param['id'];
-      this.apiService.post(urlConfig.survey.reportUrl+this.submissionId,{})
+      this.apiService.post(urlConfig.survey.reportUrl,{
+        "survey": true,
+        "submissionId": this.submissionId,
+        "pdf": false
+      })
       .subscribe((res:any) => {
         this.surveyName = res.message.surveyName
         this.allQuestions = res.message.report;
