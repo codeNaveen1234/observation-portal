@@ -71,6 +71,9 @@
   "APPLY_FILTER": "फ़िल्टर लागू करें",
   "RESET_FILTER": "फ़िल्टर रीसेट करें",
   "PREVIEW": "पूर्वावलोकन",
-  "EVIDENCE": "साक्ष्य:"
-
+  "EVIDENCE": "साक्ष्य:",
+  "EXPIRED_ON": "को समाप्त हुआ",
+  "EXPIRED_IN": "में समाप्त होगा",
+  "COMPLETED_ON": "को पूर्ण हुआ",
+  "VALID_TILL": "तक मान्य"
 }

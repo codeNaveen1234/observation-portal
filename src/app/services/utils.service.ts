@@ -52,18 +52,29 @@ export class UtilsService {
     const expiryDate = new Date(survey.endDate);
     const diffDays = Math.ceil((expiryDate.getTime() - today) / (1000 * 60 * 60 * 24));
     const formattedDate = this.formatDateWithSuffix(expiryDate);
-  
-    switch (diffDays) {
-      case 1:
-        survey.generatedExpMsg = await this.translateMessage('EXPIRE_IN_ONE_DAY');
-        break;
-      case 2:
-        survey.generatedExpMsg = await this.translateMessage('EXPIRE_IN_TWO_DAY');
-        break;
-      default:
-        const key = diffDays > 2 ? 'MSG_VALID_TILL' : 'MSG_EXPIRED_ON';
-        const msg = await this.translateMessage(key);
-        survey.generatedExpMsg = `${msg} ${formattedDate}`;
+    let key: any;
+    if (expiryDate.getTime() < today) {
+      if (survey?.status === 'completed') {
+        key = 'COMPLETED_ON';
+      } else {
+        key = 'EXPIRED_ON';
+        survey.status = 'expired';
+      }
+      const msg = await this.translateMessage(key);
+      survey.generatedExpMsg = `${msg} ${formattedDate}`;
+    } else {
+      switch (diffDays) {
+        case 1:
+          survey.generatedExpMsg = await this.translateMessage('EXPIRE_IN_ONE_DAY');
+          break;
+        case 2:
+          survey.generatedExpMsg = await this.translateMessage('EXPIRE_IN_TWO_DAY');
+          break;
+        default:
+          key = 'VALID_TILL';
+          const msg = await this.translateMessage(key);
+          survey.generatedExpMsg = `${msg} ${formattedDate}`;
+      }
     }
   
     return survey;

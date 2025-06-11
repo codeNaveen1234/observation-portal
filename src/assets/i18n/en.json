@@ -71,5 +71,9 @@
     "APPLY_FILTER":"APPLY FILTER",
     "RESET_FILTER":"RESET FILTER",
     "PREVIEW":"Preview",
-    "EVIDENCE":"Evidences:"
+    "EVIDENCE":"Evidences:",
+    "EXPIRED_ON":"Expired on",
+    "EXPIRED_IN":"Expires in",
+    "COMPLETED_ON":"Completed on",
+    "VALID_TILL":"Valid till"
 }
