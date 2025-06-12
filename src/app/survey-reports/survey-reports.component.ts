@@ -36,10 +36,10 @@ export class SurveyReportsComponent implements OnInit {
         "submissionId": this.submissionId,
         "pdf": false
       })
-      .subscribe((res:any) => {
-        this.surveyName = res.message.surveyName
-        this.allQuestions = res.message.report;
-        this.reportDetails = this.processSurveyData(res.message.report);
+      .subscribe((res:any) => { 
+        this.surveyName = res.solutionName
+        this.allQuestions = res.reportSections;
+        this.reportDetails = this.processSurveyData(res.reportSections);
       })
     })
   
