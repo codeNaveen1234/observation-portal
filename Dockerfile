@@ -9,7 +9,7 @@ RUN npm install --force
 
 COPY . .
 
-RUN ng build
+RUN ng build --configuration production
 
 FROM node:18 AS final
 
