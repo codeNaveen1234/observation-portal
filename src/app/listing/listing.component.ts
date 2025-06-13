@@ -7,6 +7,7 @@ import { ApiService } from '../services/api.service';
 import { UrlParamsService } from '../services/urlParams.service';
 import { UtilsService } from '../services/utils.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Location } from '@angular/common';
 import { TITLE_MAP, DESC_KEY_MAP, solutionTypeMap } from '../constants/actionContants';
 
 @Component({
@@ -46,13 +47,23 @@ export class ListingComponent implements OnInit {
     private route:ActivatedRoute,
     private utils:UtilsService,
     private translate: TranslateService,
+    private location:Location
   ) {
   }
   ngOnInit(): void {
+    window.addEventListener('message', this.handleMessage);
     this.urlParamService.parseRouteParams(this.route)
     this.setPageTitle()
     this.reportPage = this.pageTitle === 'Observation';
     this.loadInitialData();
+  }
+
+  handleMessage=async(event: MessageEvent)=>{
+    if (event.data?.type === 'EXPIRED') {
+      const stateData = event.data.data;
+       this.toaster.showToast('SURVEY_EXPIRED','danger')
+       this.location.back(); 
+    }
   }
 
   setPageTitle() {
