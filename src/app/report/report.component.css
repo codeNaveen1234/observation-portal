@@ -29,6 +29,7 @@
     border-radius: 0.3125rem;
     margin-bottom: 0.9375rem;
     padding: 0.9375rem;
+    
   }
   
   .question-card:hover {
@@ -234,10 +235,12 @@
   
   .row {
     display: flex;
+    flex-wrap: wrap;
     margin-bottom: 0.5rem;
     padding: 0.5rem;
     text-align: center;
     min-width: 100%;
+    
   }
   
   .row:nth-child(odd) {
@@ -249,9 +252,10 @@
   }
   
   .column {
-    flex: 1 0 auto;
+    flex: 1 1 150px;
     padding: 0.5rem;
     min-width: 6.563rem;
+    word-break: break-word;
   }
   
   .expansion-panel{
@@ -260,6 +264,8 @@
   
   .title-accordion{
     font-size: large;
+    word-break: break-word;
+    margin: 0;
   }
   
   .no-data-found{
@@ -321,5 +327,12 @@
       display: block;
       margin-bottom: 0.3125rem;
     }
+  }
+
+  h2 {
+     word-break: break-word;     
+     overflow-wrap: break-word; 
+     max-width: 100%; 
+
   }
   
