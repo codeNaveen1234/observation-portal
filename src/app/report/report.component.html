@@ -1,5 +1,5 @@
 
-<main *ngIf="loaded">
+<main>
     <div class="list-title">
     <div class="list">
         <h1 class="heading">{{ observationDetails?.entityName }}</h1>
@@ -8,7 +8,7 @@
      </div>
     <div class="report-container">
       <div class="select-wrapper">
-        <mat-form-field class="custom-select" *ngIf="isMultiple == 'true'">
+        <mat-form-field class="custom-select" *ngIf="isMultiple == 'true' && filterData > 0">
           <mat-label>{{"SELECT_SUBMISSION"|translate}}</mat-label>
           <mat-select (selectionChange)="onSelectionChange($event.value)">
             <mat-option *ngFor="let item of filterData" [value]="item._id">
@@ -50,11 +50,11 @@
                 <div *ngSwitchCase="'date'">
                   <ng-container *ngIf="question?.answers?.length > 1; else singleDate">
                     <ng-container *ngFor="let ans of question.answers">
-                  <label>{{ ans | date:'shortDate' }}</label>
+                  <label>{{ ans}}</label>
                     </ng-container>
                   </ng-container>
                   <ng-template #singleDate>
-                    <label>{{ question?.answers | date:'shortDate' }}</label>
+                    <label>{{ question?.answers }}</label>
                       </ng-template>
                 </div>
                 <div *ngSwitchCase="'radio'">
@@ -183,11 +183,11 @@
                   <div *ngSwitchCase="'date'">
                     <ng-container *ngIf="question?.answers?.length > 1; else singleDate">
                       <ng-container *ngFor="let ans of question.answers">
-                    <label>{{ ans | date:'shortDate' }}</label>
+                    <label>{{ ans }}</label>
                       </ng-container>
                     </ng-container>
                     <ng-template #singleDate>
-                      <label>{{ question?.answers | date:'shortDate' }}</label>
+                      <label>{{ question?.answers }}</label>
                         </ng-template>
                   </div>
                   <div *ngSwitchCase="'radio'">
