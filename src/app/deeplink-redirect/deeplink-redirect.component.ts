@@ -185,6 +185,9 @@ export class DeeplinkRedirectComponent {
     await this.router.navigate([`/listing/${this.type}`]);
     this.router.navigate(['questionnaire'], {
       queryParams:{
+        index: 0, 
+        submissionId:data?.assessment?.submissionId,
+        solutionId:data?.solution?._id,
         solutionType:this.type
       },
       state:{data:{...data,isSurvey:true}}
