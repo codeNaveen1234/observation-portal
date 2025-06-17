@@ -29,7 +29,6 @@
     border-radius: 0.3125rem;
     margin-bottom: 0.9375rem;
     padding: 0.9375rem;
-    
   }
   
   .question-card:hover {
@@ -239,8 +238,7 @@
     margin-bottom: 0.5rem;
     padding: 0.5rem;
     text-align: center;
-    min-width: 100%;
-    
+    min-width: 100%; 
   }
   
   .row:nth-child(odd) {
@@ -265,7 +263,9 @@
   .title-accordion{
     font-size: large;
     word-break: break-word;
-    margin: 0;
+    margin: 0;     
+   overflow-wrap: break-word; 
+    max-width: 100%; 
   }
   
   .no-data-found{
@@ -328,11 +328,3 @@
       margin-bottom: 0.3125rem;
     }
   }
-
-  h2 {
-     word-break: break-word;     
-     overflow-wrap: break-word; 
-     max-width: 100%; 
-
-  }
-  
