@@ -75,5 +75,6 @@
     "EXPIRED_ON":"Expired on",
     "EXPIRED_IN":"Expires in",
     "COMPLETED_ON":"Completed on",
-    "VALID_TILL":"Valid till"
+    "VALID_TILL":"Valid till",
+    "SURVEY_EXPIRED_MSG":"Sorry! the form has expired."
 }
