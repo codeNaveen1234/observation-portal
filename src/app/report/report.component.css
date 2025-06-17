@@ -234,10 +234,11 @@
   
   .row {
     display: flex;
+    flex-wrap: wrap;
     margin-bottom: 0.5rem;
     padding: 0.5rem;
     text-align: center;
-    min-width: 100%;
+    min-width: 100%; 
   }
   
   .row:nth-child(odd) {
@@ -249,9 +250,10 @@
   }
   
   .column {
-    flex: 1 0 auto;
+    flex: 1 1 150px;
     padding: 0.5rem;
     min-width: 6.563rem;
+    word-break: break-word;
   }
   
   .expansion-panel{
@@ -260,6 +262,10 @@
   
   .title-accordion{
     font-size: large;
+    word-break: break-word;
+    margin: 0;     
+   overflow-wrap: break-word; 
+    max-width: 100%; 
   }
   
   .no-data-found{
@@ -322,4 +328,3 @@
       margin-bottom: 0.3125rem;
     }
   }
-  
