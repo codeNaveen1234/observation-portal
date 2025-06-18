@@ -110,10 +110,7 @@ export class ReportComponent implements OnInit {
         this.objectType == 'questions' ? this.renderCharts(this.reportDetails, false) : this.renderCharts(this.reportDetails, true);
         if(this.initialLoad){
           this.initialLoad = false;
-          let filter = this.filterData = this.observationDetails?.filters[0]?.filter?.data;
-          if(filter?.length > 1){
-            this.isMultiple = 'true';
-          }
+          this.filterData = this.observationDetails?.filters[0]?.filter?.data
         }
       });
   }

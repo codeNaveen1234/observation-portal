@@ -11,5 +11,5 @@ export const APP_ROUTES = {
     OBSERVATION_AS_TASK: "task/:solutionId",
     DOWNLOADS: "downloads",
     SURVEYREPORTS:'surveyReports/:id',
-    SURVEYEXPIRED:'surveyExpired'
+    SURVEYEXPIRED:'surveyStatus'
 };
