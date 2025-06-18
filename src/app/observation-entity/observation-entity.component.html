@@ -88,12 +88,12 @@
                 <mat-selection-list 
                 [multiple]="true" 
                 (selectionChange)="onSelectionChange($event)">
-                <mat-list-option 
-                  *ngFor="let entity of filteredEntities" 
+               <mat-list-option class="list-options"
+                  *ngFor="let entity of filteredEntities"
                   [value]="entity?._id"
                   [selected]="isEntitySelected(entity)"
                   [disabled]="isEntityInFilteredEntitiesOne(entity)">
-                  {{ entity?.name }}
+                <span matLine> {{ entity?.name }} </span>
                 </mat-list-option>
               </mat-selection-list>
               
