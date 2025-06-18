@@ -196,7 +196,6 @@ export class ReportComponent implements OnInit {
 
   evaluateAndFormatDates(data: any[]): any[] {
     return data.map((item) => {
-      console.log("item",item)
       if (item.responseType === 'date' && Array.isArray(item.answers)) {
         item.answers = item.answers.map((rawDate: string) => {
           const datePart = rawDate.split(' ')[0];
