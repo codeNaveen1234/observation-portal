@@ -105,7 +105,6 @@ export class ReportComponent implements OnInit {
         this.allQuestions = reportSections?.map((question:any) => {
           return { ...question, selected: true };
         });
-        this.allQuestions = this.evaluateAndFormatDates(this.allQuestions)
         this.reportDetails = this.processSurveyData(this.allQuestions);
         this.cdr?.detectChanges();
         this.objectType == 'questions' ? this.renderCharts(this.reportDetails, false) : this.renderCharts(this.reportDetails, true);
@@ -192,19 +191,6 @@ export class ReportComponent implements OnInit {
           return criterias?.questionArray.map(processQuestion);
       });
     }
-  }
-
-  evaluateAndFormatDates(data: any[]): any[] {
-    return data.map((item) => {
-      if (item.responseType === 'date' && Array.isArray(item.answers)) {
-        item.answers = item.answers.map((rawDate: string) => {
-          const datePart = rawDate.split(' ')[0];
-          const [day, month, year] = datePart.split('-').map((part) => part.padStart(2, '0'));
-          return `${day}-${month}-${year}`; 
-        });
-      }
-      return item;
-    });
   }
 
 
