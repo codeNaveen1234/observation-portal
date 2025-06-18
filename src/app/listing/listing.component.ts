@@ -149,7 +149,11 @@ export class ListingComponent implements OnInit {
   navigateTo(data?: any) {
     if(this.pageTitle === 'Survey'){
       if(data?.status === 'expired'){
-        this.router.navigate(['surveyExpired'])
+        this.router.navigate(['surveyStatus'],{
+          queryParams:{
+            status:data?.status
+          }
+        })
         return
       }
       this.router.navigate(['/questionnaire'], {

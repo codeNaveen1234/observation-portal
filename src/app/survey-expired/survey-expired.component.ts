@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component , OnInit} from '@angular/core';
+import { surveyStatusMap } from '../constants/actionContants';
+import { QueryParamsService } from '../services/queryParams.service';
 
 @Component({
   selector: 'app-survey-expired',
@@ -6,6 +8,14 @@ import { Component } from '@angular/core';
   templateUrl: './survey-expired.component.html',
   styleUrl: './survey-expired.component.css'
 })
-export class SurveyExpiredComponent {
+export class SurveyExpiredComponent implements  OnInit{
+  surveyMessage:any
+
+  constructor(private queryParamService:QueryParamsService){}
+
+  ngOnInit(): void {
+    this.queryParamService.parseQueryParams()
+    this.surveyMessage=surveyStatusMap[this.queryParamService.surveyStatus]
+  }
 
 }
