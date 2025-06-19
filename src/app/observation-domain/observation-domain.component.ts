@@ -36,7 +36,8 @@ export class ObservationDomainComponent implements OnInit {
   isQuestionerDataInIndexDb: any;
   isDataInDownloadsIndexDb: any = [];
   observationDetails: any
-
+  confirmModel:any;
+  @ViewChild('downloadModel') downloadModel:TemplateRef<any>;
   constructor(
     private apiService: ApiService,
     private toaster: ToastService,
@@ -193,9 +194,12 @@ export class ObservationDomainComponent implements OnInit {
     await this.downloadService.downloadObservation(this.observationId, this.entityId, this.observationDetails, this.submissionId)
     this.observationDownloaded = true;
   }
-
-  setLanguage() {
-    this.translate.setDefaultLang('en');
-    this.translate.use('en');
-  }
+  downloadPop() {
+      const dialogRef = this.dialog.open(this.downloadModel);
+      dialogRef.afterClosed().subscribe(result => {
+        if (result === 'yes') {
+          this.downloadObservation()
+        }
+      });
+    }
 }

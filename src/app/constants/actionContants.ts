@@ -29,3 +29,13 @@ export const surveyStatusMap = {
     text:'SURVEY_COMPLETED_MSG'
   }
 }
+export const dialogConfirmationMap ={
+  observeAgain:{
+    title:'OBSERVE_AGIAN',
+    close:true,
+    message:'OBSERVE_AGIAN_MSG',
+  },
+  downloadPop:{
+    message:'DOWNLOAD_MSG'
+  }
+}
