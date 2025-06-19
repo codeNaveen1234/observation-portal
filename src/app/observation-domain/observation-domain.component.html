@@ -6,13 +6,13 @@
         <button mat-icon-button (click)="$event.stopPropagation()" class="download-btn">
             <mat-icon>check</mat-icon>
           </button>
-          <p class="download-text">Downloaded</p>
+          <p class="download-text">{{'DOWNLOADED'|translate}}</p>
     </div>
     <div class="download-wrapper" *ngIf="!observationDownloaded">
-        <button mat-icon-button (click)="downloadObservation()" class="download-btn">
+        <button mat-icon-button (click)="downloadPop()" class="download-btn">
             <mat-icon>arrow_downward</mat-icon>
           </button>
-          <p class="download-text">Download</p>
+          <p class="download-text">{{'DOWNLOAD'|translate}}</p>
     </div>
   </div>
 
@@ -106,4 +106,12 @@
         <button mat-dialog-close="cancel" class="secondary-btn">{{"CANCEL"| translate}}</button>
     </mat-dialog-actions>
   </div>
+</ng-template>
+
+<ng-template #downloadModel>
+  <mat-dialog-content>{{ 'DOWNLOAD_MSG'| translate}}</mat-dialog-content>
+  <mat-dialog-actions class="mat-dialog-actions">
+    <button [mat-dialog-close]="'yes'" class="primary-btn">{{"YES"|translate}}</button>
+    <button mat-dialog-close="no" class="secondary-btn">{{"NO"| translate}}</button>
+  </mat-dialog-actions>
 </ng-template>

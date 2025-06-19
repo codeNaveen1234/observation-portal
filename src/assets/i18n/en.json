@@ -77,5 +77,9 @@
     "COMPLETED_ON":"Completed on",
     "VALID_TILL":"Valid till",
     "SURVEY_EXPIRED_MSG":"Sorry! the form has expired.",
-    "SURVEY_COMPLETED_MSG":"Your form is Submitted!"
+    "SURVEY_COMPLETED_MSG":"Your form is Submitted!",
+    "OBSERVE_AGIAN_MSG":"Are you sure you want to create an observation instance",
+    "DOWNLOAD_MSG":"Do you want download this form",
+    "DOWNLOAD":"Download",
+    "DOWNLOADED":"Downloaded"
 }
