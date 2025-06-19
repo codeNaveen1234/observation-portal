@@ -10,5 +10,6 @@ export const APP_ROUTES = {
     VERIFYLINK:'view/:type/:id',
     OBSERVATION_AS_TASK: "task/:solutionId",
     DOWNLOADS: "downloads",
-    SURVEYREPORTS:'surveyReports/:id'
+    SURVEYREPORTS:'surveyReports/:id',
+    SURVEYEXPIRED:'surveyStatus'
 };

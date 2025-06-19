@@ -165,13 +165,19 @@ export class DeeplinkRedirectComponent {
         )
           .subscribe(async (res: any) => {
             if (res.result === false) {
-              this.toastService.showToast('SURVEY_EXPIRED', 'close');
-              await this.router.navigate([`/listing/${this.type}`]);
+              await this.router.navigate(['surveyStatus'],{
+                queryParams:{
+                  status:'expired'
+                }
+              })
               return;
             }
             if (res.result.status && res.result.status === 'completed') {
-              this.toastService.showToast('SURVEY_COMPLETED', 'close');
-              await this.router.navigate([`/listing/${this.type}`]);
+              await this.router.navigate(['surveyStatus'],{
+                queryParams:{
+                  status:res?.result?.status
+                }
+              })
               return;
             }
             this.navigateToSurvey(res?.result);
@@ -185,6 +191,9 @@ export class DeeplinkRedirectComponent {
     await this.router.navigate([`/listing/${this.type}`]);
     this.router.navigate(['questionnaire'], {
       queryParams:{
+        index: 0, 
+        submissionId:data?.assessment?.submissionId,
+        solutionId:data?.solution?._id,
         solutionType:this.type
       },
       state:{data:{...data,isSurvey:true}}

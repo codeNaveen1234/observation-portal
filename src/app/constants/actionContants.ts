@@ -18,3 +18,14 @@ export const solutionTypeMap = {
   survey: 'survey',
   observationReports:'observation'
 };
+
+export const surveyStatusMap = {
+  expired:{
+    path:'/managed-observation-portal/assets/images/survey-expired.svg',
+    text:'SURVEY_EXPIRED_MSG'
+  },
+  completed:{
+    path:'/managed-observation-portal/assets/images/submitted.svg',
+    text:'SURVEY_COMPLETED_MSG'
+  }
+}

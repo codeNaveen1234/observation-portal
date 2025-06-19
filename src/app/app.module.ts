@@ -58,6 +58,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { SurveyReportsComponent } from './survey-reports/survey-reports.component';
 import { SurveyFilterComponent } from './shared/survey-filter/survey-filter.component';
 import { SurveyPreviewComponent } from './shared/survey-preview/survey-preview.component';
+import { SurveyExpiredComponent } from './survey-expired/survey-expired.component';
 
 export function translateHttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -81,7 +82,8 @@ export function translateHttpLoaderFactory(httpClient: HttpClient) {
     DownloadsComponent,
     SurveyReportsComponent,
     SurveyFilterComponent,
-    SurveyPreviewComponent
+    SurveyPreviewComponent,
+    SurveyExpiredComponent
   ],
   imports: [
     BrowserModule,
