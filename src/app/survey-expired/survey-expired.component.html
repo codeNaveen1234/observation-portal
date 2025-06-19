@@ -1,4 +1,4 @@
 <div class="survey-container">
-    <img src="/managed-observation-portal/assets/images/survey-expired.svg" alt="surveyExpired"/>
-    <h2 class="survey-message">{{'SURVEY_EXPIRED_MSG' | translate}}</h2>
+    <img [src]='surveyMessage?.path' alt="surveyMSG"/>
+    <h2 class="survey-message">{{ surveyMessage?.text | translate}}</h2>
 </div>
