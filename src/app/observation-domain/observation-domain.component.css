@@ -20,6 +20,7 @@
 }
 
 .not-applicable {
+    height: 2.625rem;
     border-radius: 1.25rem;
     padding: 0.625rem;
     background-color: transparent;
@@ -30,14 +31,12 @@
 }
 
 .secondary-btn {
-    height: 2.625rem;
     background-color: var(--primary-color);
     color: var(--general-btn-text-color);
     border: none;
 }
   
 .primary-btn {
-    height: 2.625rem;
     background-color: var(--color-light);
     color: var(--primary-color);
     border: 0.063rem solid var(--primary-color);
