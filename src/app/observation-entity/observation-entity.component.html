@@ -51,10 +51,15 @@
           </div>
         </div>
       </div>
-  
+  @if(isOnline){
     <div *ngIf="!filteredEntitiesOne?.length" class="no-data-container">
       <img src="/managed-observation-portal/assets/images/no_data.jpg" alt="No data" />
     </div>
+  }@else{
+    <div class="offline-no-data-wrapper">
+      <p class="no-data-text">{{"NO_DATA_MSG" | translate}}</p>
+    </div>
+  }
   
   </ng-container>
   

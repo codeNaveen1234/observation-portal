@@ -8,6 +8,7 @@ import { UrlParamsService } from '../services/urlParams.service';
 import { UtilsService } from '../services/utils.service';
 import { TranslateService } from '@ngx-translate/core';
 import { TITLE_MAP, DESC_KEY_MAP, solutionTypeMap } from '../constants/actionContants';
+import { NetworkServiceService } from 'network-service';
 
 @Component({
   selector: 'app-listing',
@@ -38,6 +39,7 @@ export class ListingComponent implements OnInit {
   surveyDate:any;
   solutionType:any;
   description:any;
+  isOnline:any;
   constructor(
     public router: Router,
     private toaster: ToastService,
@@ -46,7 +48,11 @@ export class ListingComponent implements OnInit {
     private route:ActivatedRoute,
     private utils:UtilsService,
     private translate: TranslateService,
+    private network:NetworkServiceService
   ) {
+    this.network.isOnline$.subscribe((status: any)=>{
+      this.isOnline=status
+    })
   }
   ngOnInit(): void {
     this.urlParamService.parseRouteParams(this.route)

@@ -18,6 +18,8 @@ import {
 } from 'chart.js';
 import { UrlParamsService } from '../services/urlParams.service';
 import { QueryParamsService } from '../services/queryParams.service';
+import { SurveyPreviewComponent } from '../shared/survey-preview/survey-preview.component';
+import { MatDialog } from '@angular/material/dialog';
 Chart.register(PieController, BarController, ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 @Component({
@@ -61,6 +63,7 @@ export class ReportComponent implements OnInit {
     private urlParamsService: UrlParamsService,
     private route:ActivatedRoute,
     private queryParamsService: QueryParamsService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -260,10 +263,14 @@ export class ReportComponent implements OnInit {
     return options;
   }
 
-  openDialog(url: string, type: string) {
-    this.objectURL = url;
-    this.objectType = type;
-    this.isModalOpen = true;
+  openDialog(url: any, type: string) {
+    this.dialog.open(SurveyPreviewComponent, {
+      width: '400px',
+      data: {
+        objectType:type,
+        objectUrl:url
+      }
+    })
   }
 
   closeDialog() {
