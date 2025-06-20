@@ -86,124 +86,19 @@ export class ReportComponent implements OnInit {
     this.totalSubmissions = [];
     this.allQuestions = [];
     this.reportDetails = [];
-    this.loaded = true;
+    this.loaded = false;
 
     let payload = this.createPayload(submissionId, criteria, pdf);
 
-    // this.apiService.post(urlConfig.survey.reportUrl, payload)
-    //   .pipe(
-    //     finalize(() =>this.loaded = true),
-    //     catchError((err) => {
-    //       this.toaster.showToast(err?.error?.message, 'danger', 5000)
-    //       throw new Error('Could not fetch the details');
-    //     })
-    //   )
-    //   .subscribe((res: any) => {
-      let res:any={
-        "result": true,
-        "observationId": "6853b756e8708500083abca6",
-        "entityType": "district",
-        "districtName": "Gomati",
-        "programName": "Test program with observations",
-        "solutionName": "Observation Without Rubric",
-        "reportSections": [
-            {
-                "order": "Q1_1748848857674-1748848862508",
-                "question": "Enter the date of observation",
-                "responseType": "date",
-                "answers": [
-                    "20-6-2025 4:4:4 PM"
-                ],
-                "chart": {},
-                "instanceQuestions": []
-            },
-            {
-                "order": "Q2_1748848857674-1748848862509",
-                "question": "What type of device is available at home?",
-                "responseType": "text",
-                "answers": [
-                    "Simple mobile phone without internet",
-                    "TV"
-                ],
-                "chart": {},
-                "instanceQuestions": []
-            },
-            {
-                "order": "Q3_1748848857674-1748848862510",
-                "question": "How many courses have you taken?",
-                "responseType": "text",
-                "answers": [
-                    "one"
-                ],
-                "chart": {},
-                "instanceQuestions": [],
-                "evidences": [
-                    {
-                        "url": "https://bmzbbujw9kal.compat.objectstorage.ap-mumbai-1.oraclecloud.com/odev-dev-diksha-manage-learn/survey/6854e2d2e8708500083ad598/398b0898-56ef-48a7-97cc-6cb66c134fd0/bdd90a66-2e7b-41ff-a6bc-5a2188acea93/VID_20250620_002802_990.mp4",
-                        "extension": "mp4"
-                    },
-                    {
-                        "url": "https://bmzbbujw9kal.compat.objectstorage.ap-mumbai-1.oraclecloud.com/odev-dev-diksha-manage-learn/survey/6854e2d2e8708500083ad598/398b0898-56ef-48a7-97cc-6cb66c134fd0/e4efe573-cf82-4624-b061-9fadfd4c9e47/VID_20250620_002802_990.mp4",
-                        "extension": "mp4"
-                    }
-                ],
-                "evidence_count": 2
-            },
-            {
-                "order": "Q4_1748848857674-1748848862511",
-                "question": "Which courses did you go through?",
-                "responseType": "text",
-                "answers": [
-                    "Shhshd"
-                ],
-                "chart": {},
-                "instanceQuestions": []
-            }
-        ],
-        "completedDate": "2025-06-20T10:35:31.650Z",
-        "filters": [
-            {
-                "order": "",
-                "filter": {
-                    "type": "segment",
-                    "title": "",
-                    "keyToSend": "criteriaWise",
-                    "data": [
-                        "questionWise",
-                        "criteriaWise"
-                    ]
-                }
-            },
-            {
-                "order": "",
-                "filter": {
-                    "type": "modal",
-                    "title": "",
-                    "keyToSend": "questionId",
-                    "data": [
-                        {
-                            "name": "Enter the date of observation",
-                            "_id": "Q1_1748848857674-1748848862508"
-                        },
-                        {
-                            "name": "How many courses have you taken?",
-                            "_id": "Q3_1748848857674-1748848862510"
-                        },
-                        {
-                            "name": "What type of device is available at home?",
-                            "_id": "Q2_1748848857674-1748848862509"
-                        },
-                        {
-                            "name": "Which courses did you go through?",
-                            "_id": "Q4_1748848857674-1748848862511"
-                        }
-                    ]
-                }
-            }
-        ],
-        "entityName": "Gomati",
-        "responseCode": "OK"
-    }
+    this.apiService.post(urlConfig.survey.reportUrl, payload)
+      .pipe(
+        finalize(() =>this.loaded = true),
+        catchError((err) => {
+          this.toaster.showToast(err?.error?.message, 'danger', 5000)
+          throw new Error('Could not fetch the details');
+        })
+      )
+      .subscribe((res: any) => {
         this.resultData = res?.result;
         this.observationDetails = res;
         this.filterData = submissionId ? this.filterData : this.observationDetails?.filters[0]?.filter?.data;
@@ -222,7 +117,7 @@ export class ReportComponent implements OnInit {
           this.filterData = this.observationDetails?.filters[0]?.filter?.data
         }
         console.log("the reportDeta",this.reportDetails)
-      // });
+      });
   }
 
   createPayload(submissionId: string, criteria: boolean, pdf: boolean): any {
