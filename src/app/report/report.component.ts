@@ -334,8 +334,19 @@ export class ReportComponent implements OnInit {
           throw new Error('Could not fetch the details');
         })
       )
-      .subscribe((res: any) => {
-        this.openUrl(res?.pdfUrl);
+      .subscribe(async (res: any) => {
+        const shareOptions = {
+          type: "download",
+          title: "data.name",
+          fileType: "pdf",
+          isBase64: false,
+          url: res?.pdfUrl
+        }
+
+        let response = await this.postMessageListener(shareOptions)
+        if(!response){
+          this.openUrl(res?.pdfUrl)
+        }
       });
   }
 
@@ -346,5 +357,21 @@ export class ReportComponent implements OnInit {
 
   navigateToObservationLedImpPage(){
     this.router.navigate(['/observation-led-imp'], { state: { improvementProjectSuggestions: this.observationDetails?.improvementProjectSuggestions, programName : this.observationDetails?.programName } });
+  }
+
+  postMessageListener(data:any):Promise<boolean>{
+    return new Promise((resolve) => {
+      try {
+        if ((window as any).FlutterChannel) {
+          (window as any).FlutterChannel.postMessage(data);
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      } catch (err: any) {
+        console.error('FlutterChannel Error:', err);
+        resolve(false);
+      }
+    });
   }
 }
