@@ -285,6 +285,18 @@
   color: #fff;
   border: 1px solid #696969;
 }
+.offline-no-data-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  text-align: center;
+}
+.no-data-text {
+  font-size: 16px;
+  color: var(--color-dark);
+  margin: 0;
+}
   ::ng-deep .mat-mdc-option {
     --mat-option-selected-state-label-text-color: var(--color-primary);
   }
