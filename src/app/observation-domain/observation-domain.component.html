@@ -6,13 +6,13 @@
         <button mat-icon-button (click)="$event.stopPropagation()" class="download-btn">
             <mat-icon>check</mat-icon>
           </button>
-          <p class="download-text">Downloaded</p>
+          <p class="download-text">{{'DOWNLOADED'|translate}}</p>
     </div>
     <div class="download-wrapper" *ngIf="!observationDownloaded">
-        <button mat-icon-button (click)="downloadObservation()" class="download-btn">
+        <button mat-icon-button (click)="downloadPop()" class="download-btn">
             <mat-icon>arrow_downward</mat-icon>
           </button>
-          <p class="download-text">Download</p>
+          <p class="download-text">{{'DOWNLOAD'|translate}}</p>
     </div>
   </div>
 
@@ -24,9 +24,8 @@
                     <mat-card class="observation-card" (click)="navigateToDetails(entity,i)">
                         <mat-card-content>
                             <div class="card-header">
-                                <div>
-                                    <h2 class="observation-name">{{ entity?.name }}</h2>
-                                </div>
+                                <h2 class="observation-name">{{ entity?.name }}</h2>
+                                <button class="not-applicable primary-btn" *ngIf="(!entity?.canBeNotAllowed && !entity.progressStatus) && !entity.notApplicable" (click)="notApplicable(entity); $event.stopPropagation()">Not Applicable</button>
                             </div>
                             <div class="btn-container">
                                 <div>
@@ -73,7 +72,7 @@
                                   </div>
                                 </div>
                               </div>
-                            <div class="btn-container" *ngIf="entity?.notApplicable">
+                            <div class="btn-container" *ngIf="entity?.notApplicable" >
                             <p>{{"NOT_APPLICABLE" | translate}}</p>
                         </div>
                         </mat-card-content>
@@ -92,6 +91,7 @@
 
 
 <ng-template #notApplicableModel>
+  <div class="p-16 flex flex-col items-center justify-center">
     <h1 mat-dialog-title>{{"NOT_APPLICABLE" | translate}}</h1>
     <mat-dialog-content>
         <p>{{ 'ADD_REMARKS' | translate }}</p>
@@ -105,4 +105,13 @@
             [disabled]="!remark" [ngClass]="{'disabled-button': !remark}">{{"CONFIRM" | translate}}</button>
         <button mat-dialog-close="cancel" class="secondary-btn">{{"CANCEL"| translate}}</button>
     </mat-dialog-actions>
+  </div>
+</ng-template>
+
+<ng-template #downloadModel>
+  <mat-dialog-content>{{ 'DOWNLOAD_MSG'| translate}}</mat-dialog-content>
+  <mat-dialog-actions class="mat-dialog-actions">
+    <button [mat-dialog-close]="'yes'" class="primary-btn">{{"YES"|translate}}</button>
+    <button mat-dialog-close="no" class="secondary-btn">{{"NO"| translate}}</button>
+  </mat-dialog-actions>
 </ng-template>
