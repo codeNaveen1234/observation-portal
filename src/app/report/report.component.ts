@@ -109,14 +109,12 @@ export class ReportComponent implements OnInit {
           return { ...question, selected: true };
         });
         this.reportDetails = this.processSurveyData(this.allQuestions);
-        console.log("the reportDeta",this.reportDetails)
         this.cdr?.detectChanges();
         this.objectType == 'questions' ? this.renderCharts(this.reportDetails, false) : this.renderCharts(this.reportDetails, true);
         if(this.initialLoad){
           this.initialLoad = false;
           this.filterData = this.observationDetails?.filters[0]?.filter?.data
         }
-        console.log("the reportDeta",this.reportDetails)
       });
   }
 
