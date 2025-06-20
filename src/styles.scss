@@ -137,7 +137,7 @@ body{
     grid-template-columns: repeat(2, 1fr);
     gap: 1.25rem;
   }
-  .observation-list, .grid-container, .mat-tab-group   {
+  .observation-list, .mat-tab-group   {
     padding-bottom: 5rem;
   }
   spinner-overlay {
@@ -164,7 +164,18 @@ body{
 .search {
   margin-top: 0 !important;
 }
-
+.offline-no-data-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  text-align: center;
+}
+.no-data-text {
+  font-size: 16px;
+  color: var(--color-dark);
+  margin: 0;
+}
 ::ng-deep{
     .mat-mdc-mini-fab{
       box-shadow: none !important;
