@@ -175,5 +175,38 @@ async openUrl(evidence: any) {
         }
       });
     }
+    getEvidenceType(extension: string): 'image' | 'video' | 'audio' | 'url' | 'unknown' {
+      const ext = extension.toLowerCase();
+      const imageExts = ['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif', 'hevc'];
+      const videoExts = ['mp4', 'avi', 'flv', '3gp', 'm4v', 'mkv', 'mov', 'ogg', 'webm', 'wmv'];
+      const audioExts = ['mp3', 'wav', 'mpeg'];
+      const urlExts = ['pdf', 'csv', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'txt'];
+    
+      if (imageExts.includes(ext)) return 'image';
+      if (videoExts.includes(ext)) return 'video';
+      if (audioExts.includes(ext)) return 'audio';
+      if (urlExts.includes(ext)) return 'url';
+      return 'unknown';
+    }
+    
+    getTooltip(type: string): string {
+      switch (type) {
+        case 'image': return 'View image';
+        case 'video': return 'View video';
+        case 'audio': return 'Play audio';
+        case 'url': return 'Open file';
+        default: return 'Unknown file';
+      }
+    }
+    
+    getIconName(type: string, ext: string): string {
+      if (type === 'image') return 'image';
+      if (type === 'video') return 'videocam';
+      if (type === 'audio') return 'audiotrack';
+      if (ext === 'pdf') return 'picture_as_pdf';
+      if (type === 'url') return 'article';
+      return 'insert_drive_file';
+    }
+    
 
 }
