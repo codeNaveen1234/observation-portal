@@ -144,4 +144,6 @@
     font-size: 22px;
   }
   
-  
+  .restrict {
+    pointer-events: none;
+  }

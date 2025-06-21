@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, viewChild, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { ToastService } from '../services/toast.service';
@@ -38,6 +38,8 @@ export class ObservationDomainComponent implements OnInit {
   observationDetails: any
   confirmModel:any;
   @ViewChild('downloadModel') downloadModel:TemplateRef<any>;
+  @ViewChild('ECMModel') ECMModel:TemplateRef<any>;
+
   constructor(
     private apiService: ApiService,
     private toaster: ToastService,
@@ -143,7 +145,10 @@ export class ObservationDomainComponent implements OnInit {
     this.expandedIndex = this.expandedIndex === index ? null : index;
   }
 
-  navigateToDetails(data, index) {
+  navigateToDetails(data, index,notApplicable) {
+    if(notApplicable){
+      return
+    }
     this.stateData ? this.router.navigate(['questionnaire'], {
       queryParams: {
         solutionType: this.stateData?.solutionType
@@ -157,19 +162,27 @@ export class ObservationDomainComponent implements OnInit {
 
   notApplicable(entity) {
     this.remark = "";
-    const dialogRef = this.dialog.open(this.notApplicableModel);
-
-    dialogRef.afterClosed().subscribe(result => {
+  
+    const dialogRefEcm = this.dialog.open(this.ECMModel);
+  
+    dialogRefEcm.afterClosed().subscribe(result => {
       if (result === 'confirm') {
-        const evidence = {
-          externalId: entity?.code,
-          remarks: this.remark,
-          notApplicable: true
-        }
-        this.updateEntity(evidence)
+        const dialogRef = this.dialog.open(this.notApplicableModel);
+        dialogRef.afterClosed().subscribe(result => {
+          if (result === 'add') {
+            const evidence = {
+              externalId: entity?.code,
+              remarks: this.remark,
+              notApplicable: true
+            };
+            console.log("evidence",evidence)
+            this.updateEntity(evidence);
+          }
+        });
       }
     });
   }
+  
 
   updateEntity(evidence) {
     let payload = {
