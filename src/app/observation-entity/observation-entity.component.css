@@ -244,3 +244,9 @@
   color: var(--color-dark);
   margin: 0;
 }
+.sticky-search {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 1000;
+}
