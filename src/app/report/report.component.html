@@ -107,22 +107,11 @@
               <div class="evidence-icons">
                 <div *ngFor="let evidence of question?.evidences" class="iconList">
                   <ng-container [ngSwitch]="evidence.extension">
-                    <div *ngSwitchCase="'jpg'" class="iconList">
-                      <mat-icon class="customizeIcon" matTooltip="View the uploaded image" matTooltipClass="tooltip"
-                        (click)="openDialog(evidence,'image')">image</mat-icon>
-                    </div>
-                    <div *ngSwitchCase="'png'" class="iconList">
-                      <mat-icon class="customizeIcon" matTooltip="View the uploaded image" matTooltipClass="tooltip"
-                        (click)="openDialog(evidence,'image')">image</mat-icon>
-                    </div>
-                    <div *ngSwitchCase="'pdf'" class="iconList">
-                      <mat-icon class="customizeIcon" matTooltip="View the uploaded image" matTooltipClass="tooltip"
-                        (click)="openUrl(evidence)">picture_as_pdf</mat-icon>
-                    </div>
-                    <div *ngSwitchCase="'mp4'" class="iconList">
-                      <mat-icon class="customizeIcon" matTooltip="View the uploaded video" matTooltipClass="tooltip"
-                        (click)="openDialog(evidence,'video')">video_file</mat-icon>
-                    </div>
+                    <mat-icon class="evidence-icon"
+                    [matTooltip]="getTooltip(getEvidenceType(evidence.extension))"
+                    (click)="getEvidenceType(evidence.extension) === 'url'? openUrl(evidence): openDialog(evidence.url, getEvidenceType(evidence.extension))">
+                    {{ getIconName(getEvidenceType(evidence.extension), evidence.extension.toLowerCase()) }}
+                  </mat-icon>
                   </ng-container>
                 </div>
               </div>
@@ -240,22 +229,11 @@
                 <div class="evidence-icons">
                   <div *ngFor="let evidence of question?.evidences" class="iconList">
                     <ng-container [ngSwitch]="evidence.extension">
-                      <div *ngSwitchCase="'jpg'" class="iconList">
-                        <mat-icon class="customizeIcon" matTooltip="View the uploaded image" matTooltipClass="tooltip"
-                          (click)="openDialog(evidence,'image')">image</mat-icon>
-                      </div>
-                      <div *ngSwitchCase="'png'" class="iconList">
-                        <mat-icon class="customizeIcon" matTooltip="View the uploaded image" matTooltipClass="tooltip"
-                          (click)="openDialog(evidence,'image')">image</mat-icon>
-                      </div>
-                      <div *ngSwitchCase="'pdf'" class="iconList">
-                        <mat-icon class="customizeIcon" matTooltip="View the uploaded image" matTooltipClass="tooltip"
-                          (click)="openUrl(evidence)">picture_as_pdf</mat-icon>
-                      </div>
-                      <div *ngSwitchCase="'mp4'" class="iconList">
-                        <mat-icon class="customizeIcon" matTooltip="View the uploaded video" matTooltipClass="tooltip"
-                          (click)="openDialog(evidence,'video')">video_file</mat-icon>
-                      </div>
+                      <mat-icon class="evidence-icon"
+                      [matTooltip]="getTooltip(getEvidenceType(evidence.extension))"
+                      (click)="getEvidenceType(evidence.extension) === 'url'? openUrl(evidence): openDialog(evidence.url, getEvidenceType(evidence.extension))">
+                      {{ getIconName(getEvidenceType(evidence.extension), evidence.extension.toLowerCase()) }}
+                    </mat-icon>
                     </ng-container>
                   </div>
                 </div>
