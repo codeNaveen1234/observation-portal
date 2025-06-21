@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, viewChild, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { ToastService } from '../services/toast.service';
@@ -162,9 +162,8 @@ export class ObservationDomainComponent implements OnInit {
 
   notApplicable(entity) {
     this.remark = "";
-  
     const dialogRefEcm = this.dialog.open(this.ECMModel);
-  
+
     dialogRefEcm.afterClosed().subscribe(result => {
       if (result === 'confirm') {
         const dialogRef = this.dialog.open(this.notApplicableModel);
@@ -182,7 +181,6 @@ export class ObservationDomainComponent implements OnInit {
       }
     });
   }
-  
 
   updateEntity(evidence) {
     let payload = {
