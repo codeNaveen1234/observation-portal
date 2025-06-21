@@ -6,6 +6,7 @@ import { ToastService } from '../services/toast.service';
 import { NetworkServiceService } from 'network-service';
 import { Location } from '@angular/common';
 import { catchError } from 'rxjs/operators';
+import { UtilsService } from '../services/utils.service';
 
 @Component({
   selector: 'app-deeplink-redirect',
@@ -24,13 +25,14 @@ export class DeeplinkRedirectComponent {
     private apiService : ApiService,
     private toastService :ToastService,
     private network:NetworkServiceService,
-    private location: Location
+    private location: Location,
+    private utils:UtilsService
   ) {}
 
   ngOnInit() {
     this.network.isOnline$.subscribe(status => this.isOnline = status);
     window.addEventListener('message', this.handleMessage);
-    this.route.paramMap.subscribe((param:any)=>{
+    this.route.paramMap.subscribe(async (param:any)=>{
       this.type = param.get("type")
       this.linkId = param.get("id")
       if(!this.isOnline){
@@ -38,7 +40,11 @@ export class DeeplinkRedirectComponent {
         return
       }
       if (!this.apiService.profileData) {
-        this.router.navigate([`/listing/${this.type}`]);
+        const options = {
+          type:"redirect",
+          pathType:"home"
+        };
+        await this.utils.postMessageListener(options)
         return;
       }
       this.checkLinkType()

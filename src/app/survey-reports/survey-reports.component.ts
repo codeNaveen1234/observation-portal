@@ -146,8 +146,34 @@ export class SurveyReportsComponent implements OnInit {
     this.reportDetails = this.processSurveyData(questionsToProcess);
   }
  
-  openUrl(url:string){
-    window.open(url,'_blank')
-  }
+async openUrl(evidence: any) {
+      const shareOptions = {
+        type: "download",
+        title: "evidence",
+        fileType: "pdf",
+        isBase64: false,
+        url: evidence.url
+      }
+      let response = await this.postMessageListener(shareOptions)
+      if(!response){
+        window.open(evidence.url, '_blank');
+      }
+    }
+
+    postMessageListener(data:any):Promise<boolean>{
+      return new Promise((resolve) => {
+        try {
+          if ((window as any).FlutterChannel) {
+            (window as any).FlutterChannel.postMessage(data);
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        } catch (err: any) {
+          console.error('FlutterChannel Error:', err);
+          resolve(false);
+        }
+      });
+    }
 
 }

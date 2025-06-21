@@ -263,14 +263,24 @@ export class ReportComponent implements OnInit {
     return options;
   }
 
-  openDialog(url: any, type: string) {
+async openDialog(evidence: any, type: string) {
+    const shareOptions = {
+      type: "download",
+      title: "evidence",
+      fileType: evidence?.extension,
+      isBase64: false,
+      url: evidence?.url
+    }
+   let response= await this.postMessageListener(shareOptions)
+   if(!response){
     this.dialog.open(SurveyPreviewComponent, {
       width: '400px',
       data: {
         objectType:type,
-        objectUrl:url
+        objectUrl:evidence.url
       }
     })
+  }
   }
 
   closeDialog() {
@@ -318,9 +328,19 @@ export class ReportComponent implements OnInit {
     this.applyFilter(true);
   }
 
-  openUrl(url: string) {
-    window.open(url, '_blank');
-  }
+async openUrl(evidence: any) {
+      const shareOptions = {
+        type: "download",
+        title: "evidence",
+        fileType: "pdf",
+        isBase64: false,
+        url: evidence.url
+      }
+      let response = await this.postMessageListener(shareOptions)
+      if(!response){
+        window.open(evidence.url, '_blank');
+      }
+    }
 
   isChartNotEmpty(chart: any, i?:any) {
     return Object.keys(chart).length > 0 ? true : false;

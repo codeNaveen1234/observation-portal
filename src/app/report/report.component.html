@@ -109,19 +109,19 @@
                   <ng-container [ngSwitch]="evidence.extension">
                     <div *ngSwitchCase="'jpg'" class="iconList">
                       <mat-icon class="customizeIcon" matTooltip="View the uploaded image" matTooltipClass="tooltip"
-                        (click)="openDialog(evidence.url,'image')">image</mat-icon>
+                        (click)="openDialog(evidence,'image')">image</mat-icon>
                     </div>
                     <div *ngSwitchCase="'png'" class="iconList">
                       <mat-icon class="customizeIcon" matTooltip="View the uploaded image" matTooltipClass="tooltip"
-                        (click)="openDialog(evidence.url,'image')">image</mat-icon>
+                        (click)="openDialog(evidence,'image')">image</mat-icon>
                     </div>
                     <div *ngSwitchCase="'pdf'" class="iconList">
                       <mat-icon class="customizeIcon" matTooltip="View the uploaded image" matTooltipClass="tooltip"
-                        (click)="openUrl(evidence.url)">picture_as_pdf</mat-icon>
+                        (click)="openUrl(evidence)">picture_as_pdf</mat-icon>
                     </div>
                     <div *ngSwitchCase="'mp4'" class="iconList">
                       <mat-icon class="customizeIcon" matTooltip="View the uploaded video" matTooltipClass="tooltip"
-                        (click)="openDialog(evidence.url,'video')">video_file</mat-icon>
+                        (click)="openDialog(evidence,'video')">video_file</mat-icon>
                     </div>
                   </ng-container>
                 </div>
@@ -242,19 +242,19 @@
                     <ng-container [ngSwitch]="evidence.extension">
                       <div *ngSwitchCase="'jpg'" class="iconList">
                         <mat-icon class="customizeIcon" matTooltip="View the uploaded image" matTooltipClass="tooltip"
-                          (click)="openDialog(evidence.url,'image')">image</mat-icon>
+                          (click)="openDialog(evidence,'image')">image</mat-icon>
                       </div>
                       <div *ngSwitchCase="'png'" class="iconList">
                         <mat-icon class="customizeIcon" matTooltip="View the uploaded image" matTooltipClass="tooltip"
-                          (click)="openDialog(evidence.url,'image')">image</mat-icon>
+                          (click)="openDialog(evidence,'image')">image</mat-icon>
                       </div>
                       <div *ngSwitchCase="'pdf'" class="iconList">
                         <mat-icon class="customizeIcon" matTooltip="View the uploaded image" matTooltipClass="tooltip"
-                          (click)="openUrl(evidence.url)">picture_as_pdf</mat-icon>
+                          (click)="openDialog(evidence,'pdf')">picture_as_pdf</mat-icon>
                       </div>
                       <div *ngSwitchCase="'mp4'" class="iconList">
                         <mat-icon class="customizeIcon" matTooltip="View the uploaded video" matTooltipClass="tooltip"
-                          (click)="openDialog(evidence.url,'video')">video_file</mat-icon>
+                          (click)="openDialog(evidence,'video')">video_file</mat-icon>
                       </div>
                     </ng-container>
                   </div>
