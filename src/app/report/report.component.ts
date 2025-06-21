@@ -264,15 +264,6 @@ export class ReportComponent implements OnInit {
   }
 
 async openDialog(evidence: any, type: string) {
-    const shareOptions = {
-      type: "download",
-      title: "evidence",
-      fileType: evidence?.extension,
-      isBase64: false,
-      url: evidence?.url
-    }
-   let response= await this.postMessageListener(shareOptions)
-   if(!response){
     this.dialog.open(SurveyPreviewComponent, {
       width: '400px',
       data: {
@@ -280,7 +271,6 @@ async openDialog(evidence: any, type: string) {
         objectUrl:evidence.url
       }
     })
-  }
   }
 
   closeDialog() {
