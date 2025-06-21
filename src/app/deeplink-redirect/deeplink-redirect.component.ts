@@ -39,10 +39,10 @@ export class DeeplinkRedirectComponent {
         this.toastService.showToast('NETWORK_OFFLINE','danger')
         return
       }
-      if (!this.apiService.profileData) {
+      if (!this.utils.isLoggedIn()) {
         const options = {
           type:"redirect",
-          pathType:"home"
+          pathType:"login"
         };
         await this.utils.postMessageListener(options)
         return;
