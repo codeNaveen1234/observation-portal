@@ -21,7 +21,7 @@
         <div class="grid-container">
             <ng-container>
                 <div class="grid-item" *ngFor="let entity of evidences; let i = index">
-                    <mat-card class="observation-card" (click)="navigateToDetails(entity,i,entity.notApplicable)" [ngClass]="{ 'restrict': entity?.notApplicable === true }">
+                    <mat-card class="observation-card" (click)="navigateToDetails(entity,i)" [ngClass]="{ 'restrict': entity?.notApplicable === true }">
                         <mat-card-content>
                             <div class="card-header">
                                 <h2 class="observation-name">{{ entity?.name }}</h2>
