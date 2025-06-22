@@ -145,10 +145,7 @@ export class ObservationDomainComponent implements OnInit {
     this.expandedIndex = this.expandedIndex === index ? null : index;
   }
 
-  navigateToDetails(data, index,notApplicable) {
-    if(notApplicable){
-      return
-    }
+  navigateToDetails(data, index) {
     this.stateData ? this.router.navigate(['questionnaire'], {
       queryParams: {
         solutionType: this.stateData?.solutionType
