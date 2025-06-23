@@ -320,9 +320,9 @@ async openDialog(url: any, type: string) {
 
 async openUrl(evidence: any) {
       const shareOptions = {
-        type: "download",
-        title: "evidence",
-        fileType: "pdf",
+        type: "preview",
+        title:`evidence.${evidence.extension}`,
+        fileType: evidence.extension,
         isBase64: false,
         url: evidence.url
       }
@@ -353,8 +353,8 @@ async openUrl(evidence: any) {
       )
       .subscribe(async (res: any) => {
         const shareOptions = {
-          type: "download",
-          title: "data.name",
+          type: "preview",
+          title: "data.pdf",
           fileType: "pdf",
           isBase64: false,
           url: res?.pdfUrl

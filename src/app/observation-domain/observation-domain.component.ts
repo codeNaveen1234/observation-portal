@@ -145,7 +145,10 @@ export class ObservationDomainComponent implements OnInit {
     this.expandedIndex = this.expandedIndex === index ? null : index;
   }
 
-  navigateToDetails(data, index) {
+  navigateToDetails(data, index,notApplicable) {
+    if(notApplicable){
+      return;
+    }
     this.stateData ? this.router.navigate(['questionnaire'], {
       queryParams: {
         solutionType: this.stateData?.solutionType
@@ -171,7 +174,6 @@ export class ObservationDomainComponent implements OnInit {
               remarks: this.remark,
               notApplicable: true
             };
-            console.log("evidence",evidence)
             this.updateEntity(evidence);
           }
         });
@@ -186,10 +188,11 @@ export class ObservationDomainComponent implements OnInit {
     }
     this.apiService.post(urlConfig.observation.update + this.id, payload)
 
-      .subscribe((res: any) => {
+      .subscribe(async (res: any) => {
 
         if (res.status == 200) {
           this.getObservationByEntityId();
+          await this.offlineData.getFullObservationData(this.observationId, this.entityId, this.id, this.submissionNumber);
         } else {
           this.toaster.showToast(res.message, 'Close');
         }

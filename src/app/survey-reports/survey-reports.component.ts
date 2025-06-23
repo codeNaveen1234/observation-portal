@@ -148,11 +148,11 @@ export class SurveyReportsComponent implements OnInit {
  
 async openUrl(evidence: any) {
       const shareOptions = {
-        type: "download",
-        title: "evidence",
-        fileType: "pdf",
-        isBase64: false,
-        url: evidence.url
+          type: "preview",
+          title:`evidence.${evidence.extension}`,
+          fileType: evidence.extension,
+          isBase64: false,
+          url: evidence.url
       }
       let response = await this.postMessageListener(shareOptions)
       if(!response){

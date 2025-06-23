@@ -21,56 +21,57 @@
         <div class="grid-container">
             <ng-container>
                 <div class="grid-item" *ngFor="let entity of evidences; let i = index">
-                    <mat-card class="observation-card" (click)="navigateToDetails(entity,i)" [ngClass]="{ 'restrict': entity?.notApplicable === true }">
+                    <mat-card class="observation-card" (click)="navigateToDetails(entity,i,entity?.notApplicable)" [ngClass]="{ 'restrict': entity?.notApplicable === true }">
                         <mat-card-content>
                             <div class="card-header">
                                 <h2 class="observation-name">{{ entity?.name }}</h2>
-                                <button class="not-applicable primary-btn" *ngIf="(entity?.canBeNotAllowed && !entity.progressStatus) && !entity.notApplicable" (click)="notApplicable(entity); $event.stopPropagation()">{{'NOT_APPLICABLE' | translate}}</button>
+                                <button class="not-applicable primary-btn" *ngIf="(!entity?.canBeNotAllowed && !entity.progressStatus) && !entity.notApplicable" (click)="notApplicable(entity); $event.stopPropagation()">{{'NOT_APPLICABLE' | translate}}</button>
                             </div>
                             <div class="btn-container">
                                 <div>
-                                  <p>{{ 'STATUS' | translate }}:
-                                    {{
-                                      !entity?.progressStatus 
-                                        ? ('NOT_STARTED' | translate)
-                                        : (entity?.progressStatus | translate)
-                                    }}
-                                  </p>
+                                  @if(entity?.notApplicable){
+                                    <p>{{ 'STATUS' | translate }}:{{"NOT_APPLICABLE" | translate}}</p>
+                                  }@else{
+                                    <p>{{ 'STATUS' | translate }}:
+                                      {{
+                                        !entity?.progressStatus 
+                                          ? ('NOT_STARTED' | translate)
+                                          : (entity?.progressStatus | translate)
+                                      }}
+                                    </p>
+                                  }
                                 </div>
-                              
+                              @if(!entity?.notApplicable){
                                 <div class="progress-container">
-                                    <div class="progress-box">
-                                        <span class="progress-text">{{ entity?.isSubmitted ? 100 : (entity?.completePercentage || 0) }}%</span>
-                                      
-                                        <mat-progress-bar
-                                          *ngIf="(entity?.isSubmitted || entity?.progressStatus === 'completed' || entity?.progressStatus === 'submitted') && !entity?.notApplicable"
-                                          mode="determinate"
-                                          value="100"
-                                          color="primary"
-                                          class="custom-progress-bar">
-                                        </mat-progress-bar>
-                                      
-                                        <mat-progress-bar
-                                          *ngIf="(!entity?.isSubmitted && entity?.progressStatus === 'inProgress') && !entity?.notApplicable"
-                                          mode="determinate"
-                                          [value]="entity?.completePercentage || 0"
-                                          color="accent"
-                                          class="custom-progress-bar">
-                                        </mat-progress-bar>
-                                      
-                                        <mat-progress-bar
-                                        *ngIf="!entity?.isSubmitted && (!entity?.progressStatus || entity?.progressStatus === 'notStarted') && !entity?.notApplicable"
-                                          mode="determinate"
-                                          value="0"
-                                          color="warn"
-                                          class="custom-progress-bar">
-                                        </mat-progress-bar>
-                                      </div>
-                                </div>
+                                  <div class="progress-box">
+                                      <span class="progress-text">{{ entity?.isSubmitted ? 100 : (entity?.completePercentage || 0) }}%</span>
+                                      <mat-progress-bar
+                                        *ngIf="(entity?.isSubmitted || entity?.progressStatus === 'completed' || entity?.progressStatus === 'submitted')"
+                                        mode="determinate"
+                                        value="100"
+                                        color="primary"
+                                        class="custom-progress-bar">
+                                      </mat-progress-bar>
+                                    
+                                      <mat-progress-bar
+                                        *ngIf="(!entity?.isSubmitted && entity?.progressStatus === 'inProgress')"
+                                        mode="determinate"
+                                        [value]="entity?.completePercentage || 0"
+                                        color="accent"
+                                        class="custom-progress-bar">
+                                      </mat-progress-bar>
+                                    
+                                      <mat-progress-bar
+                                      *ngIf="!entity?.isSubmitted && (!entity?.progressStatus || entity?.progressStatus === 'notStarted')"
+                                        mode="determinate"
+                                        value="0"
+                                        color="warn"
+                                        class="custom-progress-bar">
+                                      </mat-progress-bar>
+                                    </div>
                               </div>
-                            <div class="btn-container" *ngIf="entity?.notApplicable" >
-                            <p>{{"NOT_APPLICABLE" | translate}}</p>
-                        </div>
+                              }
+                              </div>
                         </mat-card-content>
                     </mat-card>
 
@@ -97,9 +98,9 @@
     </mat-dialog-content>
 
     <mat-dialog-actions class="mat-dialog-actions">
+      <button mat-dialog-close="cancel" class="secondary-btn">{{"CANCEL"| translate}}</button>
         <button [mat-dialog-close]="'add'" class="primary-btn"
-            [disabled]="!remark" [ngClass]="{'disabled-button': !remark}">{{"CONFIRM" | translate}}</button>
-        <button mat-dialog-close="cancel" class="secondary-btn">{{"CANCEL"| translate}}</button>
+            [disabled]="!remark" [ngClass]="{'disabled-button': !remark}">{{"ADD" | translate}}</button>
     </mat-dialog-actions>
   </div>
 </ng-template>
