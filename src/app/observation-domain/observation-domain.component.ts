@@ -37,6 +37,7 @@ export class ObservationDomainComponent implements OnInit {
   isDataInDownloadsIndexDb: any = [];
   observationDetails: any
   confirmModel:any;
+  submissionsId:any;
   @ViewChild('downloadModel') downloadModel:TemplateRef<any>;
   @ViewChild('ECMModel') ECMModel:TemplateRef<any>;
 
@@ -181,9 +182,11 @@ export class ObservationDomainComponent implements OnInit {
     });
   }
 
-  updateEntity(evidence) {
+  updateEntity(data) {
     let payload = {
-      ...evidence,
+      evidence:{
+        ...data
+      },
       ...this.apiService.profileData
     }
     this.apiService.post(urlConfig.observation.update + this.id, payload)
