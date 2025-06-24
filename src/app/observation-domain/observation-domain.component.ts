@@ -182,7 +182,7 @@ export class ObservationDomainComponent implements OnInit {
     });
   }
 
-  async updateEntity(evidences,code) {
+  updateEntity(evidences,code) {
     let payload = {
       evidence:{
         ...evidences
