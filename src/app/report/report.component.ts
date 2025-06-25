@@ -20,6 +20,7 @@ import { UrlParamsService } from '../services/urlParams.service';
 import { QueryParamsService } from '../services/queryParams.service';
 import { SurveyPreviewComponent } from '../shared/survey-preview/survey-preview.component';
 import { MatDialog } from '@angular/material/dialog';
+import { UtilsService } from '../services/utils.service';
 Chart.register(PieController, BarController, ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 @Component({
@@ -63,7 +64,8 @@ export class ReportComponent implements OnInit {
     private urlParamsService: UrlParamsService,
     private route:ActivatedRoute,
     private queryParamsService: QueryParamsService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private utils:UtilsService
   ) {}
 
   ngOnInit() {
@@ -326,7 +328,7 @@ async openUrl(evidence: any) {
         isBase64: false,
         url: evidence.url
       }
-      let response = await this.postMessageListener(shareOptions)
+      let response = await this.utils.postMessageListener(shareOptions)
       if(!response){
         window.open(evidence.url, '_blank');
       }
@@ -360,7 +362,7 @@ async openUrl(evidence: any) {
           url: res?.pdfUrl
         }
 
-        let response = await this.postMessageListener(shareOptions)
+        let response = await this.utils.postMessageListener(shareOptions)
         if(!response){
           this.openUrl(res?.pdfUrl)
         }
@@ -376,21 +378,6 @@ async openUrl(evidence: any) {
     this.router.navigate(['/observation-led-imp'], { state: { improvementProjectSuggestions: this.observationDetails?.improvementProjectSuggestions, programName : this.observationDetails?.programName } });
   }
 
-  postMessageListener(data:any):Promise<boolean>{
-    return new Promise((resolve) => {
-      try {
-        if ((window as any).FlutterChannel) {
-          (window as any).FlutterChannel.postMessage(data);
-          resolve(true);
-        } else {
-          resolve(false);
-        }
-      } catch (err: any) {
-        console.error('FlutterChannel Error:', err);
-        resolve(false);
-      }
-    });
-  }
   getEvidenceType(extension: string): 'image' | 'video' | 'audio' | 'url' | 'unknown' {
     const ext = extension.toLowerCase();
     const imageExts = ['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif', 'hevc'];

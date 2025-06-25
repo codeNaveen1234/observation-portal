@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { SurveyFilterComponent } from '../shared/survey-filter/survey-filter.component';
 import { SurveyPreviewComponent } from '../shared/survey-preview/survey-preview.component';
+import { UtilsService } from '../services/utils.service';
 
 @Component({
   selector: 'app-survey-reports',
@@ -26,6 +27,7 @@ export class SurveyReportsComponent implements OnInit {
     private apiService: ApiService,
     private dialog: MatDialog,
     private router:ActivatedRoute, 
+    private utils:UtilsService
   ) {}
 
   ngOnInit() {
@@ -154,27 +156,12 @@ async openUrl(evidence: any) {
           isBase64: false,
           url: evidence.url
       }
-      let response = await this.postMessageListener(shareOptions)
+      let response = await this.utils.postMessageListener(shareOptions)
       if(!response){
         window.open(evidence.url, '_blank');
       }
     }
 
-    postMessageListener(data:any):Promise<boolean>{
-      return new Promise((resolve) => {
-        try {
-          if ((window as any).FlutterChannel) {
-            (window as any).FlutterChannel.postMessage(data);
-            resolve(true);
-          } else {
-            resolve(false);
-          }
-        } catch (err: any) {
-          console.error('FlutterChannel Error:', err);
-          resolve(false);
-        }
-      });
-    }
     getEvidenceType(extension: string): 'image' | 'video' | 'audio' | 'url' | 'unknown' {
       const ext = extension.toLowerCase();
       const imageExts = ['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif', 'hevc'];
