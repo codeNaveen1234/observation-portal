@@ -88,7 +88,7 @@ export class ReportComponent implements OnInit {
     this.totalSubmissions = [];
     this.allQuestions = [];
     this.reportDetails = [];
-    this.loaded = false;
+    this.loaded = true;
 
     let payload = this.createPayload(submissionId, criteria, pdf);
 
@@ -343,7 +343,7 @@ async openUrl(evidence: any) {
     type == 'questions' ? this.loadObservationReport(this.submissionId, false, false) : this.loadObservationReport(this.submissionId, true, false);
   }
 
-  downloadPDF(submissionId: string, criteria: boolean, pdf: boolean) {
+  downloadPDF(submissionId: string, criteria: boolean, pdf: boolean,type:any) {
     this.loaded = false;
     let payload = this.createPayload(submissionId, criteria, pdf);
     this.apiService.post(urlConfig.survey.reportUrl, payload)
@@ -354,6 +354,7 @@ async openUrl(evidence: any) {
         })
       )
       .subscribe(async (res: any) => {
+        if(type === 'download'){
         const shareOptions = {
           type: "preview",
           title: "data.pdf",
@@ -366,9 +367,26 @@ async openUrl(evidence: any) {
         if(!response){
           this.openUrl(res?.pdfUrl)
         }
+      }else{
+        const shareOptions = {
+            title: this.generateName(),
+            text: 'Check out this observation report',
+            url: res.pdfUrl,
+            type:"share"
+          };
+        let response = await this.utils.postMessageListener(shareOptions)
+        if(!response){
+          this.toaster.showToast("SHARE_FAILED", 'danger');
+        }
+      }
       });
   }
-
+  generateName(){
+    const now = new Date();
+    const pad = (n: number) => String(n).padStart(2, '0');
+    const formattedDateTime = `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()}-${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`;
+    return `report_${formattedDateTime}`;
+  }
   onSelectionChange(submissionId: string): void {
     this.submissionId = submissionId;
     this.observationType == 'questions' ? this.loadObservationReport(submissionId, false, false) : this.loadObservationReport(submissionId, true, false);
