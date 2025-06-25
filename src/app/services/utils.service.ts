@@ -113,7 +113,4 @@ export class UtilsService {
       }
     });
   }
-  isLoggedIn(){
-    return !!localStorage.getItem('accToken')
-  }
 }

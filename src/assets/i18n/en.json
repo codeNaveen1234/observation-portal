@@ -81,5 +81,6 @@
     "OBSERVE_AGIAN_MSG":"Are you sure you want to create an observation instance",
     "DOWNLOAD_MSG":"Do you want download this form",
     "DOWNLOAD":"Download",
-    "DOWNLOADED":"Downloaded"
+    "DOWNLOADED":"Downloaded",
+    "ECM_NOT_APPLICABLE":"ECM Not Applicable"
 }
