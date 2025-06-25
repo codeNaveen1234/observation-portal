@@ -39,14 +39,6 @@ export class DeeplinkRedirectComponent {
         this.toastService.showToast('NETWORK_OFFLINE','danger')
         return
       }
-      if (!this.utils.isLoggedIn()) {
-        const options = {
-          type:"redirect",
-          pathType:"login"
-        };
-        await this.utils.postMessageListener(options)
-        return;
-      }
       this.checkLinkType()
     })
   }
@@ -121,14 +113,16 @@ export class DeeplinkRedirectComponent {
         resp?.assessment?.name,
         resp?.solution?._id
       ],{
-        state:{data:{...resp,solutionType:this.type,isSurvey:false}}
-      });
+        state:{data:{...resp,solutionType:this.type,isSurvey:false}},
+        replaceUrl:true
+    });
     } else {
       this.router.navigate(['questionnaire'], {
         queryParams:{
           solutionType:this.type,
         },
-        state:{ data:{...resp,isSurvey:false}}
+        state:{ data:{...resp,isSurvey:false}},
+        replaceUrl:true
       });
     }
   }
@@ -202,7 +196,9 @@ export class DeeplinkRedirectComponent {
         solutionId:data?.solution?._id,
         solutionType:this.type
       },
-      state:{data:{...data,isSurvey:true}}
+      state:{data:{...data,isSurvey:true},
+    },
+    replaceUrl:true
     });
   }
 

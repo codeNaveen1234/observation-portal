@@ -9,6 +9,7 @@ import { UrlParamsService } from '../services/urlParams.service';
 import { offlineSaveObservation } from '../services/offlineSaveObservation.service';
 import { DownloadService } from '../services/download.service';
 import { TranslateService } from '@ngx-translate/core';
+import { DbService } from '../services/db.service';
 @Component({
   selector: 'app-observation-domain',
   standalone: false,
@@ -49,7 +50,8 @@ export class ObservationDomainComponent implements OnInit {
     private route: ActivatedRoute,
     private offlineData: offlineSaveObservation,
     private downloadService: DownloadService,
-    private translate:TranslateService
+    private translate:TranslateService,
+     private db: DbService
   ) {
     const passedData = this.router.getCurrentNavigation()?.extras.state;
     this.observationDetails = passedData;
@@ -160,10 +162,9 @@ export class ObservationDomainComponent implements OnInit {
       });
   }
 
-  notApplicable(entity) {
+  notApplicable(entity,selectedIndex) {
     this.remark = "";
     const dialogRefEcm = this.dialog.open(this.ECMModel);
-
     dialogRefEcm.afterClosed().subscribe(result => {
       if (result === 'confirm') {
         const dialogRef = this.dialog.open(this.notApplicableModel);
@@ -174,25 +175,33 @@ export class ObservationDomainComponent implements OnInit {
               remarks: this.remark,
               notApplicable: true
             };
-            this.updateEntity(evidence);
+            this.updateEntity(evidence,selectedIndex);
           }
         });
       }
     });
   }
 
-  updateEntity(evidence) {
+  updateEntity(evidences,code) {
     let payload = {
-      ...evidence,
+      evidence:{
+        ...evidences
+      },
       ...this.apiService.profileData
     }
-    this.apiService.post(urlConfig.observation.update + this.id, payload)
-
-      .subscribe(async (res: any) => {
-
-        if (res.status == 200) {
+    this.apiService.post(urlConfig.observation.update + this.id, payload).subscribe(async (res: any) => {
+      if (res.status == 200) {
+      let data: any = await this.offlineData.checkAndMapIndexDbDataToVariables(this.submissionId);
+      if (data?.data?.assessment?.evidences?.[code]) {
+        data.data.assessment.evidences[code].notApplicable = true;
+        await this.db.updateDB(data?.data,this.submissionId)
+        this.isQuestionerDataInIndexDb = await this.offlineData.checkAndMapIndexDbDataToVariables(this.submissionId);
+        if(this.isQuestionerDataInIndexDb?.data){
+          this.mapDataToVariables(this.isQuestionerDataInIndexDb?.data)
+        }else{
           this.getObservationByEntityId();
-          await this.offlineData.getFullObservationData(this.observationId, this.entityId, this.id, this.submissionNumber);
+        }
+      }
         } else {
           this.toaster.showToast(res.message, 'Close');
         }
