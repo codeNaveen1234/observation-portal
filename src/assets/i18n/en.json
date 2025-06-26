@@ -82,5 +82,7 @@
     "DOWNLOAD_MSG":"Do you want download this form",
     "DOWNLOAD":"Download",
     "DOWNLOADED":"Downloaded",
-    "ECM_NOT_APPLICABLE":"ECM Not Applicable"
+    "ECM_NOT_APPLICABLE":"ECM Not Applicable",
+    "SHARE_PDF":"Share As PDF",
+    "SHARE_FAILED":"Failed to share"
 }
