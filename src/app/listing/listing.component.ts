@@ -169,7 +169,7 @@ export class ListingComponent implements OnInit {
       return
     }
     if(this.pageTitle === 'Survey Reports'){
-      this.router.navigate(['surveyReports',data?.submissionId])
+      this.router.navigate(['surveyReports',data?.submissionId,data?.solutionId])
         return
     }
     if (!this.reportPage) {
@@ -184,7 +184,7 @@ export class ListingComponent implements OnInit {
           data?.observationId,
           data?.entities[0]?._id,
           data?.entityType,
-          false,
+          data?.allowMultipleAssessemts,
           data?.isRubricDriven
         ]);
       } else {

@@ -84,5 +84,12 @@
   "DOWNLOADED": "डाउनलोड हो चुका है",
   "ECM_NOT_APPLICABLE": "ईसीएम लागू नहीं है",
   "SHARE_PDF": "पीडीएफ के रूप में साझा करें",
-  "SHARE_FAILED": "साझा करना विफल रहा"
+  "SHARE_FAILED": "साझा करना विफल रहा",
+  "VIEW_ALL_EVIDNECES": "सभी प्रमाण देखें",
+  "ALLEVIDENCES": "प्रमाण",
+  "REMARKS": "टिप्पणियाँ",
+  "IMAGES": "छवियाँ",
+  "VIDEOS": "वीडियो",
+  "DOCUMENTS": "दस्तावेज़",
+  "AUDIOS": "ऑडियो"
 }

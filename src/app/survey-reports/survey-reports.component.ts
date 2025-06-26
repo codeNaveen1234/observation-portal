@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as urlConfig from '../constants/url-config.json';
 import { ApiService } from '../services/api.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SurveyFilterComponent } from '../shared/survey-filter/survey-filter.component';
 import { SurveyPreviewComponent } from '../shared/survey-preview/survey-preview.component';
 import { UtilsService } from '../services/utils.service';
@@ -23,16 +23,19 @@ export class SurveyReportsComponent implements OnInit {
   surveyName!: string;
   objectKeys = Object.keys;
   submissionId: any;
+  solutionId:any
   constructor(
     private apiService: ApiService,
     private dialog: MatDialog,
     private router:ActivatedRoute, 
-    private utils:UtilsService
+    private utils:UtilsService,
+    public route: Router,
   ) {}
 
   ngOnInit() {
     this.router.params.subscribe(param => {
       this.submissionId = param['id'];
+      this.solutionId=param['solutionId']
       this.apiService.post(urlConfig.survey.reportUrl,{
         "survey": true,
         "submissionId": this.submissionId,
@@ -194,6 +197,17 @@ async openUrl(evidence: any) {
       if (type === 'url') return 'article';
       return 'insert_drive_file';
     }
-    
+
+    allEvidenceClick(question){
+      const queryParams = {
+        submissionId: this.submissionId,
+        questionExternalId: question?.order,
+        surveyEvidence:true,
+        solutionId:this.solutionId
+      };
+      this.route.navigate(['viewAllEvidences'],{
+        queryParams:queryParams
+      })
+    }
 
 }
