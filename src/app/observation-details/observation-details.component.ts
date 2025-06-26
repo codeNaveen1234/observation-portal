@@ -15,6 +15,7 @@ import { NetworkServiceService } from 'network-service';
 import {
   TranslateService
 } from '@ngx-translate/core';
+import { dialogConfirmationMap } from '../constants/actionContants';
 @Component({
   selector: 'app-observation-details',
   standalone: false,
@@ -37,11 +38,13 @@ export class ObservationDetailsComponent implements OnInit {
   allObservationDownloadedDataInIndexDb: any;
   dbKeys: any;
   submissionIdSet = new Set<string>();
+  confirmModel:any;
 
 
 
   @ViewChild('confirmDialogModel') confirmDialogModel: TemplateRef<any>;
   @ViewChild('updateDialogModel') updateDialogModel: TemplateRef<any>;
+  @ViewChild('dialogModel') dialogModel:TemplateRef<any>;
 
   constructor(
     private apiService: ApiService,
@@ -82,7 +85,23 @@ export class ObservationDetailsComponent implements OnInit {
     );
 
   }
+  dialogMessage(data: any, entity?: any) {
+    this.confirmModel = dialogConfirmationMap[data];
+    const actionsMap = {
+      observeAgain: () => this.observeAgain(),
+      downloadPop: () => this.downloadObservation(entity),
+    };
+    const dialogRef = this.dialog.open(this.dialogModel);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'yes' && actionsMap[data]) {
+        actionsMap[data]();
+      }
+    });
+  }
 
+  close(){
+    this.dialog.closeAll()
+  }
 
   getObservationsByStatus(statuses: ('draft' | 'inprogress' | 'completed' | 'started')[]): void {
     if (!this.observations) {

@@ -51,10 +51,15 @@
           </div>
         </div>
       </div>
-  
+  @if(isOnline){
     <div *ngIf="!filteredEntitiesOne?.length" class="no-data-container">
       <img src="/managed-observation-portal/assets/images/no_data.jpg" alt="No data" />
     </div>
+  }@else{
+    <div class="offline-no-data-wrapper">
+      <p class="no-data-text">{{"NO_DATA_MSG" | translate}}</p>
+    </div>
+  }
   
   </ng-container>
   
@@ -65,11 +70,7 @@
     <div class="p-16 searchEntity flex flex-col items-center justify-center">
             <div mat-dialog-title class="d-flex flex-ai-start flex-dr flex-gap-4 p-0" style="color: var(--primary-color);">
                 {{ 'ADD_ENTITY' | translate:{ entity: entityToAdd } }}
-              </div>
-              <mat-divider></mat-divider>
-              <div mat-dialog-content class="flex-ai-self-start">
-          
-                <div class="srch">
+                <div class="srch sticky-search mat-elevation-z2">
                   <div class="srch-bar">
                     <span class="icon">
                       <i class="material-icons">search</i>
@@ -85,6 +86,9 @@
                     </button>
                   </div>
                 </div>
+              </div>
+              <mat-divider></mat-divider>
+              <div mat-dialog-content class="flex-ai-self-start">
                 <mat-selection-list 
                 [multiple]="true" 
                 (selectionChange)="onSelectionChange($event)">

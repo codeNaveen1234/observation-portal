@@ -28,7 +28,11 @@
       <div class="buttons-right" *ngIf="reportDetails?.length > 0;">
         <button (click)="openFilter()" class="apply-filter" *ngIf="!domainView">{{"FILTERS" | translate}}</button>
         <button class="apply-filter"
-          (click)="downloadPDF(submissionId, observationType === 'questions' ? false : true, true)">{{"EXPORT_PDF"|translate}}</button>
+          (click)="downloadPDF(submissionId, observationType === 'questions' ? false : true, true,'download')">{{"EXPORT_PDF"|translate}}</button>
+        <button class="apply-filter" 
+        (click)="downloadPDF(submissionId, observationType === 'questions' ? false : true, true,'share')">
+           {{'SHARE_PDF'| translate}}
+        </button>
       </div>
       
      <div *ngIf="reportDetails?.length > 0; else noData">
@@ -107,22 +111,11 @@
               <div class="evidence-icons">
                 <div *ngFor="let evidence of question?.evidences" class="iconList">
                   <ng-container [ngSwitch]="evidence.extension">
-                    <div *ngSwitchCase="'jpg'" class="iconList">
-                      <mat-icon class="customizeIcon" matTooltip="View the uploaded image" matTooltipClass="tooltip"
-                        (click)="openDialog(evidence.previewUrl,'image')">image</mat-icon>
-                    </div>
-                    <div *ngSwitchCase="'png'" class="iconList">
-                      <mat-icon class="customizeIcon" matTooltip="View the uploaded image" matTooltipClass="tooltip"
-                        (click)="openDialog(evidence.previewUrl,'image')">image</mat-icon>
-                    </div>
-                    <div *ngSwitchCase="'pdf'" class="iconList">
-                      <mat-icon class="customizeIcon" matTooltip="View the uploaded image" matTooltipClass="tooltip"
-                        (click)="openUrl(evidence.previewUrl)">picture_as_pdf</mat-icon>
-                    </div>
-                    <div *ngSwitchCase="'mp4'" class="iconList">
-                      <mat-icon class="customizeIcon" matTooltip="View the uploaded video" matTooltipClass="tooltip"
-                        (click)="openDialog(evidence.previewUrl,'video')">video_file</mat-icon>
-                    </div>
+                    <mat-icon class="evidence-icon"
+                    [matTooltip]="getTooltip(getEvidenceType(evidence.extension))"
+                    (click)="getEvidenceType(evidence.extension) === 'url'? openUrl(evidence): openDialog(evidence.url, getEvidenceType(evidence.extension))">
+                    {{ getIconName(getEvidenceType(evidence.extension), evidence.extension.toLowerCase()) }}
+                  </mat-icon>
                   </ng-container>
                 </div>
               </div>
@@ -240,22 +233,11 @@
                 <div class="evidence-icons">
                   <div *ngFor="let evidence of question?.evidences" class="iconList">
                     <ng-container [ngSwitch]="evidence.extension">
-                      <div *ngSwitchCase="'jpg'" class="iconList">
-                        <mat-icon class="customizeIcon" matTooltip="View the uploaded image" matTooltipClass="tooltip"
-                          (click)="openDialog(evidence.previewUrl,'image')">image</mat-icon>
-                      </div>
-                      <div *ngSwitchCase="'png'" class="iconList">
-                        <mat-icon class="customizeIcon" matTooltip="View the uploaded image" matTooltipClass="tooltip"
-                          (click)="openDialog(evidence.previewUrl,'image')">image</mat-icon>
-                      </div>
-                      <div *ngSwitchCase="'pdf'" class="iconList">
-                        <mat-icon class="customizeIcon" matTooltip="View the uploaded image" matTooltipClass="tooltip"
-                          (click)="openUrl(evidence.previewUrl)">picture_as_pdf</mat-icon>
-                      </div>
-                      <div *ngSwitchCase="'mp4'" class="iconList">
-                        <mat-icon class="customizeIcon" matTooltip="View the uploaded video" matTooltipClass="tooltip"
-                          (click)="openDialog(evidence.previewUrl,'video')">video_file</mat-icon>
-                      </div>
+                      <mat-icon class="evidence-icon"
+                      [matTooltip]="getTooltip(getEvidenceType(evidence.extension))"
+                      (click)="getEvidenceType(evidence.extension) === 'url'? openUrl(evidence): openDialog(evidence.url, getEvidenceType(evidence.extension))">
+                      {{ getIconName(getEvidenceType(evidence.extension), evidence.extension.toLowerCase()) }}
+                    </mat-icon>
                     </ng-container>
                   </div>
                 </div>
@@ -295,19 +277,6 @@
         </div>
       </div>
 
-      <div *ngIf="isModalOpen" class="modal">
-        <div class="modal-content">
-          <header>
-            <h2>{{ "PREVIEW" | translate}}</h2>
-            <button (click)="closeDialog()">{{"CLOSE"|translate}}</button>
-          </header>
-          <div>
-            <img *ngIf="objectType == 'image'" [src]="objectURL" alt="Preview">
-            <video *ngIf="objectType == 'video'" [src]="objectURL" controls></video>
-            <iframe *ngIf="objectType == 'pdf'" [src]="objectURL"></iframe>
-          </div>
-        </div>
-      </div>
     </div>
   </main>
 

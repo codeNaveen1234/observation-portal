@@ -72,22 +72,11 @@
             <div class="evidence-icons">
               <ng-container *ngFor="let evidence of question.evidences">
                 <ng-container [ngSwitch]="evidence.extension">
-                  <mat-icon *ngSwitchCase="'jpg'"
-                            class="evidence-icon"
-                            matTooltip="View the uploaded image"
-                            (click)="openDialog(evidence.url,'image')">image</mat-icon>
-                  <mat-icon *ngSwitchCase="'png'"
-                            class="evidence-icon"
-                            matTooltip="View the uploaded image"
-                            (click)="openDialog(evidence.url,'image')">image</mat-icon>
-                  <mat-icon *ngSwitchCase="'pdf'"
-                            class="evidence-icon"
-                            matTooltip="View PDF"
-                            (click)="openUrl(evidence.url)">picture_as_pdf</mat-icon>
-                  <mat-icon *ngSwitchCase="'mp4'"
-                            class="evidence-icon"
-                            matTooltip="View the uploaded video"
-                            (click)="openDialog(evidence.url,'video')">videocam</mat-icon>
+                  <mat-icon class="evidence-icon"
+                    [matTooltip]="getTooltip(getEvidenceType(evidence.extension))"
+                    (click)="getEvidenceType(evidence.extension) === 'url'? openUrl(evidence): openDialog(evidence.url, getEvidenceType(evidence.extension))">
+                    {{ getIconName(getEvidenceType(evidence.extension), evidence.extension.toLowerCase()) }}
+                  </mat-icon>
                 </ng-container>
               </ng-container>
             </div>

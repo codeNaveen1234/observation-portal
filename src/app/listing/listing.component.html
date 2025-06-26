@@ -60,10 +60,15 @@
           </div>
         </div>
     </div>
-    <div *ngIf="solutionListCount === 0" class="no-data-container">
-      <img src ="/managed-observation-portal/assets/images/no_data.jpg" alt="No data" />
-    </div>
-
+      @if(isOnline){
+        <div *ngIf="solutionListCount === 0" class="no-data-container">
+          <img src="/managed-observation-portal/assets/images/no_data.jpg" alt="No data" />
+        </div>
+      }@else{
+        <div class="offline-no-data-wrapper">
+          <p class="no-data-text">{{"NO_DATA_MSG" | translate}}</p>
+        </div>
+      }
     <div class="fixed-bottom-buttons" *ngIf="!(solutionListCount === 0 || solutionListCount === initialSolutionData?.length)">
       <button mat-raised-button color="accent" (click)="loadData()">{{'LOAD_MORE' | translate}}</button>
     </div>

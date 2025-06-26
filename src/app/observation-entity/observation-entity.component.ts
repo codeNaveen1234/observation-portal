@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { catchError, finalize } from 'rxjs';
 import { MatSelectionListChange } from '@angular/material/list';
 import { UrlParamsService } from '../services/urlParams.service';
+import { NetworkServiceService } from 'network-service';
 @Component({
   selector: 'app-observation-entity',
   standalone: false,
@@ -32,6 +33,7 @@ export class ObservationEntityComponent  {
   loaded = false;
   searchValue: string = "";
   searchAddEntityValue: string = "";
+  isOnline:any;
 
   constructor(
     private apiService: ApiService, 
@@ -40,7 +42,12 @@ export class ObservationEntityComponent  {
     private dialog: MatDialog,
     private urlParamsService:UrlParamsService,
     private route: ActivatedRoute,
-  ) {}
+    private network:NetworkServiceService
+  ) {
+    this.network.isOnline$.subscribe((status: any)=>{
+      this.isOnline=status
+    })
+  }
 
   ngOnInit() {
     this.urlParamsService.parseRouteParams(this.route);

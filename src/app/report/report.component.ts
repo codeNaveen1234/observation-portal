@@ -18,6 +18,9 @@ import {
 } from 'chart.js';
 import { UrlParamsService } from '../services/urlParams.service';
 import { QueryParamsService } from '../services/queryParams.service';
+import { SurveyPreviewComponent } from '../shared/survey-preview/survey-preview.component';
+import { MatDialog } from '@angular/material/dialog';
+import { UtilsService } from '../services/utils.service';
 Chart.register(PieController, BarController, ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 @Component({
@@ -61,6 +64,8 @@ export class ReportComponent implements OnInit {
     private urlParamsService: UrlParamsService,
     private route:ActivatedRoute,
     private queryParamsService: QueryParamsService,
+    private dialog: MatDialog,
+    private utils:UtilsService
   ) {}
 
   ngOnInit() {
@@ -83,7 +88,7 @@ export class ReportComponent implements OnInit {
     this.totalSubmissions = [];
     this.allQuestions = [];
     this.reportDetails = [];
-    this.loaded = false;
+    this.loaded = true;
 
     let payload = this.createPayload(submissionId, criteria, pdf);
 
@@ -260,10 +265,14 @@ export class ReportComponent implements OnInit {
     return options;
   }
 
-  openDialog(url: string, type: string) {
-    this.objectURL = url;
-    this.objectType = type;
-    this.isModalOpen = true;
+async openDialog(url: any, type: string) {
+    this.dialog.open(SurveyPreviewComponent, {
+      width: '400px',
+      data: {
+        objectType:type,
+        objectUrl:url
+      }
+    })
   }
 
   closeDialog() {
@@ -311,9 +320,19 @@ export class ReportComponent implements OnInit {
     this.applyFilter(true);
   }
 
-  openUrl(url: string) {
-    window.open(url, '_blank');
-  }
+async openUrl(evidence: any) {
+      const shareOptions = {
+        type: "preview",
+        title:`evidence.${evidence.extension}`,
+        fileType: evidence.extension,
+        isBase64: false,
+        url: evidence.url
+      }
+      let response = await this.utils.postMessageListener(shareOptions)
+      if(!response){
+        window.open(evidence.url, '_blank');
+      }
+    }
 
   isChartNotEmpty(chart: any, i?:any) {
     return Object.keys(chart).length > 0 ? true : false;
@@ -324,7 +343,7 @@ export class ReportComponent implements OnInit {
     type == 'questions' ? this.loadObservationReport(this.submissionId, false, false) : this.loadObservationReport(this.submissionId, true, false);
   }
 
-  downloadPDF(submissionId: string, criteria: boolean, pdf: boolean) {
+  downloadPDF(submissionId: string, criteria: boolean, pdf: boolean,type:any) {
     this.loaded = false;
     let payload = this.createPayload(submissionId, criteria, pdf);
     this.apiService.post(urlConfig.survey.reportUrl, payload)
@@ -334,11 +353,40 @@ export class ReportComponent implements OnInit {
           throw new Error('Could not fetch the details');
         })
       )
-      .subscribe((res: any) => {
-        this.openUrl(res?.pdfUrl);
+      .subscribe(async (res: any) => {
+        if(type === 'download'){
+        const shareOptions = {
+          type: "preview",
+          title: "data.pdf",
+          fileType: "pdf",
+          isBase64: false,
+          url: res?.pdfUrl
+        }
+
+        let response = await this.utils.postMessageListener(shareOptions)
+        if(!response){
+          this.openUrl(res?.pdfUrl)
+        }
+      }else{
+        const shareOptions = {
+            title: this.generateName(),
+            text: 'Check out this observation report',
+            url: res.pdfUrl,
+            type:"share"
+          };
+        let response = await this.utils.postMessageListener(shareOptions)
+        if(!response){
+          this.toaster.showToast("SHARE_FAILED", 'danger');
+        }
+      }
       });
   }
-
+  generateName(){
+    const now = new Date();
+    const pad = (n: number) => String(n).padStart(2, '0');
+    const formattedDateTime = `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()}-${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`;
+    return `report_${formattedDateTime}`;
+  }
   onSelectionChange(submissionId: string): void {
     this.submissionId = submissionId;
     this.observationType == 'questions' ? this.loadObservationReport(submissionId, false, false) : this.loadObservationReport(submissionId, true, false);
@@ -347,4 +395,38 @@ export class ReportComponent implements OnInit {
   navigateToObservationLedImpPage(){
     this.router.navigate(['/observation-led-imp'], { state: { improvementProjectSuggestions: this.observationDetails?.improvementProjectSuggestions, programName : this.observationDetails?.programName } });
   }
+
+  getEvidenceType(extension: string): 'image' | 'video' | 'audio' | 'url' | 'unknown' {
+    const ext = extension.toLowerCase();
+    const imageExts = ['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif', 'hevc'];
+    const videoExts = ['mp4', 'avi', 'flv', '3gp', 'm4v', 'mkv', 'mov', 'ogg', 'webm', 'wmv'];
+    const audioExts = ['mp3', 'wav', 'mpeg'];
+    const urlExts = ['pdf', 'csv', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'txt'];
+  
+    if (imageExts.includes(ext)) return 'image';
+    if (videoExts.includes(ext)) return 'video';
+    if (audioExts.includes(ext)) return 'audio';
+    if (urlExts.includes(ext)) return 'url';
+    return 'unknown';
+  }
+  
+  getTooltip(type: string): string {
+    switch (type) {
+      case 'image': return 'View image';
+      case 'video': return 'View video';
+      case 'audio': return 'Play audio';
+      case 'url': return 'Open file';
+      default: return 'Unknown file';
+    }
+  }
+  
+  getIconName(type: string, ext: string): string {
+    if (type === 'image') return 'image';
+    if (type === 'video') return 'videocam';
+    if (type === 'audio') return 'audiotrack';
+    if (ext === 'pdf') return 'picture_as_pdf';
+    if (type === 'url') return 'article';
+    return 'insert_drive_file';
+  }
+
 }

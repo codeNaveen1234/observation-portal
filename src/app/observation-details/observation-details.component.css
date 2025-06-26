@@ -145,10 +145,6 @@
     color: green;
   }
 
-  .downloaded-text{
-    /* color: grey; */
-  }
-
   .margin-right-spacing{
     margin-right: 20px !important;
   }
@@ -156,4 +152,15 @@
 .actions-buttons{
   display: flex;
   flex-direction: row;
+}
+.dialog-title-with-close {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-icon {
+  margin: 1rem;
+  cursor: pointer;
+  color: var(--color-dark);
 }

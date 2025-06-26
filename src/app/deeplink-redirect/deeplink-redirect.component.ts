@@ -6,6 +6,7 @@ import { ToastService } from '../services/toast.service';
 import { NetworkServiceService } from 'network-service';
 import { Location } from '@angular/common';
 import { catchError } from 'rxjs/operators';
+import { UtilsService } from '../services/utils.service';
 
 @Component({
   selector: 'app-deeplink-redirect',
@@ -24,22 +25,19 @@ export class DeeplinkRedirectComponent {
     private apiService : ApiService,
     private toastService :ToastService,
     private network:NetworkServiceService,
-    private location: Location
+    private location: Location,
+    private utils:UtilsService
   ) {}
 
   ngOnInit() {
     this.network.isOnline$.subscribe(status => this.isOnline = status);
     window.addEventListener('message', this.handleMessage);
-    this.route.paramMap.subscribe((param:any)=>{
+    this.route.paramMap.subscribe(async (param:any)=>{
       this.type = param.get("type")
       this.linkId = param.get("id")
       if(!this.isOnline){
         this.toastService.showToast('NETWORK_OFFLINE','danger')
         return
-      }
-      if (!this.apiService.profileData) {
-        this.router.navigate([`/listing/${this.type}`]);
-        return;
       }
       this.checkLinkType()
     })
@@ -115,14 +113,16 @@ export class DeeplinkRedirectComponent {
         resp?.assessment?.name,
         resp?.solution?._id
       ],{
-        state:{data:{...resp,solutionType:this.type,isSurvey:false}}
-      });
+        state:{data:{...resp,solutionType:this.type,isSurvey:false}},
+        replaceUrl:true
+    });
     } else {
       this.router.navigate(['questionnaire'], {
         queryParams:{
           solutionType:this.type,
         },
-        state:{ data:{...resp,isSurvey:false}}
+        state:{ data:{...resp,isSurvey:false}},
+        replaceUrl:true
       });
     }
   }
@@ -196,7 +196,9 @@ export class DeeplinkRedirectComponent {
         solutionId:data?.solution?._id,
         solutionType:this.type
       },
-      state:{data:{...data,isSurvey:true}}
+      state:{data:{...data,isSurvey:true},
+    },
+    replaceUrl:true
     });
   }
 
