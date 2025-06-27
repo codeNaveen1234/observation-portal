@@ -428,5 +428,17 @@ async openUrl(evidence: any) {
     if (type === 'url') return 'article';
     return 'insert_drive_file';
   }
+  allEvidenceClick(question:any){
+    const queryParams = {
+      submissionId: this.submissionId,
+      observationId: this.observationId,
+      entityId: this.entityId,
+      questionExternalId: question?.order,
+      entityType: this.entityType,
+    };
+    this.router.navigate(['viewAllEvidences'],{
+      queryParams:queryParams
+    })
+  }
 
 }

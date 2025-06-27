@@ -13,6 +13,7 @@ import { ObservationAsTaskComponent } from './observation-as-task/observation-as
 import { DownloadsComponent } from './downloads/downloads.component';
 import { SurveyReportsComponent } from './survey-reports/survey-reports.component';
 import { SurveyExpiredComponent } from './survey-expired/survey-expired.component';
+import { ViewEvidencesComponent } from './shared/view-evidences/view-evidences.component';
 
 const routes: Routes = [ 
   { path: APP_ROUTES.LISTING, component: ListingComponent },
@@ -27,7 +28,8 @@ const routes: Routes = [
   { path: APP_ROUTES.OBSERVATION_AS_TASK,component:ObservationAsTaskComponent},
   { path: APP_ROUTES.DOWNLOADS,component:DownloadsComponent},
   { path:APP_ROUTES.SURVEYREPORTS,component:SurveyReportsComponent},
-  {path:APP_ROUTES.SURVEYEXPIRED,component:SurveyExpiredComponent},
+  { path:APP_ROUTES.SURVEYEXPIRED,component:SurveyExpiredComponent},
+  { path:APP_ROUTES.VIEWALLEVIDENCES,component:ViewEvidencesComponent},
   { path: '', redirectTo: 'listing/observation', pathMatch: 'full' },
 ];
 

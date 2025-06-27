@@ -84,5 +84,12 @@
     "DOWNLOADED":"Downloaded",
     "ECM_NOT_APPLICABLE":"ECM Not Applicable",
     "SHARE_PDF":"Share As PDF",
-    "SHARE_FAILED":"Failed to share"
+    "SHARE_FAILED":"Failed to share",
+    "VIEW_ALL_EVIDNECES":"View All Evidence",
+    "ALLEVIDENCES":"Evidences",
+    "REMARKS":"Remarks",
+    "IMAGES": "Images",
+    "VIDEOS": "Videos",
+    "DOCUMENTS": "Documents",
+    "AUDIOS": "Audios"
 }

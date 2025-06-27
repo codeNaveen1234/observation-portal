@@ -105,7 +105,7 @@ export class DeeplinkRedirectComponent {
   }
 
   async redirectObservation(resp) {
-    await this.router.navigate([`/listing/${this.type}`]);
+    await this.router.navigate([`/listing/${this.type}`],{replaceUrl:true});
     if (resp?.solution?.isRubricDriven) {
       this.router.navigate([
         'domain',
@@ -114,15 +114,13 @@ export class DeeplinkRedirectComponent {
         resp?.solution?._id
       ],{
         state:{data:{...resp,solutionType:this.type,isSurvey:false}},
-        replaceUrl:true
     });
     } else {
       this.router.navigate(['questionnaire'], {
         queryParams:{
           solutionType:this.type,
         },
-        state:{ data:{...resp,isSurvey:false}},
-        replaceUrl:true
+        state:{ data:{...resp,isSurvey:false}}
       });
     }
   }
@@ -188,7 +186,7 @@ export class DeeplinkRedirectComponent {
   }
 
   async navigateToSurvey(data:any){
-    await this.router.navigate([`/listing/${this.type}`]);
+    await this.router.navigate([`/listing/${this.type}`,{replaceUrl:true}]);
     this.router.navigate(['questionnaire'], {
       queryParams:{
         index: 0, 
@@ -198,7 +196,6 @@ export class DeeplinkRedirectComponent {
       },
       state:{data:{...data,isSurvey:true},
     },
-    replaceUrl:true
     });
   }
 

@@ -155,7 +155,10 @@ export class ObservationDomainComponent implements OnInit {
       queryParams: {
         solutionType: this.stateData?.solutionType
       },
-      state: { data: this.stateData }
+      state: { data: {
+        ...this.stateData,
+        isSurvey:false
+      }}
     }) :
       this.router.navigate(['questionnaire'], {
         queryParams: { observationId: this.observationId, entityId: this.entityId, submissionNumber: this.submissionNumber, evidenceCode: data?.code, index: index, submissionId: this.submissionId }

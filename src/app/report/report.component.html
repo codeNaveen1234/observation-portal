@@ -107,7 +107,7 @@
             </div>
 
             <div class="evidence-section" *ngIf="question?.evidences && question?.evidences?.length">
-              <h4>{{ 'EVIDENCES' | translate }} {{ question?.evidences?.length }}</h4>
+              <h4>{{ 'EVIDENCES' | translate }} {{ question?.evidence_count }}</h4>
               <div class="evidence-icons">
                 <div *ngFor="let evidence of question?.evidences" class="iconList">
                   <ng-container [ngSwitch]="evidence.extension">
@@ -117,9 +117,14 @@
                     {{ getIconName(getEvidenceType(evidence.extension), evidence.extension.toLowerCase()) }}
                   </mat-icon>
                   </ng-container>
+                  </div>
+                </div>
+                <div class="view-all-wrapper" *ngIf="question?.evidence_count > 3">
+                  <button class="view-all-link" (click)="allEvidenceClick(question)">
+                    {{ 'VIEW_ALL_EVIDNECES' | translate }}
+                  </button>
                 </div>
               </div>
-            </div>
 
           </div>
 
