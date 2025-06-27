@@ -186,7 +186,7 @@ export class DeeplinkRedirectComponent {
   }
 
   async navigateToSurvey(data:any){
-    await this.router.navigate([`/listing/${this.type}`,{replaceUrl:true}]);
+    // await this.router.navigate([`/listing/${this.type}`,{replaceUrl:true}]);
     this.router.navigate(['questionnaire'], {
       queryParams:{
         index: 0, 
@@ -196,6 +196,7 @@ export class DeeplinkRedirectComponent {
       },
       state:{data:{...data,isSurvey:true},
     },
+    replaceUrl:true
     });
   }
 
