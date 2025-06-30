@@ -58,6 +58,7 @@ export class ObservationDomainComponent implements OnInit {
   }
 
   async ngOnInit() {
+    window.addEventListener('message', this.handleMessage);
     this.stateData = history.state?.data;
     if (this.stateData) {
       this.mapDataToVariables(this.stateData)
@@ -225,4 +226,15 @@ export class ObservationDomainComponent implements OnInit {
         }
       });
     }
+    handleMessage = async(event: MessageEvent) => {
+      if (event.data?.type === 'START') {
+        const stateData = event.data.data;
+          if(stateData?.solution?.isRubricDriven){
+            this.router.navigate([
+            'entityList',
+            stateData?.solution?._id,
+            stateData?.solution?.name]);
+          }
+      }
+    };
 }
