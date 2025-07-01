@@ -60,6 +60,7 @@ export class ObservationDomainComponent implements OnInit {
   async ngOnInit() {
     window.addEventListener('message', this.handleMessage);
     this.stateData = history.state?.data;
+    console.log("domain", this.stateData)
     if (this.stateData) {
       this.mapDataToVariables(this.stateData)
     } else {
@@ -162,7 +163,10 @@ export class ObservationDomainComponent implements OnInit {
       }}
     }) :
       this.router.navigate(['questionnaire'], {
-        queryParams: { observationId: this.observationId, entityId: this.entityId, submissionNumber: this.submissionNumber, evidenceCode: data?.code, index: index, submissionId: this.submissionId }
+        queryParams: { observationId: this.observationId, entityId: this.entityId, submissionNumber: this.submissionNumber, evidenceCode: data?.code, index: index, submissionId: this.submissionId },
+        state: { data: {
+          isSurvey:true
+        }}
       });
   }
 
