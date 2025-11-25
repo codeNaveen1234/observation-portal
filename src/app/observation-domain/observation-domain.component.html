@@ -36,7 +36,7 @@
               <p>{{ 'STATUS' | translate }}:{{"NOT_APPLICABLE" | translate}}</p>
               }@else{
               <p>{{ 'STATUS' | translate }}:
-                {{ !entity?.progressStatus ? ('NOT_STARTED' | translate) : (entity?.progressStatus | translate)}}
+                {{ entity?.progressStatus ? (entity?.progressStatus | translate):(entity?.isSubmitted ? ('COMPLETED' | translate) : ('NOT_STARTED' | translate) ) }}
               </p>
               }
             </div>
