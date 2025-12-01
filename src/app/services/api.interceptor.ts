@@ -126,8 +126,8 @@ export class ApiInterceptor implements HttpInterceptor {
     }
 
     if (error.status === 401) {
-      // localStorage.removeItem('accToken');
-      // localStorage.removeItem('headers');
+      localStorage.removeItem('accToken');
+      localStorage.removeItem('headers');
 
       this.redirectToLogin();
     }
