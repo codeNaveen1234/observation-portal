@@ -106,6 +106,9 @@ export class ApiInterceptor implements HttpInterceptor {
       return throwError(() => new Error('User is offline'));
     }
     if(error.status === 401 || error.status === 403){
+      let userId = localStorage.getItem("userId") || ''
+      localStorage.clear()
+      localStorage.setItem("userIdCopy",userId)
       const data = {
         type:"redirect",
         pathType:"login"
