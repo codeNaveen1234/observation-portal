@@ -61,6 +61,7 @@ import { SurveyPreviewComponent } from './shared/survey-preview/survey-preview.c
 import { SurveyExpiredComponent } from './survey-expired/survey-expired.component';
 import { ViewEvidencesComponent } from './shared/view-evidences/view-evidences.component';
 import { GenericDialogComponent } from './shared/generic-dialog/generic-dialog.component';
+import { DbService } from './services/db.service';
 
 export function translateHttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -145,11 +146,23 @@ export function translateHttpLoaderFactory(httpClient: HttpClient) {
   
 })
 export class AppModule { 
-  constructor(private translate:TranslateService){
+  constructor(private translate:TranslateService, private db: DbService){
     this.setLanguage();
+    this.handleStoredData()
   }
   setLanguage() {
     this.translate.setDefaultLang('en');
     this.translate.use('en'); 
+  }
+
+  handleStoredData(){
+    setTimeout(() => {
+      let oldUserId = localStorage.getItem("userIdCopy")
+      let currentUserId = localStorage.getItem("userId")
+      if (!oldUserId) return
+      if(oldUserId != currentUserId){
+        this.db.clearDb()
+      }
+    }, 1000);
   }
 }
