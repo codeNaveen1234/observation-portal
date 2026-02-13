@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
-import { firstValueFrom, Observable } from 'rxjs';
+import { catchError, firstValueFrom, map, Observable, of } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
 import { GenericDialogComponent } from '../shared/generic-dialog/generic-dialog.component';
 import { Location } from '@angular/common';
+import { ApiService } from './api.service';
+import * as urlConfig from '../constants/url-config.json';
+
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +19,9 @@ export class UtilsService {
 
  cloudStorageUpload?(payload): Observable<any>;
 
-  constructor(private translate: TranslateService, private dialog: MatDialog, private location: Location) {}
+  constructor(private translate: TranslateService, private dialog: MatDialog, private location: Location,
+    private apiService: ApiService,
+  ) {}
 
   isEmpty(value: any): boolean {
     if (value == null) {
@@ -117,24 +122,54 @@ export class UtilsService {
     });
   }
 
-  async getProfileData(){
-    let dialogData = {
-      title: "ALERT",
-      message:"UPDATE_PROFILE_MSG",
-      actionButtons:[
-        { label: "UPDATE_PROFILE", action: true, class: "dialog-primary-button" }
-      ],
-      disableClose: true
-    }
-    await new Promise(resolve => setTimeout(resolve, 100));
-    let data = await JSON.parse(localStorage.getItem('profileData'))
-    if(data && data?.state){
-      return data
-    }else{
-      this.showProfileUpdateAlert(dialogData)
-      return null
-    }
+getProfileData(): Observable<any | null> {
+  const dialogData = {
+    title: "ALERT",
+    message: "UPDATE_PROFILE_MSG",
+    actionButtons: [
+      {
+        label: "UPDATE_PROFILE",
+        action: true,
+        class: "dialog-primary-button"
+      }
+    ],
+    disableClose: true
+  };
+
+  const profileData = JSON.parse(localStorage.getItem('profileData') || '{}');
+
+  if (!profileData) {
+    this.showProfileUpdateAlert(dialogData);
+    return of(null);
   }
+
+
+  return this.apiService.get(
+      urlConfig.entityTypesByLocationAndRole + `${profileData?.state}?role=${profileData?.role}`
+    ).pipe(
+    map((apiResponse: any) => {
+      const requiredFields: string[] = apiResponse?.result || [];
+      const isValid = requiredFields.every(field =>
+        profileData?.[field] !== null &&
+        profileData?.[field] !== undefined &&
+        profileData?.[field] !== ''
+      );
+
+      if (isValid) {
+        return profileData;
+      } else {
+        this.showProfileUpdateAlert(dialogData);
+        return null;
+      }
+    }),
+    catchError(error => {
+      console.error('Profile validation error:', error);
+      this.showProfileUpdateAlert(dialogData);
+      return of(null);
+    })
+  );
+}
+
 
   async showProfileUpdateAlert(data: any){
     const popupRef = this.dialog.open(GenericDialogComponent,{

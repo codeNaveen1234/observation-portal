@@ -82,10 +82,12 @@ export class ListingComponent implements OnInit {
   async loadInitialData() {
     this.page = 1;
     this.solutionList = [];
-    this.profileData = await this.utils.getProfileData()
-    if(this.profileData){
+    this.utils.getProfileData().subscribe(profile => {
+    this.profileData = profile;
+    if (this.profileData) {
       this.getListData();
     }
+  });
   }
 
   handleKeyDown(event: KeyboardEvent): void {
