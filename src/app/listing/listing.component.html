@@ -1,9 +1,9 @@
 
 <div class="content" *ngIf="loaded">
     <div class="list-title">
-        <p class="profile-details">
+<p class="profile-details">
   {{ profileLine }}
-  <i class="material-icons edit-icon">edit</i>
+  <i class="material-icons edit-icon" (click)="onEditProfile()">edit</i>
 </p>
       <div class="list-heading">
         <h1 class="heading">{{pageTitle}}</h1>

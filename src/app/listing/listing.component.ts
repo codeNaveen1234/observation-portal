@@ -293,4 +293,9 @@ async loadInitialData() {
     element.tagClass = statusInfo.tagClass;
     element.statusLabel = statusInfo.statusLabel;
   } 
+
+  onEditProfile() {
+  window.location.href = '/managed-learn/profile';
+}
+
 }
