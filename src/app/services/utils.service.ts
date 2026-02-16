@@ -123,6 +123,7 @@ export class UtilsService {
   }
 
 getProfileData(): Observable<any | null> {
+
   const dialogData = {
     title: "ALERT",
     message: "UPDATE_PROFILE_MSG",
@@ -136,38 +137,105 @@ getProfileData(): Observable<any | null> {
     disableClose: true
   };
 
-  const profileData = JSON.parse(localStorage.getItem('profileData') || '{}');
+  const profileData = {
+    state: {
+      id: "b7416eb6-56b1-492a-a85f-97988edcd693",
+      name: "State Test"
+    },
+    district: {
+      id: "d1f09cff-24d2-4c47-8400-2c59c5253f95",
+      name: "District Test"
+    },
+    block: {
+      id: "46917bef-9147-47fd-9a8d-9d6beba26810",
+      name: "Block Test"
+    },
+    cluster: {
+      id: "c64b0153-58f3-407c-b349-a339f9e34b7e",
+      name: "Cluster Test"
+    },
+    // cluster:null,
+    school: {
+      id: "c5447cf5-e32e-4f28-b9a8-2c0ae2fff319",
+      name: "School Test"
+    },
+    role: "DEO,SPD,PRINCIPAL,HM,HT,PT"
+  };
 
-  if (!profileData) {
+  if (!profileData || !profileData.state?.id || !profileData.role) {
     this.showProfileUpdateAlert(dialogData);
     return of(null);
   }
 
+  const stateId = profileData.state.id;
+  const role = profileData.role;
 
-  return this.apiService.get(
-      urlConfig.entityTypesByLocationAndRole + `${profileData?.state}?role=${profileData?.role}`
-    ).pipe(
-    map((apiResponse: any) => {
-      const requiredFields: string[] = apiResponse?.result || [];
-      const isValid = requiredFields.every(field =>
-        profileData?.[field] !== null &&
-        profileData?.[field] !== undefined &&
-        profileData?.[field] !== ''
-      );
+  const cachedStateData = JSON.parse(localStorage.getItem(stateId) || '{}');
 
-      if (isValid) {
-        return profileData;
-      } else {
-        this.showProfileUpdateAlert(dialogData);
-        return null;
-      }
-    }),
-    catchError(error => {
-      console.error('Profile validation error:', error);
+  if (cachedStateData && cachedStateData[role]) {
+
+    console.log('Using cached required fields');
+
+    const requiredFields: string[] = cachedStateData[role];
+
+    const missingFields = requiredFields.filter(field =>
+      this.isInvalidField(profileData?.[field])
+    );
+
+    if (missingFields.length > 0) {
+      console.log('Missing fields (cache):', missingFields);
       this.showProfileUpdateAlert(dialogData);
       return of(null);
-    })
-  );
+    }
+
+    return of(profileData);
+  }
+
+  return this.apiService
+    .get(
+      urlConfig.entityTypesByLocationAndRole +
+      `${stateId}?role=${role}`
+    )
+    .pipe(
+
+      map((apiResponse: any) => {
+
+        const requiredFields: string[] = apiResponse?.result || [];
+        cachedStateData[role] = requiredFields;
+        localStorage.setItem(stateId, JSON.stringify(cachedStateData));
+        const missingFields = requiredFields.filter(field =>
+          this.isInvalidField(profileData?.[field])
+        );
+
+        if (missingFields.length > 0) {
+          console.log('Missing fields (API):', missingFields);
+          this.showProfileUpdateAlert(dialogData);
+          return null;
+        }
+
+        return profileData;
+      }),
+
+      catchError(error => {
+        console.error('Profile validation error:', error);
+        this.showProfileUpdateAlert(dialogData);
+        return of(null);
+      })
+    );
+}
+
+
+private isInvalidField(value: any): boolean {
+
+  if (value === null || value === undefined) return true;
+
+  if (typeof value !== 'object') return true;
+
+  if (!value.id || value.id === null || value.id === undefined) return true;
+
+  if (typeof value.id === 'string' && value.id.trim() === '') return true;
+
+  return false;
 }
 
 
