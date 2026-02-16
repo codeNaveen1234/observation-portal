@@ -137,30 +137,7 @@ getProfileData(): Observable<any | null> {
     disableClose: true
   };
 
-  const profileData = {
-    state: {
-      id: "b7416eb6-56b1-492a-a85f-97988edcd693",
-      name: "State Test"
-    },
-    district: {
-      id: "d1f09cff-24d2-4c47-8400-2c59c5253f95",
-      name: "District Test"
-    },
-    block: {
-      id: "46917bef-9147-47fd-9a8d-9d6beba26810",
-      name: "Block Test"
-    },
-    cluster: {
-      id: "c64b0153-58f3-407c-b349-a339f9e34b7e",
-      name: "Cluster Test"
-    },
-    // cluster:null,
-    school: {
-      id: "c5447cf5-e32e-4f28-b9a8-2c0ae2fff319",
-      name: "School Test"
-    },
-    role: "DEO,SPD,PRINCIPAL,HM,HT,PT"
-  };
+const profileData = JSON.parse(localStorage.getItem('profileData') || 'null');
 
   if (!profileData || !profileData.state?.id || !profileData.role) {
     this.showProfileUpdateAlert(dialogData);
@@ -174,8 +151,6 @@ getProfileData(): Observable<any | null> {
 
   if (cachedStateData && cachedStateData[role]) {
 
-    console.log('Using cached required fields');
-
     const requiredFields: string[] = cachedStateData[role];
 
     const missingFields = requiredFields.filter(field =>
@@ -183,7 +158,6 @@ getProfileData(): Observable<any | null> {
     );
 
     if (missingFields.length > 0) {
-      console.log('Missing fields (cache):', missingFields);
       this.showProfileUpdateAlert(dialogData);
       return of(null);
     }
@@ -208,7 +182,6 @@ getProfileData(): Observable<any | null> {
         );
 
         if (missingFields.length > 0) {
-          console.log('Missing fields (API):', missingFields);
           this.showProfileUpdateAlert(dialogData);
           return null;
         }
