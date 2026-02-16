@@ -7,6 +7,7 @@ import { GenericDialogComponent } from '../shared/generic-dialog/generic-dialog.
 import { Location } from '@angular/common';
 import { ApiService } from './api.service';
 import * as urlConfig from '../constants/url-config.json';
+import { ToastService } from './toast.service';
 
 
 @Injectable({
@@ -20,7 +21,7 @@ export class UtilsService {
  cloudStorageUpload?(payload): Observable<any>;
 
   constructor(private translate: TranslateService, private dialog: MatDialog, private location: Location,
-    private apiService: ApiService,
+    private apiService: ApiService, private toaster: ToastService,
   ) {}
 
   isEmpty(value: any): boolean {
@@ -147,11 +148,11 @@ const profileData = JSON.parse(localStorage.getItem('profileData') || 'null');
   const stateId = profileData.state.id;
   const role = profileData.role;
 
-  const cachedStateData = JSON.parse(localStorage.getItem(stateId) || '{}');
+  const mandatoryFields = JSON.parse(localStorage.getItem(stateId) || '{}');
 
-  if (cachedStateData && cachedStateData[role]) {
+  if (mandatoryFields && mandatoryFields[role]) {
 
-    const requiredFields: string[] = cachedStateData[role];
+    const requiredFields: string[] = mandatoryFields[role];
 
     const missingFields = requiredFields.filter(field =>
       this.isInvalidField(profileData?.[field])
@@ -171,12 +172,11 @@ const profileData = JSON.parse(localStorage.getItem('profileData') || 'null');
       `${stateId}?role=${role}`
     )
     .pipe(
-      retry(1),
       map((apiResponse: any) => {
 
         const requiredFields: string[] = apiResponse?.result || [];
-        cachedStateData[role] = requiredFields;
-        localStorage.setItem(stateId, JSON.stringify(cachedStateData));
+        mandatoryFields[role] = requiredFields;
+        localStorage.setItem(stateId, JSON.stringify(mandatoryFields));
         const missingFields = requiredFields.filter(field =>
           this.isInvalidField(profileData?.[field])
         );
@@ -190,6 +190,7 @@ const profileData = JSON.parse(localStorage.getItem('profileData') || 'null');
       }),
 
       catchError(error => {
+        this.toaster.showToast(error?.error?.message, 'Close');
         console.error('Profile validation error:', error);
         return of(null);
       })
