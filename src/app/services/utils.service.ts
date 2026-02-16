@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { catchError, firstValueFrom, map, Observable, of } from 'rxjs';
+import { catchError, firstValueFrom, map, Observable, of, retry } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -171,7 +171,7 @@ const profileData = JSON.parse(localStorage.getItem('profileData') || 'null');
       `${stateId}?role=${role}`
     )
     .pipe(
-
+      retry(1),
       map((apiResponse: any) => {
 
         const requiredFields: string[] = apiResponse?.result || [];
@@ -191,7 +191,6 @@ const profileData = JSON.parse(localStorage.getItem('profileData') || 'null');
 
       catchError(error => {
         console.error('Profile validation error:', error);
-        this.showProfileUpdateAlert(dialogData);
         return of(null);
       })
     );
