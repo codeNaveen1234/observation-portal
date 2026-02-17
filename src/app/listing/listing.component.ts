@@ -83,12 +83,12 @@ export class ListingComponent implements OnInit {
 async loadInitialData() {
   this.page = 1;
   this.solutionList = [];
-  this.utils.getProfileData().subscribe(profile => {
-    this.profileData = profile;
-    if (this.profileData) {
-      this.getListData();
-      this.profileInfo = this.utils.buildProfileInfo(this.profileData);
-    }
+  this.utils.getProfileData().subscribe(response => {
+    if (!response) return;
+
+    this.profileData = response?.normalizedProfile;
+    this.profileInfo = response?.profileInfo;
+    this.getListData();
   });
 }
 

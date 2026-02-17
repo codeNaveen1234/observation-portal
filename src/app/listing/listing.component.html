@@ -1,10 +1,12 @@
 
 <div class="content" *ngIf="loaded">
     <div class="list-title">
-<p class="profile-details" *ngIf="profileInfo">
+      @if (profileInfo) {
+<p class="profile-details">
   {{ profileInfo }}
   <i class="material-icons edit-icon" (click)="onEditProfile()">edit</i>
 </p>
+      }
       <div class="list-heading">
         <h1 class="heading">{{pageTitle}}</h1>
         <p class="heading-paragraph">{{description}}</p>

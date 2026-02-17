@@ -123,7 +123,7 @@ export class UtilsService {
     });
   }
 
-getProfileData(): Observable<any | null> {
+getProfileData(): Observable<{ normalizedProfile: any, profileInfo: string } | null> {
 
   const dialogData = {
     title: "ALERT",
@@ -138,57 +138,51 @@ getProfileData(): Observable<any | null> {
     disableClose: true
   };
 
-const profileData = JSON.parse(localStorage.getItem('profileData') || 'null');
+  const rawProfileData = this.getRawProfileFromStorage();
 
-  if (!profileData || !profileData.state?.id || !profileData.role) {
+  if (!rawProfileData?.state?.id || !rawProfileData?.role) {
     this.showProfileUpdateAlert(dialogData);
     return of(null);
   }
 
-  const stateId = profileData.state.id;
-  const role = profileData.role;
+  const normalizedRole = this.normalizeRole(rawProfileData.role);
+
+  const stateId = rawProfileData.state.id;
 
   const mandatoryFields = JSON.parse(localStorage.getItem(stateId) || '{}');
 
-  if (mandatoryFields && mandatoryFields[role]) {
+  const validateProfile = (requiredFields: string[]) => {
 
-    const requiredFields: string[] = mandatoryFields[role];
-
-    const missingFields = requiredFields.filter(field =>
-      this.isInvalidField(profileData?.[field])
-    );
-
-    if (missingFields.length > 0) {
+    if (this.hasMissingFields(rawProfileData, requiredFields)) {
       this.showProfileUpdateAlert(dialogData);
-      return of(null);
+      return null;
     }
 
-    return of(profileData);
+    return {
+      normalizedProfile: this.normalizeProfileData({
+        ...rawProfileData,
+        role: normalizedRole
+      }),
+      profileInfo: this.buildProfileInfo(rawProfileData)
+    };
+  };
+
+  if (mandatoryFields?.[normalizedRole]) {
+    return of(validateProfile(mandatoryFields[normalizedRole]));
   }
 
   return this.apiService
-    .get(
-      urlConfig.entityTypesByLocationAndRole +
-      `${stateId}?role=${role}`
-    )
+    .get(`${urlConfig.entityTypesByLocationAndRole}${stateId}?role=${normalizedRole}`)
     .pipe(
       map((apiResponse: any) => {
 
         const requiredFields: string[] = apiResponse?.result || [];
-        mandatoryFields[role] = requiredFields;
+
+        mandatoryFields[normalizedRole] = requiredFields;
         localStorage.setItem(stateId, JSON.stringify(mandatoryFields));
-        const missingFields = requiredFields.filter(field =>
-          this.isInvalidField(profileData?.[field])
-        );
 
-        if (missingFields.length > 0) {
-          this.showProfileUpdateAlert(dialogData);
-          return null;
-        }
-
-        return profileData;
+        return validateProfile(requiredFields);
       }),
-
       catchError(error => {
         this.toaster.showToast(error?.error?.message, 'Close');
         console.error('Profile validation error:', error);
@@ -196,6 +190,21 @@ const profileData = JSON.parse(localStorage.getItem('profileData') || 'null');
       })
     );
 }
+
+private getRawProfileFromStorage(): any {
+  return JSON.parse(localStorage.getItem('profileData') || 'null');
+}
+
+private normalizeRole(role: string): string {
+  if (!role) return '';
+
+  return role
+    .split(',')
+    .map(r => r.trim().toLowerCase())
+    .sort()
+    .join(',');
+}
+
 
 buildProfileInfo(
   profileData: any,
@@ -207,19 +216,17 @@ buildProfileInfo(
 
   const values: string[] = [];
 
-  for (const key of orderedKeys) {
-    const field = profileData[key];
-    if (!this.isInvalidField(field) && field.name) {
-      values.push(field.name);
+  orderedKeys.forEach(key => {
+    if (profileData[key]?.name) {
+      values.push(profileData[key].name);
     }
-  }
+  });
 
   Object.entries(profileData).forEach(([key, value]: [string, any]) => {
     if (
       !orderedKeys.includes(key) &&
       !excludeKeys.includes(key) &&
-      !this.isInvalidField(value) &&
-      value.name
+      value?.name
     ) {
       values.push(value.name);
     }
@@ -228,19 +235,25 @@ buildProfileInfo(
   return values.join(', ');
 }
 
-private isInvalidField(value: any): boolean {
-
-  if (value === null || value === undefined) return true;
-
-  if (typeof value !== 'object') return true;
-
-  if (!value.id || value.id === null || value.id === undefined) return true;
-
-  if (typeof value.id === 'string' && value.id.trim() === '') return true;
-
-  return false;
+private hasMissingFields(profileData: any, requiredFields: string[]): boolean {
+  return requiredFields?.some(field => !profileData?.[field]);
 }
 
+private normalizeProfileData(profileData: any): any {
+  if (!profileData) return null;
+
+  const normalized: any = {};
+
+  Object.entries(profileData).forEach(([key, value]: [string, any]) => {
+    if (value && typeof value === 'object' && 'id' in value) {
+      normalized[key] = value.id;
+    } else {
+      normalized[key] = value;
+    }
+  });
+
+  return normalized;
+}
 
   async showProfileUpdateAlert(data: any){
     const popupRef = this.dialog.open(GenericDialogComponent,{
