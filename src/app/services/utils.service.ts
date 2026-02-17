@@ -197,6 +197,36 @@ const profileData = JSON.parse(localStorage.getItem('profileData') || 'null');
     );
 }
 
+buildProfileInfo(
+  profileData: any,
+  orderedKeys: string[] = ['block', 'school', 'cluster'],
+  excludeKeys: string[] = ['state', 'district']
+): string {
+
+  if (!profileData) return '';
+
+  const values: string[] = [];
+
+  for (const key of orderedKeys) {
+    const field = profileData[key];
+    if (!this.isInvalidField(field) && field.name) {
+      values.push(field.name);
+    }
+  }
+
+  Object.entries(profileData).forEach(([key, value]: [string, any]) => {
+    if (
+      !orderedKeys.includes(key) &&
+      !excludeKeys.includes(key) &&
+      !this.isInvalidField(value) &&
+      value.name
+    ) {
+      values.push(value.name);
+    }
+  });
+
+  return values.join(', ');
+}
 
 private isInvalidField(value: any): boolean {
 

@@ -42,7 +42,7 @@ export class ListingComponent implements OnInit {
   isOnline:any;
   profileData:any
   selectedEntityName:any;
-  profileLine: string = ''; 
+  profileInfo: string = ''; 
   constructor(
     public router: Router,
     private toaster: ToastService,
@@ -87,34 +87,10 @@ async loadInitialData() {
     this.profileData = profile;
     if (this.profileData) {
       this.getListData();
-
-      const fieldOrder = ['block', 'school', 'cluster'];
-
-      const values: string[] = [];
-
-      for (const key of fieldOrder) {
-        const field = this.profileData[key];
-        if (field && typeof field === 'object' && field.id && field.name) {
-          values.push(field.name);
-        }
-      }
-
-      Object.entries(this.profileData).forEach(([key, value]: [string, any]) => {
-        if (
-          !fieldOrder.includes(key) &&              
-          key !== 'state' && key !== 'district' &&
-          value && typeof value === 'object' &&
-          value.id && value.name
-        ) {
-          values.push(value.name);
-        }
-      });
-
-      this.profileLine = values.join(', ');
+      this.profileInfo = this.utils.buildProfileInfo(this.profileData);
     }
   });
 }
-
 
   handleKeyDown(event: KeyboardEvent): void {
     if (event.key === 'Enter') {
@@ -297,5 +273,4 @@ async loadInitialData() {
   onEditProfile() {
   window.location.href = '/managed-learn/profile';
 }
-
 }
