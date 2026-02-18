@@ -42,6 +42,7 @@ export class ListingComponent implements OnInit {
   isOnline:any;
   profileData:any
   selectedEntityName:any;
+  profileInfo: string = ''; 
   constructor(
     public router: Router,
     private toaster: ToastService,
@@ -78,15 +79,18 @@ export class ListingComponent implements OnInit {
       this.description = translatedDesc;
     });
   }
-  
-  async loadInitialData() {
-    this.page = 1;
-    this.solutionList = [];
-    this.profileData = await this.utils.getProfileData()
-    if(this.profileData){
-      this.getListData();
-    }
-  }
+
+async loadInitialData() {
+  this.page = 1;
+  this.solutionList = [];
+  this.utils.getProfileData().subscribe(response => {
+    if (!response) return;
+
+    this.profileData = response?.normalizedProfile;
+    this.profileInfo = response?.profileInfo;
+    this.getListData();
+  });
+}
 
   handleKeyDown(event: KeyboardEvent): void {
     if (event.key === 'Enter') {
@@ -265,4 +269,8 @@ export class ListingComponent implements OnInit {
     element.tagClass = statusInfo.tagClass;
     element.statusLabel = statusInfo.statusLabel;
   } 
+
+  onEditProfile() {
+  window.location.href = '/managed-learn/profile';
+}
 }

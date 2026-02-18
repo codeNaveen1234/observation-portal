@@ -306,6 +306,15 @@
 ::ng-deep .mat-primary .mat-pseudo-checkbox-indeterminate.mat-pseudo-checkbox-minimal::after {
   color: var(--color-primary);
 }
+
+.profile-details{
+  margin: 0px 0px 1rem 0px ;
+}
+
+.edit-icon{
+  font-size: 1rem;
+  cursor: pointer;
+}
   @media (max-width: 48rem) {
     .grid-container {
       grid-template-columns: 1fr;

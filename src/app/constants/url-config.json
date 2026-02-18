@@ -23,5 +23,6 @@
         "templateDetails":"/ml/solutions/mlcore/v1/details/",
         "observationEvidences": "/ml/observations/mlreports/v1/listAllEvidences"
     },
-    "presignedUrl":"/kendra/cloud-services/mlcore/v1/files/preSignedUrls"
+    "presignedUrl":"/kendra/cloud-services/mlcore/v1/files/preSignedUrls",
+    "entityTypesByLocationAndRole":"/kendra/entities/mlcore/v1/entityTypesByLocationAndRole/"
 }

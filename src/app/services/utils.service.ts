@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
-import { firstValueFrom, Observable } from 'rxjs';
+import { catchError, firstValueFrom, map, Observable, of, retry } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
 import { GenericDialogComponent } from '../shared/generic-dialog/generic-dialog.component';
 import { Location } from '@angular/common';
+import { ApiService } from './api.service';
+import * as urlConfig from '../constants/url-config.json';
+import { ToastService } from './toast.service';
+
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +20,9 @@ export class UtilsService {
 
  cloudStorageUpload?(payload): Observable<any>;
 
-  constructor(private translate: TranslateService, private dialog: MatDialog, private location: Location) {}
+  constructor(private translate: TranslateService, private dialog: MatDialog, private location: Location,
+    private apiService: ApiService, private toaster: ToastService,
+  ) {}
 
   isEmpty(value: any): boolean {
     if (value == null) {
@@ -117,24 +123,137 @@ export class UtilsService {
     });
   }
 
-  async getProfileData(){
-    let dialogData = {
-      title: "ALERT",
-      message:"UPDATE_PROFILE_MSG",
-      actionButtons:[
-        { label: "UPDATE_PROFILE", action: true, class: "dialog-primary-button" }
-      ],
-      disableClose: true
-    }
-    await new Promise(resolve => setTimeout(resolve, 100));
-    let data = await JSON.parse(localStorage.getItem('profileData'))
-    if(data && data?.state){
-      return data
-    }else{
-      this.showProfileUpdateAlert(dialogData)
-      return null
-    }
+getProfileData(): Observable<{ normalizedProfile: any, profileInfo: string } | null> {
+
+  const dialogData = {
+    title: "ALERT",
+    message: "UPDATE_PROFILE_MSG",
+    actionButtons: [
+      {
+        label: "UPDATE_PROFILE",
+        action: true,
+        class: "dialog-primary-button"
+      }
+    ],
+    disableClose: true
+  };
+
+  const rawProfileData = this.getRawProfileFromStorage();
+
+  if (!rawProfileData?.state?.id || !rawProfileData?.role) {
+    this.showProfileUpdateAlert(dialogData);
+    return of(null);
   }
+
+  const normalizedRole = this.normalizeRole(rawProfileData.role);
+
+  const stateId = rawProfileData.state.id;
+
+  const mandatoryFields = JSON.parse(localStorage.getItem(stateId) || '{}');
+
+  const validateProfile = (requiredFields: string[]) => {
+
+    if (this.hasMissingFields(rawProfileData, requiredFields)) {
+      this.showProfileUpdateAlert(dialogData);
+      return null;
+    }
+
+    return {
+      normalizedProfile: this.normalizeProfileData({
+        ...rawProfileData,
+        role: normalizedRole
+      }),
+      profileInfo: this.buildProfileInfo(rawProfileData)
+    };
+  };
+
+  if (mandatoryFields?.[normalizedRole]) {
+    return of(validateProfile(mandatoryFields[normalizedRole]));
+  }
+
+  return this.apiService
+    .get(`${urlConfig.entityTypesByLocationAndRole}${stateId}?role=${normalizedRole}`)
+    .pipe(
+      map((apiResponse: any) => {
+
+        const requiredFields: string[] = apiResponse?.result || [];
+
+        mandatoryFields[normalizedRole] = requiredFields;
+        localStorage.setItem(stateId, JSON.stringify(mandatoryFields));
+
+        return validateProfile(requiredFields);
+      }),
+      catchError(error => {
+        this.toaster.showToast(error?.error?.message, 'Close');
+        console.error('Profile validation error:', error);
+        return of(null);
+      })
+    );
+}
+
+private getRawProfileFromStorage(): any {
+  return JSON.parse(localStorage.getItem('profileData') || 'null');
+}
+
+private normalizeRole(role: string): string {
+  if (!role) return '';
+
+  return role
+    .split(',')
+    .map(r => r.trim().toLowerCase())
+    .sort()
+    .join(',');
+}
+
+
+buildProfileInfo(
+  profileData: any,
+  orderedKeys: string[] = ['block', 'school', 'cluster'],
+  excludeKeys: string[] = ['state', 'district']
+): string {
+
+  if (!profileData) return '';
+
+  const values: string[] = [];
+
+  orderedKeys.forEach(key => {
+    if (profileData[key]?.name) {
+      values.push(profileData[key].name);
+    }
+  });
+
+  Object.entries(profileData).forEach(([key, value]: [string, any]) => {
+    if (
+      !orderedKeys.includes(key) &&
+      !excludeKeys.includes(key) &&
+      value?.name
+    ) {
+      values.push(value.name);
+    }
+  });
+
+  return values.join(', ');
+}
+
+private hasMissingFields(profileData: any, requiredFields: string[]): boolean {
+  return requiredFields?.some(field => !profileData?.[field]);
+}
+
+private normalizeProfileData(profileData: any): any {
+  if (!profileData) return null;
+
+  const normalized: any = {};
+
+  Object.entries(profileData).forEach(([key, value]: [string, any]) => {
+    if (value && typeof value === 'object' && 'id' in value) {
+      normalized[key] = value.id;
+    } else {
+      normalized[key] = value;
+    }
+  });
+
+  return normalized;
+}
 
   async showProfileUpdateAlert(data: any){
     const popupRef = this.dialog.open(GenericDialogComponent,{
