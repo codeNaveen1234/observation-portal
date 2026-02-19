@@ -10,7 +10,7 @@ import { environment } from 'src/assets/envirnoments/environment';
 export class ApiService {
   public baseUrl:string=environment.surveyBaseURL;
   public token:string;
-  public profileData:any=JSON.parse(localStorage.getItem('profileData'));
+  public profileData:any;
   public solutionId :any; 
   public entityType:any
   public userAuthToken:any=localStorage.getItem('accToken');
@@ -20,7 +20,9 @@ export class ApiService {
   public index:any;
   public fileSizeLimit:any;
 
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient) {
+    this.fetchProfileData(); 
+   }
 
   get<T>(url: string, params?: HttpParams): Observable<T> {
     return this.http.get<T>(this.baseUrl+url, { params });
@@ -61,4 +63,30 @@ export class ApiService {
         return null;
     }
     }
+
+  fetchProfileData(){
+    let rawProfileData = this.getRawProfileFromStorage();
+    this.profileData = this.normalizeProfileData(rawProfileData);
+  }
+
+
+  public getRawProfileFromStorage(): any {
+    return JSON.parse(localStorage.getItem('profileData') || 'null');
+  }
+
+  public normalizeProfileData(profileData: any): any {
+    if (!profileData) return null;
+
+    const normalized: any = {};
+
+    Object.entries(profileData).forEach(([key, value]: [string, any]) => {
+      if (value && typeof value === 'object' && 'id' in value) {
+        normalized[key] = value.id;
+      } else {
+        normalized[key] = value;
+      }
+    });
+
+    return normalized;
+  }
 }

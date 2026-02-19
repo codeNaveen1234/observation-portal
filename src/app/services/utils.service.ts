@@ -138,7 +138,7 @@ getProfileData(): Observable<{ normalizedProfile: any, profileInfo: string } | n
     disableClose: true
   };
 
-  const rawProfileData = this.getRawProfileFromStorage();
+  const rawProfileData = this.apiService.getRawProfileFromStorage();
 
   if (!rawProfileData?.state?.id || !rawProfileData?.role) {
     this.showProfileUpdateAlert(dialogData);
@@ -159,7 +159,7 @@ getProfileData(): Observable<{ normalizedProfile: any, profileInfo: string } | n
     }
 
     return {
-      normalizedProfile: this.normalizeProfileData({
+      normalizedProfile: this.apiService.normalizeProfileData({
         ...rawProfileData,
         role: normalizedRole
       }),
@@ -191,10 +191,6 @@ getProfileData(): Observable<{ normalizedProfile: any, profileInfo: string } | n
     );
 }
 
-private getRawProfileFromStorage(): any {
-  return JSON.parse(localStorage.getItem('profileData') || 'null');
-}
-
 private normalizeRole(role: string): string {
   if (!role) return '';
 
@@ -204,7 +200,6 @@ private normalizeRole(role: string): string {
     .sort()
     .join(',');
 }
-
 
 buildProfileInfo(
   profileData: any,
@@ -237,22 +232,6 @@ buildProfileInfo(
 
 private hasMissingFields(profileData: any, requiredFields: string[]): boolean {
   return requiredFields?.some(field => !profileData?.[field]);
-}
-
-private normalizeProfileData(profileData: any): any {
-  if (!profileData) return null;
-
-  const normalized: any = {};
-
-  Object.entries(profileData).forEach(([key, value]: [string, any]) => {
-    if (value && typeof value === 'object' && 'id' in value) {
-      normalized[key] = value.id;
-    } else {
-      normalized[key] = value;
-    }
-  });
-
-  return normalized;
 }
 
   async showProfileUpdateAlert(data: any){
