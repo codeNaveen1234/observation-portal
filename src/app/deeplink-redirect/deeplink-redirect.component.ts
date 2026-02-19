@@ -58,7 +58,7 @@ export class DeeplinkRedirectComponent {
   };
 
 
-  async checkLinkType(){
+  checkLinkType(){
     this.utils.getProfileData().subscribe(response => {
     if (!response) return;
     this.profileData = response?.normalizedProfile;

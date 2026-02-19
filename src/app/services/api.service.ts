@@ -20,9 +20,7 @@ export class ApiService {
   public index:any;
   public fileSizeLimit:any;
 
-  constructor(private http:HttpClient) {
-    this.fetchProfileData(); 
-   }
+  constructor(private http:HttpClient) {}
 
   get<T>(url: string, params?: HttpParams): Observable<T> {
     return this.http.get<T>(this.baseUrl+url, { params });
@@ -64,14 +62,21 @@ export class ApiService {
     }
     }
 
-  fetchProfileData(){
+  public get fetchProfileData(){
     let rawProfileData = this.getRawProfileFromStorage();
-    this.profileData = this.normalizeProfileData(rawProfileData);
+    return this.profileData = this.normalizeProfileData(rawProfileData);
   }
 
 
   public getRawProfileFromStorage(): any {
-    return JSON.parse(localStorage.getItem('profileData') || 'null');
+    const data = localStorage.getItem('profileData');
+    if (!data) return null;
+    try {
+      return JSON.parse(data);
+    } catch (e) {
+      console.error('Failed to parse profileData from localStorage:', e);
+      return null;
+    }
   }
 
   public normalizeProfileData(profileData: any): any {
