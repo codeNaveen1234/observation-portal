@@ -46,7 +46,6 @@ export class ProfileService {
 
 buildProfileInfo(
   profileData: any,
-  orderedKeys: string[] = ['block', 'school', 'cluster'],
   excludeKeys: string[] = ['state', 'district']
 ): string {
 
@@ -54,15 +53,8 @@ buildProfileInfo(
 
   const values: string[] = [];
 
-  orderedKeys.forEach(key => {
-    if (profileData[key]?.name) {
-      values.push(profileData[key].name);
-    }
-  });
-
   Object.entries(profileData).forEach(([key, value]: [string, any]) => {
     if (
-      !orderedKeys.includes(key) &&
       !excludeKeys.includes(key) &&
       value?.name
     ) {
