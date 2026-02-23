@@ -58,9 +58,11 @@ export class DeeplinkRedirectComponent {
   };
 
 
-  async checkLinkType(){
-    this.profileData = await this.utils.getProfileData()
-    if(!this.profileData) return
+  checkLinkType(){
+    this.utils.getProfileData().subscribe(response => {
+    if (!response) return;
+    this.profileData = response?.normalizedProfile;
+    });
     if (this.type === 'observation') {
       this.handleObservationLink();
     } else if (this.type === 'survey') {

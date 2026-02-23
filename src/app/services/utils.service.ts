@@ -8,6 +8,7 @@ import { Location } from '@angular/common';
 import { ApiService } from './api.service';
 import * as urlConfig from '../constants/url-config.json';
 import { ToastService } from './toast.service';
+import { ProfileService } from './profile.service';
 
 
 @Injectable({
@@ -21,7 +22,7 @@ export class UtilsService {
  cloudStorageUpload?(payload): Observable<any>;
 
   constructor(private translate: TranslateService, private dialog: MatDialog, private location: Location,
-    private apiService: ApiService, private toaster: ToastService,
+    private apiService: ApiService, private toaster: ToastService, private profileService: ProfileService 
   ) {}
 
   isEmpty(value: any): boolean {
@@ -138,14 +139,14 @@ getProfileData(): Observable<{ normalizedProfile: any, profileInfo: string } | n
     disableClose: true
   };
 
-  const rawProfileData = this.getRawProfileFromStorage();
+  const rawProfileData = this.profileService.getRawProfileFromStorage();
 
   if (!rawProfileData?.state?.id || !rawProfileData?.role) {
     this.showProfileUpdateAlert(dialogData);
     return of(null);
   }
 
-  const normalizedRole = this.normalizeRole(rawProfileData.role);
+  const normalizedRole = this.profileService.normalizeRole(rawProfileData.role);
 
   const stateId = rawProfileData.state.id;
 
@@ -153,17 +154,17 @@ getProfileData(): Observable<{ normalizedProfile: any, profileInfo: string } | n
 
   const validateProfile = (requiredFields: string[]) => {
 
-    if (this.hasMissingFields(rawProfileData, requiredFields)) {
+    if (this.profileService.hasMissingFields(rawProfileData, requiredFields)) {
       this.showProfileUpdateAlert(dialogData);
       return null;
     }
 
     return {
-      normalizedProfile: this.normalizeProfileData({
+      normalizedProfile: this.profileService.normalizeProfileData({
         ...rawProfileData,
         role: normalizedRole
       }),
-      profileInfo: this.buildProfileInfo(rawProfileData)
+      profileInfo: this.profileService.buildProfileInfo(rawProfileData)
     };
   };
 
@@ -189,70 +190,6 @@ getProfileData(): Observable<{ normalizedProfile: any, profileInfo: string } | n
         return of(null);
       })
     );
-}
-
-private getRawProfileFromStorage(): any {
-  return JSON.parse(localStorage.getItem('profileData') || 'null');
-}
-
-private normalizeRole(role: string): string {
-  if (!role) return '';
-
-  return role
-    .split(',')
-    .map(r => r.trim().toLowerCase())
-    .sort()
-    .join(',');
-}
-
-
-buildProfileInfo(
-  profileData: any,
-  orderedKeys: string[] = ['block', 'school', 'cluster'],
-  excludeKeys: string[] = ['state', 'district']
-): string {
-
-  if (!profileData) return '';
-
-  const values: string[] = [];
-
-  orderedKeys.forEach(key => {
-    if (profileData[key]?.name) {
-      values.push(profileData[key].name);
-    }
-  });
-
-  Object.entries(profileData).forEach(([key, value]: [string, any]) => {
-    if (
-      !orderedKeys.includes(key) &&
-      !excludeKeys.includes(key) &&
-      value?.name
-    ) {
-      values.push(value.name);
-    }
-  });
-
-  return values.join(', ');
-}
-
-private hasMissingFields(profileData: any, requiredFields: string[]): boolean {
-  return requiredFields?.some(field => !profileData?.[field]);
-}
-
-private normalizeProfileData(profileData: any): any {
-  if (!profileData) return null;
-
-  const normalized: any = {};
-
-  Object.entries(profileData).forEach(([key, value]: [string, any]) => {
-    if (value && typeof value === 'object' && 'id' in value) {
-      normalized[key] = value.id;
-    } else {
-      normalized[key] = value;
-    }
-  });
-
-  return normalized;
 }
 
   async showProfileUpdateAlert(data: any){

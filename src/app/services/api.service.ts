@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import * as urlConfig from '../constants/url-config.json';
 import { environment } from 'src/assets/envirnoments/environment';
+import { ProfileService } from './profile.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,6 @@ import { environment } from 'src/assets/envirnoments/environment';
 export class ApiService {
   public baseUrl:string=environment.surveyBaseURL;
   public token:string;
-  public profileData:any=JSON.parse(localStorage.getItem('profileData'));
   public solutionId :any; 
   public entityType:any
   public userAuthToken:any=localStorage.getItem('accToken');
@@ -20,7 +20,7 @@ export class ApiService {
   public index:any;
   public fileSizeLimit:any;
 
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient, private profileService:ProfileService) {}
 
   get<T>(url: string, params?: HttpParams): Observable<T> {
     return this.http.get<T>(this.baseUrl+url, { params });
@@ -61,4 +61,9 @@ export class ApiService {
         return null;
     }
     }
+
+  public get profileData(){
+    let rawProfileData = this.profileService.getRawProfileFromStorage();
+    return this.profileService.normalizeProfileData(rawProfileData);
+  }
 }

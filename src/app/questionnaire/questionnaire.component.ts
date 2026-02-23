@@ -28,7 +28,7 @@ export class QuestionnaireComponent implements OnInit{
       this.apiConfig['userAuthToken'] = this.apiService.userAuthToken;
       this.apiConfig['solutionType'] = param['solutionType']
       this.apiConfig['fileSizeLimit'] = 50;
-      this.apiConfig['profileData'] =JSON.parse(localStorage.getItem('profileData'));
+      this.apiConfig['profileData'] =this.apiService.profileData;
       this.apiConfig['observationId']=param['observationId'];
       this.apiConfig['entityId']=param['entityId']
       this.apiConfig['evidenceCode']=param['evidenceCode']
