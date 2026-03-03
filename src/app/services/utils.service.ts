@@ -216,7 +216,5 @@ getProfileData(): Observable<{ normalizedProfile: any, profileInfo: string } | n
         pathType: "home"
       }
     }
-    let eventResponse = await this.postMessageListener(options)
-    if(!eventResponse) this.location.back()
   }
 }
