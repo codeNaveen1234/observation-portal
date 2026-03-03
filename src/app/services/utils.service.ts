@@ -177,6 +177,11 @@ getProfileData(): Observable<{ normalizedProfile: any, profileInfo: string } | n
     .pipe(
       map((apiResponse: any) => {
 
+        if(!apiResponse?.result){
+          this.showProfileUpdateAlert(dialogData);
+          return null;
+        }
+
         const requiredFields: string[] = apiResponse?.result || [];
 
         mandatoryFields[normalizedRole] = requiredFields;
