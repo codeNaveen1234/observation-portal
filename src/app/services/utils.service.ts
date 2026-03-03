@@ -204,19 +204,10 @@ getProfileData(): Observable<{ normalizedProfile: any, profileInfo: string } | n
       disableClose: data.disableClose || false
     })
     let response = await firstValueFrom(popupRef.afterClosed())
-    let options:any
-    if(response){
-      options = {
-        type: "redirect",
-        pathType: "profile"
+      if (response) {
+        window.location.href = '/managed-learn/profile';
+      } else {
+        window.location.href = '/home';
       }
-    }else{
-      options = {
-        type: "redirect",
-        pathType: "home"
-      }
-    }
-    let eventResponse = await this.postMessageListener(options)
-    if(!eventResponse) this.location.back()
   }
 }
