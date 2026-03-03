@@ -208,7 +208,7 @@ getProfileData(): Observable<{ normalizedProfile: any, profileInfo: string } | n
     if(response){
       options = {
         type: "redirect",
-        pathType: "profile"
+        pathType: "managed-learn/profile"
       }
     }else{
       options = {
