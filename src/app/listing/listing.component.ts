@@ -43,6 +43,7 @@ export class ListingComponent implements OnInit {
   profileData:any
   selectedEntityName:any;
   profileInfo: string = ''; 
+  visibilityHandler!: () => void;
   constructor(
     public router: Router,
     private toaster: ToastService,
@@ -67,7 +68,9 @@ export class ListingComponent implements OnInit {
     this.setPageTitle()
     this.reportPage = this.pageTitle === 'Observation';
     this.loadInitialData();
-  }
+
+    this.initVisibilityHandler();
+}
 
   setPageTitle() {
     const solutionType = this.urlParamService.solutionType;
@@ -272,5 +275,18 @@ async loadInitialData() {
 
   onEditProfile() {
   window.location.href = '/managed-learn/profile';
+}
+
+initVisibilityHandler(): void {
+    this.visibilityHandler = () => {
+      if (document.visibilityState === 'visible') {
+        this.loadInitialData();
+      }
+    };
+    document.addEventListener('visibilitychange', this.visibilityHandler);
+  }
+
+ngOnDestroy(): void {
+  document.removeEventListener('visibilitychange', this.visibilityHandler);
 }
 }
