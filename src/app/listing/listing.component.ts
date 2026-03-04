@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, finalize } from 'rxjs/operators';
+import { catchError, debounceTime, filter, finalize } from 'rxjs/operators';
 import * as urlConfig from '../constants/url-config.json';
 import { ToastService } from '../services/toast.service';
 import { ApiService } from '../services/api.service';
@@ -9,6 +9,7 @@ import { UtilsService } from '../services/utils.service';
 import { TranslateService } from '@ngx-translate/core';
 import { TITLE_MAP, DESC_KEY_MAP, solutionTypeMap } from '../constants/actionContants';
 import { NetworkServiceService } from 'network-service';
+import { fromEvent, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-listing',
@@ -43,7 +44,8 @@ export class ListingComponent implements OnInit {
   profileData:any
   selectedEntityName:any;
   profileInfo: string = ''; 
-  visibilityHandler!: () => void;
+  private visibilityHandler!: () => void;
+  private visibilitySubscription!: Subscription;
   constructor(
     public router: Router,
     private toaster: ToastService,
@@ -278,15 +280,19 @@ async loadInitialData() {
 }
 
 initVisibilityHandler(): void {
-    this.visibilityHandler = () => {
-      if (document.visibilityState === 'visible') {
+    this.visibilitySubscription = fromEvent(document, 'visibilitychange')
+      .pipe(
+        filter(() => document.visibilityState === 'visible'),
+        debounceTime(1000)
+      )
+      .subscribe(() => {
         this.loadInitialData();
-      }
-    };
-    document.addEventListener('visibilitychange', this.visibilityHandler);
+      });
   }
 
 ngOnDestroy(): void {
-  document.removeEventListener('visibilitychange', this.visibilityHandler);
+   if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
 }
 }
