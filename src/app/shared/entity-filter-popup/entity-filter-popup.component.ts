@@ -17,7 +17,7 @@ export interface EntityFilterDialogData {
 })
 
 export class EntityFilterPopupComponent {
-  selectedEntityName; 
+  selectedEntityName:string; 
   constructor(
     private navigate:RouterService,
     public dialogRef: MatDialogRef<EntityFilterPopupComponent>,

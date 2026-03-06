@@ -1,15 +1,33 @@
-import * as urlConfig from '../constants/url-config.json';
+import urlConfig from '../constants/url-config.json';
+interface ListingItemConfig {
+  title: string;
+  solutionType: string;
+  description: string;
+  placeholder: string;
+  searchTerm?: string;
+  urlPath: string;
+  isObservation?: boolean;
+  surveyPage?: boolean;
+  surveyReports?: boolean;
+  showSearch?: boolean;
+}
 
-export const listingConfig:any ={
+export interface ListingConfig {
+  observation: ListingItemConfig;
+  survey: ListingItemConfig;
+  observationReports: ListingItemConfig;
+  surveyReports: ListingItemConfig;
+}
+
+export const listingConfig:ListingConfig ={
     observation:{
       title:'Observation',
       solutionType:'observation',
       description:'OBSERVATION_LISTING_MESSAGE',
       placeholder:'SEARCH_PLACEHOLDER',
       searchTerm:'',
-      urlPath:urlConfig['observation'].listing+'observation&search=',
+      urlPath:urlConfig.observation.listing+'observation&search=',
       isObservation:true,
-      observation:true
     },
     survey :{
       title:'Survey',
@@ -17,9 +35,8 @@ export const listingConfig:any ={
       description:'SURVEY_DESC',
       placeholder:'SEARCH_PLACEHOLDER',
       searchTerm:'',
-      urlPath:urlConfig['observation'].listing+'survey&surveyReportPage=false&search=',
+      urlPath:urlConfig.observation.listing+'survey&surveyReportPage=false&search=',
       surveyPage:true,
-      isSurvey:true,
     },
     observationReports:{
       title:'Observation Reports',
@@ -27,7 +44,7 @@ export const listingConfig:any ={
       description:'OBSERVATION_REPORTS_DESC',
       placeholder:'SEARCH_PLACEHOLDER',
       showSearch:true,
-      urlPath:urlConfig['observation'].reportListing,
+      urlPath:urlConfig.observation.reportListing,
       isObservation:true,
     },
     surveyReports:{
@@ -36,8 +53,7 @@ export const listingConfig:any ={
       description:'SURVEY_DESC',
       placeholder:'SEARCH_PLACEHOLDER',
       searchTerm:'',
-      urlPath:urlConfig['observation'].listing+'survey&surveyReportPage=true&search=',
-      isSurvey:true,
+      urlPath:urlConfig.observation.listing+'survey&surveyReportPage=true&search=',
       surveyReports:true,
     }
 }
@@ -45,9 +61,9 @@ export const listingConfig:any ={
 
 export const dialogConfirmationMap ={
   observeAgain:{
-    title:'OBSERVE_AGIAN',
+    title:'OBSERVE_AGAIN',
     close:true,
-    message:'OBSERVE_AGIAN_MSG',
+    message:'OBSERVE_AGAIN_MSG',
   },
   downloadPop:{
     message:'DOWNLOAD_MSG'
