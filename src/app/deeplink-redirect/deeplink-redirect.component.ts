@@ -62,12 +62,13 @@ export class DeeplinkRedirectComponent {
     this.utils.getProfileData().subscribe(response => {
     if (!response) return;
     this.profileData = response?.normalizedProfile;
-    });
+
     if (this.type === 'observation') {
       this.handleObservationLink();
     } else if (this.type === 'survey') {
       this.handleSurveyLink();
     }
+    });
   }
 
   navigateToEntities(data){
