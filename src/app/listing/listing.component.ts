@@ -122,7 +122,7 @@ export class ListingComponent implements OnInit {
   navigateTo(data?: any) {
     const { solutionId,name,entityType,observationId,entities,allowMultipleAssessemts,isRubricDriven,entityId,submissionNumber,submissionId,status} = data
     if(this.headerConfig.isObservation){
-        if(this.headerConfig.title === 'Observation') return this.navigate.navigation(['entityList',solutionId,name,entityType])
+        if(this.headerConfig.title === 'Observation') return this.navigate?.navigation(['entityList',solutionId,name,entityType])
         entities?.length > 1 ? 
           this.dialog.open(EntityFilterPopupComponent, 
             { 
@@ -133,11 +133,11 @@ export class ListingComponent implements OnInit {
               }
             }
           ):
-        this.navigate.navigation(['reports',observationId,entities[0]?._id,entityType,allowMultipleAssessemts,isRubricDriven])
+        this.navigate?.navigation(['reports',observationId,entities[0]?._id,entityType,allowMultipleAssessemts,isRubricDriven])
     }else{
-      if(this.headerConfig.surveyReports) return this.navigate.navigation(['surveyReports',submissionId])
+      if(this.headerConfig.surveyReports) return this.navigate?.navigation(['surveyReports',submissionId])
       if(status === 'expired') return this.toaster.showToast('FORM_EXPIRED','danger')
-      this.navigate.navigation(
+      this.navigate?.navigation(
             ['/questionnaire'],
             {
               observationId: observationId,

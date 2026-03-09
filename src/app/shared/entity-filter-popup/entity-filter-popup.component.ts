@@ -32,7 +32,7 @@ export class EntityFilterPopupComponent {
 
   applyFilter(){
     let entity = this.data.entities.filter(question => question.selected)
-    this.navigate.navigation(['reports',this.data?.observationId,entity[0]?._id,this.data?.entityType,false,this.data?.isRubricDriven])
+    this.navigate?.navigation(['reports',this.data?.observationId,entity[0]?._id,this.data?.entityType,false,this.data?.isRubricDriven])
     this.dialogRef.close()
   }
 
