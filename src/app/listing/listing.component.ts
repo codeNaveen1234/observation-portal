@@ -52,7 +52,6 @@ export class ListingComponent implements OnInit {
   }
  
   ngOnInit(): void {
-    this.setProfile()
     this.urlParamService.parseRouteParams(this.route)
     this.headerConfig = listingConfig[this.urlParamService.solutionType]
     this.loadInitialData();
@@ -230,26 +229,6 @@ export class ListingComponent implements OnInit {
     });
   }
 
-  setProfile(){
-    let accToken='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjozNjczLCJuYW1lIjoiZmRmIiwic2Vzc2lvbl9pZCI6MzMyMzQsIm9yZ2FuaXphdGlvbl9pZHMiOlsiMzMiXSwib3JnYW5pemF0aW9uX2NvZGVzIjpbInRhbjkwIl0sInRlbmFudF9jb2RlIjoic2hpa3NoYWxva2FtIiwib3JnYW5pemF0aW9ucyI6W3siaWQiOjMzLCJuYW1lIjoidGFuOTAiLCJjb2RlIjoidGFuOTAiLCJkZXNjcmlwdGlvbiI6IlRhbjkwIHNwZWNpYWxpemVzIGluIHByb3ZpZGluZyBlZHVjYXRpb25hbCBTVEVBTSIsInN0YXR1cyI6IkFDVElWRSIsInJlbGF0ZWRfb3JncyI6W10sInRlbmFudF9jb2RlIjoic2hpa3NoYWxva2FtIiwibWV0YSI6bnVsbCwiY3JlYXRlZF9ieSI6MSwidXBkYXRlZF9ieSI6MTcwOSwicm9sZXMiOlt7ImlkIjoyMywidGl0bGUiOiJtZW50ZWUiLCJsYWJlbCI6Im1lbnRlZSIsInVzZXJfdHlwZSI6MCwic3RhdHVzIjoiQUNUSVZFIiwib3JnYW5pemF0aW9uX2lkIjoxMCwidmlzaWJpbGl0eSI6IlBVQkxJQyIsInRlbmFudF9jb2RlIjoic2hpa3NoYWxva2FtIiwidHJhbnNsYXRpb25zIjpudWxsfV19XX0sImlhdCI6MTc3Mjc3NjMxOCwiZXhwIjoxNzcyODYyNzE4fQ.2z2_KpgnGvwkqd6YXZEON-SnqBsFHjpnKzunwzYtu4s'
-    let refToken='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjozNjczLCJuYW1lIjoiZmRmIiwic2Vzc2lvbl9pZCI6MzMyMzQsIm9yZ2FuaXphdGlvbl9pZHMiOlsiMzMiXSwib3JnYW5pemF0aW9uX2NvZGVzIjpbInRhbjkwIl0sInRlbmFudF9jb2RlIjoic2hpa3NoYWxva2FtIiwib3JnYW5pemF0aW9ucyI6W3siaWQiOjMzLCJuYW1lIjoidGFuOTAiLCJjb2RlIjoidGFuOTAiLCJkZXNjcmlwdGlvbiI6IlRhbjkwIHNwZWNpYWxpemVzIGluIHByb3ZpZGluZyBlZHVjYXRpb25hbCBTVEVBTSIsInN0YXR1cyI6IkFDVElWRSIsInJlbGF0ZWRfb3JncyI6W10sInRlbmFudF9jb2RlIjoic2hpa3NoYWxva2FtIiwibWV0YSI6bnVsbCwiY3JlYXRlZF9ieSI6MSwidXBkYXRlZF9ieSI6MTcwOSwicm9sZXMiOlt7ImlkIjoyMywidGl0bGUiOiJtZW50ZWUiLCJsYWJlbCI6Im1lbnRlZSIsInVzZXJfdHlwZSI6MCwic3RhdHVzIjoiQUNUSVZFIiwib3JnYW5pemF0aW9uX2lkIjoxMCwidmlzaWJpbGl0eSI6IlBVQkxJQyIsInRlbmFudF9jb2RlIjoic2hpa3NoYWxva2FtIiwidHJhbnNsYXRpb25zIjpudWxsfV19XX0sImlhdCI6MTc3Mjc3NjMxOCwiZXhwIjoxNzczMzgxMTE4fQ.VrpSdOssvStdnwATQLe0DQw0kB31doRYGuBXROQdGhQ'
-    let profileData = {
-      "state": "6853e0168500f000144a3ea4",
-      "district": "6853e0828500f000144a3eba",
-      "block": "6853e0bb8500f000144a3f48",
-      "cluster": "6853e0e48500f000144a46e9",
-      "school": "6853e8628500f000144b0e6b",
-      "professional_role": "6825950197b5680013e6a17c",
-      "professional_subroles": "6825ad1f97b5680013e8450b,6825ad1f97b5680013e8450c,6825ad1f97b5680013e84519",
-      "organizations": "[object Object]"
-  }
-  let data: any = { "org-id": "33" }
-  let Theme: any = { "primaryColor": "#572E91", "secondaryColor": "#FF9911" }
-  localStorage.setItem("headers", JSON.stringify(data))
-  localStorage.setItem("profileData", JSON.stringify(profileData))
-  localStorage.setItem('accToken', accToken)
-  localStorage.setItem('refToken', refToken)
-  localStorage.setItem('theme', JSON.stringify(Theme))
-  }
+
 
 }
