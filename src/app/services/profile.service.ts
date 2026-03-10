@@ -52,7 +52,8 @@ buildProfileInfo(profileData: any): string {
     profileData?.school?.name ||
     profileData?.cluster?.name ||
     profileData?.block?.name ||
-    ''
+    profileData?.district?.name ||
+    profileData?.state?.name
   );
 }
 
