@@ -61,6 +61,7 @@ export class ListingComponent implements OnInit {
     })
   }
   ngOnInit(): void {
+    this.setProfile();
     setTimeout(() => {
       let scrollTop = window.pageYOffset;
       window.scrollTo(0, scrollTop + 1);
@@ -69,7 +70,9 @@ export class ListingComponent implements OnInit {
     this.urlParamService.parseRouteParams(this.route)
     this.setPageTitle()
     this.reportPage = this.pageTitle === 'Observation';
-    this.loadInitialData();
+    setTimeout(() => {
+      this.loadInitialData();
+    }, 1000);
 
     this.initVisibilityHandler();
 }
@@ -294,5 +297,33 @@ ngOnDestroy(): void {
    if (this.visibilitySubscription) {
       this.visibilitySubscription.unsubscribe();
     }
+}
+
+setProfile(){
+  let profileData = {
+state: {
+id: "b7416eb6-56b1-492a-a85f-97988edcd693",
+name: "Karnataka"
+},
+district: {
+id: "d1f09cff-24d2-4c47-8400-2c59c5253f95",
+name: "Bangalore"
+},
+block: {
+id: "46917bef-9147-47fd-9a8d-9d6beba26810",
+name: "Bangalore Urban"
+},
+cluster: {
+id: "c64b0153-58f3-407c-b349-a339f9e34b7e",
+name: "Annakel"
+},
+school: {
+id: "c5447cf5-e32e-4f28-b9a8-2c0ae2fff319",
+name: "LRESH",
+},
+role: "DEO,SPD,PRINCIPAL,HM,HT,PT"
+};
+
+localStorage.setItem('profileData', JSON.stringify(profileData));
 }
 }

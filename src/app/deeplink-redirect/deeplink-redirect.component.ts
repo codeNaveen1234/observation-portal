@@ -40,7 +40,9 @@ export class DeeplinkRedirectComponent {
         this.toastService.showToast('NETWORK_OFFLINE','danger')
         return
       }
-      this.checkLinkType()
+      setTimeout(() => {
+        this.checkLinkType()
+      }, 1000);
     })
   }
 
