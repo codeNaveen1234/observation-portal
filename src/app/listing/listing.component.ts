@@ -69,7 +69,9 @@ export class ListingComponent implements OnInit {
     this.urlParamService.parseRouteParams(this.route)
     this.setPageTitle()
     this.reportPage = this.pageTitle === 'Observation';
-    this.loadInitialData();
+    setTimeout(() => {
+      this.loadInitialData();
+    }, 1000);
 
     this.initVisibilityHandler();
 }
