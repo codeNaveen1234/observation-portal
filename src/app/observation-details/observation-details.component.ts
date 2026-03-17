@@ -339,7 +339,6 @@ async fetchDownloadedData(mapData) {
     this.observations.set(mapped);
     this.observationInit.set(false);
     this.isRubricDriven.set(this.isQuestionerDataInIndexDb()?.data?.[0]?.isRubric);
-    console.log("this.isRubricDriven",this.isRubricDriven())
     this.getObservationsByStatus(['draft', 'started', 'inprogress']);
   }
 }
