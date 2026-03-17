@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild, signal } from '@angular/core';
+import { Component,  OnDestroy, OnInit, TemplateRef, ViewChild, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { ToastService } from '../services/toast.service';
@@ -17,7 +17,7 @@ import { DownloadDataPayloadCreationService } from '../services/download-data-pa
   templateUrl: './observation-domain.component.html',
   styleUrl: './observation-domain.component.css'
 })
-export class ObservationDomainComponent implements OnInit {
+export class ObservationDomainComponent implements OnInit, OnDestroy {
   entityId = signal<any>('');
   observations = signal<any[]>([]);
   evidences = signal<any[]>([]);
@@ -36,6 +36,7 @@ export class ObservationDomainComponent implements OnInit {
   observationDetails = signal<any>(null);
 
   @ViewChild('notApplicableModel') notApplicableModel: TemplateRef<any>;
+  private initTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
   constructor(
     private apiService: ApiService, 
@@ -56,7 +57,7 @@ export class ObservationDomainComponent implements OnInit {
   }
 
   async ngOnInit() {
-   setTimeout(async () => {
+   this.initTimeoutId = setTimeout(async () => {
     window.addEventListener('message', this.handleMessage);
     this.stateData.set(history.state?.data)
     if(this.stateData()) {
@@ -90,6 +91,14 @@ export class ObservationDomainComponent implements OnInit {
       }
     }
    }, 500);
+  }
+
+  ngOnDestroy(): void {
+    if (this.initTimeoutId) {
+      clearTimeout(this.initTimeoutId);
+      this.initTimeoutId = null;
+    }
+    window.removeEventListener('message', this.handleMessage);
   }
 
   mapDataToVariables(observationData) {
