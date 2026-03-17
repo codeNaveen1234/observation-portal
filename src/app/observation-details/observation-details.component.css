@@ -71,19 +71,19 @@
  
   ::ng-deep .mat-mdc-tab-group, 
   ::ng-deep .mat-mdc-tab-nav-bar {
-      --mdc-tab-indicator-active-indicator-color: var(--primary-color);
-      --mat-tab-header-disabled-ripple-color: var(--primary-color);
-      --mat-tab-header-pagination-icon-color: var(--primary-color);
-      --mat-tab-header-inactive-label-text-color: var(--primary-color);
-      --mat-tab-header-active-label-text-color: var(--primary-color);
-      --mat-tab-header-active-ripple-color: var(--primary-color);
-      --mat-tab-header-inactive-ripple-color: var(--primary-color);
-      --mat-tab-header-inactive-focus-label-text-color: var(--primary-color);
-      --mat-tab-header-inactive-hover-label-text-color: var(--primary-color);
-      --mat-tab-header-active-focus-label-text-color: var(--primary-color);
-      --mat-tab-header-active-hover-label-text-color: var(--primary-color);
-      --mat-tab-header-active-focus-indicator-color: var(--primary-color);
-      --mat-tab-header-active-hover-indicator-color: var(--primary-color);
+      --mat-tab-active-indicator-color: var(--primary-color);
+      --mat-tab-disabled-ripple-color: var(--primary-color);
+      --mat-tab-pagination-icon-color: var(--primary-color);
+      --mat-tab-inactive-label-text-color: var(--primary-color);
+      --mat-tab-active-label-text-color: var(--primary-color);
+      --mat-tab-active-ripple-color: var(--primary-color);
+      --mat-tab-inactive-ripple-color: var(--primary-color);
+      --mat-tab-inactive-focus-label-text-color: var(--primary-color);
+      --mat-tab-inactive-hover-label-text-color: var(--primary-color);
+      --mat-tab-active-focus-label-text-color: var(--primary-color);
+      --mat-tab-active-hover-label-text-color: var(--primary-color);
+      --mat-tab-active-focus-indicator-color: var(--primary-color);
+      --mat-tab-active-hover-indicator-color: var(--primary-color);
   }
   ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
     background-color: #fff; 

@@ -1,5 +1,6 @@
 @use '@angular/material' as mat;
-@include mat.core();
+@include mat.elevation-classes();
+@include mat.app-background();
 
 body{
     margin: 0;
@@ -36,23 +37,23 @@ body{
     --light-opacity: #00000052;
   
     --border-color: #ccc;
-    --mdc-outlined-text-field-caret-color: var(--color-primary);
-    --mdc-outlined-text-field-focus-outline-color: var(--color-primary);
-    --mdc-outlined-text-field-focus-label-text-color: var(--color-primary);
-    --mdc-filled-text-field-focus-active-indicator-color: var(--color-primary);
-    --mdc-filled-text-field-container-color: var(--color-light);
-    --mdc-filled-text-field-caret-color: var(--primary-color);
-    --mdc-filled-text-field-focus-label-text-color: var(--primary-color);
+    --mat-form-field-outlined-caret-color: var(--color-primary);
+    --mat-form-field-outlined-focus-outline-color: var(--color-primary);
+    --mat-form-field-outlined-focus-label-text-color: var(--color-primary);
+    --mat-form-field-filled-focus-active-indicator-color: var(--color-primary);
+    --mat-form-field-filled-container-color: var(--color-light);
+    --mat-form-field-filled-caret-color: var(--primary-color);
+    --mat-form-field-filled-focus-label-text-color: var(--primary-color);
     --mat-select-focused-arrow-color: var(--primary-color);
-    --mdc-circular-progress-active-indicator-color: var(--primary-color);
+    --mat-progress-spinner-active-indicator-color: var(--primary-color);
   
-    --mdc-checkbox-selected-focus-icon-color: var(--primary-color);
-    --mdc-checkbox-selected-hover-icon-color: var(--primary-color);
-    --mdc-checkbox-selected-icon-color: var(--primary-color);
-    --mdc-checkbox-selected-pressed-icon-color: var(--primary-color);
-    --mdc-checkbox-selected-focus-state-layer-color: var(--primary-color);
-    --mdc-checkbox-selected-hover-state-layer-color: var(--primary-color);
-    --mdc-checkbox-selected-pressed-state-layer-color: var(--primary-color);
+    --mat-checkbox-selected-focus-icon-color: var(--primary-color);
+    --mat-checkbox-selected-hover-icon-color: var(--primary-color);
+    --mat-checkbox-selected-icon-color: var(--primary-color);
+    --mat-checkbox-selected-pressed-icon-color: var(--primary-color);
+    --mat-checkbox-selected-focus-state-layer-color: var(--primary-color);
+    --mat-checkbox-selected-hover-state-layer-color: var(--primary-color);
+    --mat-checkbox-selected-pressed-state-layer-color: var(--primary-color);
   
     --mat-datepicker-toggle-active-state-icon-color: var(--primary-color);
     --mat-datepicker-calendar-date-selected-state-background-color: var(--primary-color);
@@ -62,16 +63,16 @@ body{
 }
 .mat-mdc-snack-bar-container.success {
     --mat-mdc-snack-bar-button-color: #fff;
-    --mdc-snackbar-container-color: #28a745;
-    --mdc-snackbar-supporting-text-color: #fff;
+    --mat-snackbar-container-color: #28a745;
+    --mat-snackbar-supporting-text-color: #fff;
   }
   
 .mat-mdc-snack-bar-container.error,
 .mat-mdc-snack-bar-container.danger,
 .mat-mdc-snack-bar-container.warning {
     --mat-mdc-snack-bar-button-color: #fff;
-    --mdc-snackbar-container-color: #ff0000;
-    --mdc-snackbar-supporting-text-color: #fff;
+    --mat-snackbar-container-color: #ff0000;
+    --mat-snackbar-supporting-text-color: #fff;
 }
 
 ::ng-deep .mat-mdc-form-field.mat-focused .mat-mdc-floating-label {

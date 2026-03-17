@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute} from '@angular/router';
 import { catchError, finalize, throwError } from 'rxjs';
 import { ToastService } from '../services/toast.service';
@@ -23,16 +23,16 @@ import { EntityFilterPopupComponent } from '../shared/entity-filter-popup/entity
   styleUrl: './listing.component.css'
 })
 export class ListingComponent implements OnInit {
-  solutionList: any;
-  page: number = 1;
-  limit: number = 10;
-  entityType: any;
-  initialSolutionData: any = [];
-  selectedEntityType: any = '';
-  loaded = false;
-  headerConfig:any;
-  observationDownloaded: boolean = false;
-  isDataInDownloadsIndexDb: any = [];
+  solutionList = signal<any[]>([]);
+  page = signal(1);
+  limit = 10;
+  entityType = signal<any[]>([]);
+  initialSolutionData = signal<any[]>([]);
+  selectedEntityType = signal('');
+  loaded = signal(false);
+  headerConfig = signal<any>(null);
+  observationDownloaded = false;
+  isDataInDownloadsIndexDb: any[] = [];
 
   constructor(
     private toaster: ToastService,
@@ -52,38 +52,43 @@ export class ListingComponent implements OnInit {
   }
  
   ngOnInit(): void {
+    this.setProfile();
     this.urlParamService.parseRouteParams(this.route)
-    this.headerConfig = listingConfig[this.urlParamService.solutionType]
+    this.headerConfig.set(listingConfig[this.urlParamService.solutionType])
     this.loadInitialData();
   }
 
-  onSearchChange(value?:any):void {
-    this.headerConfig = {
-      ...this.headerConfig,
-      searchTerm : value ? value : ''
-    }
-    this.page = 1;
-    this.solutionList = [];
+  onSearchChange(value?: any): void {
+    this.headerConfig.update((config: any) => ({
+      ...config,
+      searchTerm: value || ''
+    }));
+    this.page.set(1);
+    this.solutionList.set([]);
     this.getListData();
   }
 
   loadInitialData(): void {
-    this.page = 1;
-    this.solutionList = [];
+    this.page.set(1);
+    this.solutionList.set([]);
     this.getListData();
   }
 
   async getListData(): Promise<void> {
-    if(!this.apiService?.profileData){
-      await this.utils.getProfileDetails()
+    const headerConfig = this.headerConfig();
+    
+    if (!headerConfig) return;
+
+    if (!this.apiService?.profileData){
+      await this.utils.getProfileDetails();
     }
 
-    let queryParams=(this.headerConfig.showSearch?`${this.selectedEntityType}` :`${this.headerConfig.searchTerm}`)+`&page=${this.page}&limit=${this.limit}`
+    let queryParams=(headerConfig.showSearch?`${this.selectedEntityType()}` :`${headerConfig.searchTerm || ''}`)+`&page=${this.page()}&limit=${this.limit}`
     this.apiService.post(
-      this.headerConfig.urlPath + queryParams,
+      headerConfig.urlPath + queryParams,
       this.apiService?.profileData
     ).pipe(
-      finalize(() => this.loaded = true),
+      finalize(() => this.loaded.set(true)),
       catchError((err: any) => {
         this.toaster.showToast(err?.error?.message, 'Close');
         return throwError(() => err);
@@ -91,21 +96,22 @@ export class ListingComponent implements OnInit {
     )
       .subscribe((res: any) => {
         if (res?.status === 200) {
-          this.headerConfig?.showSearch && (this.entityType = res?.result?.entityType);
-          let list:any = res?.result?.data ;
+          headerConfig.showSearch && this.entityType.set(res?.result?.entityType || []);
+          let list:any[] = res?.result?.data || [];
           list.forEach((element: any) => {
-            element.status = new Date().setHours(0, 0, 0, 0) > new Date(element.endDate).setHours(0, 0, 0, 0) ? 'expired': element.status;
+            element.status = new Date().setHours(0, 0, 0, 0) > new Date(element.endDate).setHours(0, 0, 0, 0)? 'expired': element.status;
             element.endDate = element.endDate ? new Date(element.endDate).toDateString() : '';
             Object.assign(element, statusMappings[element.status] ?? { tagClass: '', statusLabel: '' });
-            if(this.headerConfig.surveyPage){
+            if(headerConfig.surveyPage){
               const diffDays = element.endDate ? this.getDateDiff(element.endDate) : 0;
               element.daysUntilExpiry = Math.max(diffDays, 0);
-              element.isExpiringSoon = diffDays > 0 && diffDays <= 2 ? true : false;
+              element.isExpiringSoon = diffDays > 0 && diffDays <= 2;
               element.surveyExpiry = this.solutionExpiryStatus(element);
             }
           });
-          this.solutionList = [...this.solutionList, ...list];
-          this.initialSolutionData = this.solutionList;
+          const updatedList = [...this.solutionList(), ...list];
+          this.solutionList.set(updatedList);
+          this.initialSolutionData.set(updatedList);
           this.checkDataInDB()
         } else {
           this.toaster.showToast(res?.message, 'Close');
@@ -114,47 +120,39 @@ export class ListingComponent implements OnInit {
   }
 
   loadData(): void {
-    this.page++;
-    this.solutionList = this.initialSolutionData;
+    this.page.update((value) => value + 1);
+    this.solutionList.set(this.initialSolutionData());
     this.getListData();
   }
 
   navigateTo(data?: any) {
     const { solutionId,name,entityType,observationId,entities,allowMultipleAssessemts,isRubricDriven,entityId,submissionNumber,submissionId,status} = data
-    if(this.headerConfig.isObservation){
-        if(this.headerConfig.title === 'Observation') return this.navigate?.navigation(['entityList',solutionId,name,entityType])
-        entities?.length > 1 ? 
-          this.dialog.open(EntityFilterPopupComponent, 
-            { 
-              width: '400px', 
-              data:{
-                ...data,
-                entities:data.entities.map((entity,index)=>({...entity,selected:index===0}))
-              }
+    const headerConfig = this.headerConfig();
+    if (!headerConfig) return;
+    if(headerConfig.isObservation){
+        if(headerConfig.title === 'Observation') return this.navigate?.navigation(['entityList',solutionId,name,entityType])
+      entities?.length > 1 ? 
+         this.dialog.open(EntityFilterPopupComponent,
+          { 
+            width: '400px', 
+            data:{
+              ...data,
+              entities:data.entities.map((entity: any,index: number) => ({...entity,selected:index===0}))
             }
-          ):
+          }
+        ):
         this.navigate?.navigation(['reports',observationId,entities[0]?._id,entityType,allowMultipleAssessemts,isRubricDriven])
     }else{
-      if(this.headerConfig.surveyReports) return this.navigate?.navigation(['surveyReports',submissionId])
+      if(headerConfig.surveyReports) return this.navigate?.navigation(['surveyReports',submissionId])
       if(status === 'expired') return this.toaster.showToast('FORM_EXPIRED','danger')
-      this.navigate?.navigation(
-            ['/questionnaire'],
-            {
-              observationId: observationId,
-              entityId: entityId,
-              submissionNumber:submissionNumber,
-              submissionId:submissionId,
-              solutionId:solutionId,
-              solutionType:this.headerConfig.solutionType
-            }
-          )
+      this.navigate?.navigation(['/questionnaire'],{observationId,entityId,submissionNumber,submissionId,solutionId,solutionType:headerConfig.solutionType})
 
     }
   }
 
   changeEntityType(selectedType: any) {
-    this.selectedEntityType = selectedType;
-    this.solutionList = this.initialSolutionData.filter(solution => solution?.entityType === selectedType);
+    this.selectedEntityType.set(selectedType);
+    this.solutionList.set( this.initialSolutionData().filter((solution: any) => solution?.entityType === selectedType));
   }
 
   solutionExpiryStatus(element: any) {
@@ -205,17 +203,15 @@ export class ListingComponent implements OnInit {
       }
   
       await this.downloadService.downloadData("survey", newItem);
-  
-      this.solutionList[index].downloaded = true;
+      this.markSolutionDownloaded(index, true);
     } catch (e) {
-      this.solutionList[index].downloaded = false;
+      this.markSolutionDownloaded(index, false);
     }
   }
-  
 
   async checkDataInDB() {
-    const storedSurveys = await this.downloadService.checkAndFetchDownloadsDatas("survey") || [];
-    this.solutionList = this.solutionList.map((solution: any) => {
+    const storedSurveys =(await this.downloadService.checkAndFetchDownloadsDatas("survey")) || [];
+    this.solutionList.update((solutions) =>solutions.map((solution: any) => {
       const isDownloaded = storedSurveys.some((item: any) => {
         const entries = Array.isArray(item?.data) ? item.data : [item?.data].filter(Boolean);
         return entries.some(
@@ -226,9 +222,41 @@ export class ListingComponent implements OnInit {
       });
   
       return { ...solution, downloaded: isDownloaded };
-    });
+    }));
   }
 
+  private markSolutionDownloaded(index: number, downloaded: boolean): void {
+    this.solutionList.update((solutions) =>
+      solutions.map((item, idx) => (idx === index ? { ...item, downloaded } : item))
+    );
+    this.initialSolutionData.update((solutions) =>
+      solutions.map((item, idx) => (idx === index ? { ...item, downloaded } : item))
+    );
+  }
 
+  setProfile() {
+    const refToken =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjozNjczLCJuYW1lIjoiZmRmIiwic2Vzc2lvbl9pZCI6MzM1OTQsIm9yZ2FuaXphdGlvbl9pZHMiOlsiMzMiXSwib3JnYW5pemF0aW9uX2NvZGVzIjpbInRhbjkwIl0sInRlbmFudF9jb2RlIjoic2hpa3NoYWxva2FtIiwib3JnYW5pemF0aW9ucyI6W3siaWQiOjMzLCJuYW1lIjoidGFuOTAiLCJjb2RlIjoidGFuOTAiLCJkZXNjcmlwdGlvbiI6IlRhbjkwIHNwZWNpYWxpemVzIGluIHByb3ZpZGluZyBlZHVjYXRpb25hbCBTVEVBTSIsInN0YXR1cyI6IkFDVElWRSIsInJlbGF0ZWRfb3JncyI6W10sInRlbmFudF9jb2RlIjoic2hpa3NoYWxva2FtIiwibWV0YSI6bnVsbCwiY3JlYXRlZF9ieSI6MSwidXBkYXRlZF9ieSI6MTcwOSwicm9sZXMiOlt7ImlkIjoyMywidGl0bGUiOiJtZW50ZWUiLCJsYWJlbCI6Im1lbnRlZSIsInVzZXJfdHlwZSI6MCwic3RhdHVzIjoiQUNUSVZFIiwib3JnYW5pemF0aW9uX2lkIjoxMCwidmlzaWJpbGl0eSI6IlBVQkxJQyIsInRlbmFudF9jb2RlIjoic2hpa3NoYWxva2FtIiwidHJhbnNsYXRpb25zIjpudWxsfV19XX0sImlhdCI6MTc3MzY0ODU1NSwiZXhwIjoxNzc0MjUzMzU1fQ.8gFUjLzAll5__zbE1MITWqMtqwbaDddQ0plfLG4JO9E';
+    const accToken =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjozNjczLCJuYW1lIjoiZmRmIiwic2Vzc2lvbl9pZCI6MzM1OTQsIm9yZ2FuaXphdGlvbl9pZHMiOlsiMzMiXSwib3JnYW5pemF0aW9uX2NvZGVzIjpbInRhbjkwIl0sInRlbmFudF9jb2RlIjoic2hpa3NoYWxva2FtIiwib3JnYW5pemF0aW9ucyI6W3siaWQiOjMzLCJuYW1lIjoidGFuOTAiLCJjb2RlIjoidGFuOTAiLCJkZXNjcmlwdGlvbiI6IlRhbjkwIHNwZWNpYWxpemVzIGluIHByb3ZpZGluZyBlZHVjYXRpb25hbCBTVEVBTSIsInN0YXR1cyI6IkFDVElWRSIsInJlbGF0ZWRfb3JncyI6W10sInRlbmFudF9jb2RlIjoic2hpa3NoYWxva2FtIiwibWV0YSI6bnVsbCwiY3JlYXRlZF9ieSI6MSwidXBkYXRlZF9ieSI6MTcwOSwicm9sZXMiOlt7ImlkIjoyMywidGl0bGUiOiJtZW50ZWUiLCJsYWJlbCI6Im1lbnRlZSIsInVzZXJfdHlwZSI6MCwic3RhdHVzIjoiQUNUSVZFIiwib3JnYW5pemF0aW9uX2lkIjoxMCwidmlzaWJpbGl0eSI6IlBVQkxJQyIsInRlbmFudF9jb2RlIjoic2hpa3NoYWxva2FtIiwidHJhbnNsYXRpb25zIjpudWxsfV19XX0sImlhdCI6MTc3MzY0ODU1NSwiZXhwIjoxNzczNzM0OTU1fQ.Bi2sIG-Q-pNY3WR0sDvjqV4yn52LEieq2xvEjc2YUxA';
+    const profileData = {
+      state: '6853e0168500f000144a3ea4',
+      district: '6853e0828500f000144a3eba',
+      block: '6853e0bb8500f000144a3f48',
+      cluster: '6853e0e48500f000144a46e9',
+      school: '6853e8628500f000144b0e6b',
+      professional_role: '6825950197b5680013e6a17c',
+      professional_subroles:
+        '6825ad1f97b5680013e8450b,6825ad1f97b5680013e8450c,6825ad1f97b5680013e84519',
+      organizations: '[object Object]'
+    };
 
+    const data: any = { 'org-id': '9' };
+    const theme: any = { primaryColor: '#572E91', secondaryColor: '#FF9911' };
+    localStorage.setItem('headers', JSON.stringify(data));
+    localStorage.setItem('accToken', accToken);
+    localStorage.setItem('refToken', refToken);
+    localStorage.setItem('theme', JSON.stringify(theme));
+    localStorage.setItem('profileData', JSON.stringify(profileData));
+  }
 }
