@@ -70,6 +70,7 @@ export class ObservationDetailsComponent implements OnInit {
     this.observationInit.set(true);
     this.network.isOnline$.subscribe(status => {
       if (status == true) {
+        this.loaded.set(false);
         this.getObservationByEntityId();
         this.fetchDownloadedData(false);
       } else {
