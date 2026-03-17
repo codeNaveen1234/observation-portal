@@ -151,7 +151,7 @@ export class ListingComponent implements OnInit {
 
   changeEntityType(selectedType: any) {
     this.selectedEntityType.set(selectedType);
-    this.solutionList.set( this.initialSolutionData().filter((solution: any) => solution?.entityType === selectedType));
+    this.solutionList.set( this.initialSolutionData()?.filter((solution: any) => solution?.entityType === selectedType));
   }
 
   solutionExpiryStatus(element: any) {
