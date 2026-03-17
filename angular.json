@@ -26,8 +26,8 @@
             "outputPath": "dist/observation-portal",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "baseHref": "/observations/",
-            "deployUrl": "/observations/",
+            "baseHref": "/",
+            "deployUrl": "/",
             "polyfills": [
               "zone.js"
             ],
