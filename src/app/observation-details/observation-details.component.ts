@@ -319,7 +319,7 @@ updateDownloadedSubmissions() {
 
 async fetchDownloadedData(mapData) {
   this.allObservationDownloadedDataInIndexDb.set(await this.dbDownloadService.getAllDownloadsDatas("observation"));
-  this.isQuestionerDataInIndexDb.set(this.allObservationDownloadedDataInIndexDb().find(
+  this.isQuestionerDataInIndexDb.set(this.allObservationDownloadedDataInIndexDb()?.find(
     item => item.key === this.observationId())
   );
   this.dbKeys.set(this.isQuestionerDataInIndexDb()?.data || []);
@@ -339,6 +339,7 @@ async fetchDownloadedData(mapData) {
     this.observations.set(mapped);
     this.observationInit.set(false);
     this.isRubricDriven.set(this.isQuestionerDataInIndexDb()?.data?.[0]?.isRubric);
+    console.log("this.isRubricDriven",this.isRubricDriven())
     this.getObservationsByStatus(['draft', 'started', 'inprogress']);
   }
 }
