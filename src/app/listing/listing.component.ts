@@ -61,6 +61,7 @@ export class ListingComponent implements OnInit {
     })
   }
   ngOnInit(): void {
+    console.log("Initialising listing component ============:");
     setTimeout(() => {
       let scrollTop = window.pageYOffset;
       window.scrollTo(0, scrollTop + 1);
@@ -91,6 +92,7 @@ async loadInitialData() {
   this.page = 1;
   this.solutionList = [];
   this.utils.getProfileData().subscribe(response => {
+    console.log("PRof resp from service: ",response)
     if (!response) return;
 
     this.profileData = response?.normalizedProfile;
@@ -282,18 +284,22 @@ async loadInitialData() {
 }
 
 initVisibilityHandler(): void {
+  console.log("Visibility handler initialized");
     this.visibilitySubscription = fromEvent(document, 'visibilitychange')
       .pipe(
         filter(() => document.visibilityState === 'visible'),
         debounceTime(1000)
       )
       .subscribe(() => {
+        console.log("Document is now visible");
         this.loadInitialData();
       });
   }
 
 ngOnDestroy(): void {
+  console.log("Destroy called")
    if (this.visibilitySubscription) {
+    console.log("Unsubscribing from visibility changes");
       this.visibilitySubscription.unsubscribe();
     }
 }
