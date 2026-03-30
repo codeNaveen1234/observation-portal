@@ -147,7 +147,7 @@ export class DeeplinkRedirectComponent {
       }
     },(err:any)=>{
       this.toastService.showToast('MSG_INVALID_LINK',"danger")
-      this.router.navigate([`/listing/${this.type}`]);
+      this.router.navigate([`/listing/${this.type}`,{ replaceUrl: true }]);
     })
   }
 
@@ -187,12 +187,12 @@ export class DeeplinkRedirectComponent {
             this.navigateToSurvey(res?.result);
           },(err:any)=>{
             this.toastService.showToast('MSG_INVALID_LINK',"danger")
-            this.router.navigate([`/listing/${this.type}`,{ replaceUrl: true }]);
+            this.router.navigate([`/listing/${this.type}`],{ replaceUrl: true });
           })
   }
 
   async navigateToSurvey(data:any){
-    await this.router.navigate([`/listing/${this.type}`,{replaceUrl:true}]);
+    await this.router.navigate([`/listing/${this.type}`],{ replaceUrl: true });
     setTimeout(()=>{
     this.router.navigate(['questionnaire'], {
       queryParams:{
