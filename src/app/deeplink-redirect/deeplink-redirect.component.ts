@@ -201,8 +201,7 @@ export class DeeplinkRedirectComponent {
         solutionId:data?.solution?._id,
         solutionType:this.type
       },
-    state:{data:{...data,isSurvey:true}},
-    replaceUrl:true
+    state:{data:{...data,isSurvey:true}}
     });
     },100)
   }
