@@ -192,7 +192,8 @@ export class DeeplinkRedirectComponent {
   }
 
   async navigateToSurvey(data:any){
-    // await this.router.navigate([`/listing/${this.type}`,{replaceUrl:true}]);
+    await this.router.navigate([`/listing/${this.type}`,{replaceUrl:true}]);
+    setTimeout(()=>{
     this.router.navigate(['questionnaire'], {
       queryParams:{
         index: 0, 
@@ -200,10 +201,10 @@ export class DeeplinkRedirectComponent {
         solutionId:data?.solution?._id,
         solutionType:this.type
       },
-      state:{data:{...data,isSurvey:true},
-    },
+    state:{data:{...data,isSurvey:true}},
     replaceUrl:true
     });
+    },100)
   }
 
 }
