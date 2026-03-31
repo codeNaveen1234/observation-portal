@@ -147,7 +147,7 @@ export class DeeplinkRedirectComponent {
       }
     },(err:any)=>{
       this.toastService.showToast('MSG_INVALID_LINK',"danger")
-      this.router.navigate([`/listing/${this.type}`,{ replaceUrl: true }]);
+      this.router.navigate([`/listing/${this.type}`],{ replaceUrl: true });
     })
   }
 
