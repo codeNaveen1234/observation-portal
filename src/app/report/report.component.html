@@ -8,7 +8,7 @@
      </div>
     <div class="report-container">
       <div class="select-wrapper">
-        <mat-form-field class="custom-select" *ngIf="filterData()?.filter.type === 'dropdown'">
+        <mat-form-field class="custom-select" *ngIf="filterData()?.filter?.type === 'dropdown'">
           <mat-label>{{"SELECT_SUBMISSION"|translate}}</mat-label>
           <mat-select (selectionChange)="onSelectionChange($event.value)">
             <mat-option *ngFor="let item of filterData()?.filter?.data" [value]="item._id">
@@ -25,7 +25,7 @@
       </div>
 
       <hr>
-      <div class="buttons-right" *ngIf="reportDetails().length > 0;">
+      <div class="buttons-right" *ngIf="reportDetails()?.length > 0;">
         <button (click)="openFilter()" class="apply-filter" *ngIf="!domainView()">{{"FILTERS" | translate}}</button>
         <button class="apply-filter"
           (click)="downloadPDF(submissionId(), observationType() === 'questions' ? false : true, true,'download')">{{"EXPORT_PDF"|translate}}</button>
@@ -38,7 +38,7 @@
      <div *ngIf="reportDetails().length > 0; else noData">
       <ng-container *ngIf="observationType() === 'questions';else criteriaBlock">
         <div class="questions-list">
-          <div *ngFor="let question of reportDetails(); let qi = index" class="question-card">
+          <div *ngFor="let question of reportDetails(); let qi = index " class="question-card">
             <div class="question-header" *ngIf="!domainView()">
               <p class="questionTitle">{{qi + 1}}. {{ question?.question }}</p>
             </div>

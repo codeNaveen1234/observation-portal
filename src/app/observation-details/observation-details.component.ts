@@ -119,7 +119,7 @@ getObservationsByStatus(statuses: ('draft' | 'inprogress' | 'completed' | 'start
 }
 
 
-  getObservationByEntityId() {
+ async getObservationByEntityId() {
     this.apiService.post(urlConfig.observation.observationSubmissions + this.observationId() + `?entityId=${this.entityId()}`, this.apiService.profileData)
     .pipe(
       finalize(() => this.loaded.set(true)),
@@ -170,7 +170,10 @@ getObservationsByStatus(statuses: ('draft' | 'inprogress' | 'completed' | 'start
       const evidenceCode = data?.evidenceCode ?? data?.evidencesStatus?.[0]?.code;
       this.router.navigate(['questionnaire'], {
         queryParams: {observationId: data?.observationId, entityId: data?.entityId, submissionNumber: data?.submissionNumber, evidenceCode, index: 0,submissionId:data?._id
-        }
+        },
+        state: { data: {
+          isSurvey:true
+        }}
       });
     }
   }

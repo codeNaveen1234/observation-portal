@@ -17,7 +17,7 @@
 </div>
 
 <div *ngIf="loaded(); else loadingTpl" class="domain-content">
-  @if(evidences().length){
+  @if(evidences()?.length){
     <div class="domain-container" *ngFor="let entity of evidences(); let i = index">
       <mat-card (click)="toggleExpand(entity)" [ngClass]="{ 'restrict': entity?.notApplicable === true }" appearance="outlined" class="domain-card">
         <mat-card-header class="d-flex justify-center align-center">

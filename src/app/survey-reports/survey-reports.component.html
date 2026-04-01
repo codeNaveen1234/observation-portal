@@ -20,7 +20,7 @@
 
 <div class="list-container">
 
-    <mat-card *ngFor="let question of reportDetails(); let qi = index" class="question-card">
+    <mat-card *ngFor="let question of reportDetails(); let qi = index " class="question-card">
         <mat-card-header style="background-color: whitesmoke;">
         <mat-card-title style="font-size: 1rem;">{{qi + 1}}. {{ question.question }}</mat-card-title>
         </mat-card-header>
@@ -76,7 +76,7 @@
           </div>
         </ng-container>
       </mat-card-content>
-      <div class="evidence-section" *ngIf="question.evidences && question.evidences.length">
+      <div class="evidence-section" *ngIf="question?.evidences && question?.evidences?.length">
         <hr class="evidence-divider" />
             <h4 class="evidence-title">{{ 'EVIDENCE' | translate }} {{ question.evidence_count }}</h4>
             <div class="evidence-icons">

@@ -4,7 +4,7 @@
 
 <div class="accordion">
     <mat-accordion>
-        <mat-expansion-panel *ngFor="let imp of improvementProjectSuggestions()" class="panel-spacing">
+        <mat-expansion-panel *ngFor="let imp of improvementProjectSuggestions();let i = index" class="panel-spacing">
           <mat-expansion-panel-header>
             <div class="header-flex">
     <span class="title">{{ imp?.criteriaName }}</span>

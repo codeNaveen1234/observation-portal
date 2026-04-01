@@ -75,7 +75,7 @@
   </mat-tab-group>
   
   <div class="fixed-bottom-buttons">
-    <button mat-raised-button (click)="dialogMessage('observeAgain')" *ngIf="allowMultipleAssessemts() == 'true' && isPendingTabSelected()">{{"OBSERVE_AGIAN" | translate}}</button>
+    <button mat-raised-button (click)="dialogMessage('observeAgain')" *ngIf="allowMultipleAssessemts() == 'true' && isPendingTabSelected()">{{"OBSERVE_AGAIN" | translate}}</button>
     <button mat-raised-button color="accent" (click)="viewReport()" *ngIf="!isPendingTabSelected() && filteredObservations().length > 0">{{"VIEW_REPORT" | translate}}</button>
   </div>
 </div>
